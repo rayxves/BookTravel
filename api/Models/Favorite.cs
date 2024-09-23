@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace api.Models
 {
+    [Table("Favorite")]
     public class Favorite
     {
         public int UserId { get; set; }
