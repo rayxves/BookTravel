@@ -22,6 +22,9 @@ namespace api.Data
         {
             base.OnModelCreating(builder);
 
+             builder.Entity<Favorite>()
+            .HasKey(f => f.Id);
+
             builder.Entity<Comment>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Comments)
