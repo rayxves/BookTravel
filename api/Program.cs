@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseNpgsql(connectionString); //configura o contexto para usar PostgreSQL
 });
 
+builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 

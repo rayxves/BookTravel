@@ -42,4 +42,6 @@ next-env.d.ts  
 *.pdb
 *.suo
 
+.env
+
 appsettings.json
