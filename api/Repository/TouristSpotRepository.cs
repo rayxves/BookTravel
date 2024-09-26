@@ -21,6 +21,7 @@ namespace api.Repository
                 .Include(ts => ts.Comments)
                 .ThenInclude(c => c.User)
                 .Include(ts => ts.PlaceTypes)
+                .ThenInclude(pt => pt.Comments)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.Name))
