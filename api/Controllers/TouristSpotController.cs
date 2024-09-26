@@ -32,10 +32,26 @@ namespace api.Controllers
             {
                 return NotFound();
             }
-            
+
             var touristSpotDto = touristSpots.Select(ts => ts.ToTouristSpotDto()).ToList();
             return Ok(touristSpotDto);
+        }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id){
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var touristSpot = await _spotRepo.GetByIdAsync(id);
+
+            if (touristSpot == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(touristSpot.ToTouristSpotDto());
         }
     }
 }

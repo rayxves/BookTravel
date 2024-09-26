@@ -54,5 +54,15 @@ namespace api.Repository
 
             return paginatedTouristSpots;
         }
+
+        public async Task<TouristSpot> GetByIdAsync(int id)
+        {
+            return await _context.TouristSpots.Include(c => c.Comments).ThenInclude(c => c.User).Include(ts => ts.PlaceTypes).ThenInclude(ts => ts.Comments).FirstOrDefaultAsync(i => i.Id == id);
+        }
+
+        public async Task<TouristSpot> GetByNameAsync(string name)
+        {
+            return await _context.TouristSpots.Include(c => c.Comments).ThenInclude(c => c.User).Include(ts => ts.PlaceTypes).ThenInclude(ts => ts.Comments).FirstOrDefaultAsync(n => n.Name == name);
+        }
     }
 }

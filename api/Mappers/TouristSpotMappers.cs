@@ -8,6 +8,11 @@ namespace api.Mappers
     {
         public static TouristSpotDto ToTouristSpotDto(this TouristSpot touristSpotModel)
         {
+          if (touristSpotModel == null) 
+            {
+                throw new ArgumentNullException(nameof(touristSpotModel));
+            }
+
             return new TouristSpotDto
             {
                 Id = touristSpotModel.Id,
@@ -15,8 +20,8 @@ namespace api.Mappers
                 Description = touristSpotModel.Description,
                 Rating = touristSpotModel.Rating,
                 PhotoUrls = touristSpotModel.PhotoUrls,
-                Comments = touristSpotModel.Comments.Select(comment => comment.ToCommentDto()).ToList(),
-                PlaceTypes = touristSpotModel.PlaceTypes.Select(place => place.ToPlaceTypeDto()).ToList()
+                Comments = touristSpotModel.Comments?.Select(comment => comment.ToCommentDto()).ToList() ?? new List<CommentDto>(), 
+                PlaceTypes = touristSpotModel.PlaceTypes?.Select(place => place.ToPlaceTypeDto()).ToList() ?? new List<PlaceTypeDto>() 
             };
         }
     }

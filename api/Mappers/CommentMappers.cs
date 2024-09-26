@@ -6,6 +6,17 @@ namespace api.Dtos
     {
         public static CommentDto ToCommentDto(this Comment commentModel)
         {
+            if (commentModel == null)
+            {
+                throw new ArgumentNullException(nameof(commentModel));
+            }
+
+
+            if (commentModel.User == null)
+            {
+                throw new InvalidOperationException("Comment does not have an associated user.");
+            }
+
             return new CommentDto
             {
                 Content = commentModel.Content,
