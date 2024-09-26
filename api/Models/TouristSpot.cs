@@ -11,9 +11,10 @@ namespace api.Models
 
         [Column(TypeName = "decimal(2,1)")]
         public decimal Rating { get; set; }
-         public List<string> PhotoUrls { get; set; } = new List<string>();
+        public List<string> PhotoUrls { get; set; } = new List<string>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<Favorite> Favorites { get; set; } = new List<Favorite>();
+        public List<PlaceType> PlaceTypes { get; set; } = new List<PlaceType>();
 
     }
 }

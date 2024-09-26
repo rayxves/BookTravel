@@ -11,7 +11,9 @@ namespace api.Models
         public string UserId { get; set; }
         public User User { get; set; } = null!;
         public int? TouristSpotId { get; set; }
-        public TouristSpot? TouristSpot { get; set; } = null!;
+        public TouristSpot? TouristSpot { get; set; }
+        public int? PlaceTypeId { get; set; }
+        public PlaceType? PlaceType { get; set; }
 
     }
 }

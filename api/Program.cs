@@ -1,4 +1,6 @@
 using api.Data;
+using api.Interfaces;
+using api.Repository;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,9 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Services.AddScoped<ITouristSpotRepository, TouristSpotRepository>();
+
 
 var app = builder.Build();
 
