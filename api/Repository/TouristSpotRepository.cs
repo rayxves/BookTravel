@@ -1,4 +1,5 @@
 using api.Data;
+using api.Dtos;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
@@ -15,6 +16,29 @@ namespace api.Repository
             _context = context;
 
         }
+
+        public async Task<TouristSpot> CreateAsync(TouristSpot touristSpotModel)
+        {
+            await _context.TouristSpots.AddAsync(touristSpotModel);
+            await _context.SaveChangesAsync();
+            return touristSpotModel;
+        }
+
+        public async Task<TouristSpot> DeleteAsync(int id)
+        {
+            var touristSpotModel = await _context.TouristSpots.FirstOrDefaultAsync(i => i.Id == id);
+
+            if (touristSpotModel == null)
+            {
+                return null;
+            }
+
+            _context.TouristSpots.Remove(touristSpotModel);
+            await _context.SaveChangesAsync();
+
+            return touristSpotModel;
+        }
+
         public async Task<List<TouristSpot>> GetAllAsync(QueryObject query)
         {
             var touristSpot = _context.TouristSpots
@@ -63,6 +87,24 @@ namespace api.Repository
         public async Task<TouristSpot> GetByNameAsync(string name)
         {
             return await _context.TouristSpots.Include(c => c.Comments).ThenInclude(c => c.User).Include(ts => ts.PlaceTypes).ThenInclude(ts => ts.Comments).FirstOrDefaultAsync(n => n.Name == name);
+        }
+
+        public async Task<TouristSpot> UpdateAsync(int id, UpdateTouristSpotRequestDto touristSpotDto)
+        {
+            var existingTouristSpot = await _context.TouristSpots.FirstOrDefaultAsync(i => i.Id == id);
+
+            if (existingTouristSpot == null)
+            {
+                return null;
+            }
+
+            existingTouristSpot.Name = touristSpotDto.Name;
+            existingTouristSpot.Description = touristSpotDto.Description;
+            existingTouristSpot.Rating = touristSpotDto.Rating;
+            existingTouristSpot.PhotoUrls = touristSpotDto.PhotoUrls;
+
+            await _context.SaveChangesAsync();
+            return existingTouristSpot;
         }
     }
 }

@@ -1,7 +1,9 @@
 using api.Data;
+using api.Dtos;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
+using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -38,7 +40,8 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id){
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -52,6 +55,57 @@ namespace api.Controllers
             }
 
             return Ok(touristSpot.ToTouristSpotDto());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var touristSpotModel = touristSpotDto.ToTouristSpotFromCreatetDto();
+            await _spotRepo.CreateAsync(touristSpotModel);
+            return CreatedAtAction(nameof(GetById), new { id = touristSpotModel.Id }, touristSpotModel.ToTouristSpotDto());
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateTouristSpotRequestDto updateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var touristSpotModel = await _spotRepo.UpdateAsync(id, updateDto);
+
+            if (touristSpotModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(touristSpotModel.ToTouristSpotDto());
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var touristSpot = await _spotRepo.DeleteAsync(id);
+
+            if (touristSpot == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
