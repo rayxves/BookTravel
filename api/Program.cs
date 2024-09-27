@@ -23,6 +23,7 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddScoped<ITouristSpotRepository, TouristSpotRepository>();
 builder.Services.AddScoped<IPlaceTypeRepository, PlaceTypeRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 var app = builder.Build();
 

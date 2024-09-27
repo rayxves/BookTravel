@@ -22,6 +22,20 @@ namespace api.Dtos
                 Content = commentModel.Content,
                 CreatedOn = commentModel.CreatedOn,
                 CreatedBy = commentModel.User.UserName,
+                TouristSpotId = commentModel.TouristSpotId,
+                PlaceTypeId = commentModel.PlaceTypeId
+            };
+        }
+
+        public static Comment ToCommentFromCreatetDto(this CreateCommentRequestDto commentDto, int? touristSpotId = null, int? placeTypeId = null)
+        {
+
+            return new Comment
+            {
+                Content = commentDto.Content,
+                CreatedOn = DateTime.Now,
+                TouristSpotId = touristSpotId,
+                PlaceTypeId = placeTypeId,
             };
         }
     }
