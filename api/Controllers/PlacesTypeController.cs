@@ -1,7 +1,9 @@
 using api.Data;
+using api.Dtos;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
+using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -10,12 +12,13 @@ namespace api.Controllers
     [ApiController]
     public class PlacesTypeController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly ITouristSpotRepository _spotRepo;
         private readonly IPlaceTypeRepository _placeRepo;
-        public PlacesTypeController(ApplicationDBContext context, IPlaceTypeRepository placeRepo)
+        public PlacesTypeController(ITouristSpotRepository spotRepo, IPlaceTypeRepository placeRepo)
         {
-            _context = context;
+            _spotRepo = spotRepo;
             _placeRepo = placeRepo;
+
         }
 
         [HttpGet]
@@ -37,5 +40,87 @@ namespace api.Controllers
             return Ok(placesTypesDto);
 
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var placeType = await _placeRepo.GetByIdAsync(id);
+
+            if (placeType == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(placeType.ToPlaceTypeDto());
+        }
+
+        [HttpPost]
+        [Route("{name:alpha}")]
+        public async Task<IActionResult> Create([FromRoute] string name, CreatePlaceTypeRequestDto placeTypeDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var touristSpot = await _spotRepo.GetByNameAsync(name);
+
+            if (touristSpot == null)
+            {
+                //falta a parte de services da api do google
+                return BadRequest("Tourist Spot does not exists");
+            }
+
+            var placesTypesModel = placeTypeDto.ToPlaceTypeFromCreatetDto();
+            placesTypesModel.TouristSpotId = touristSpot.Id;
+            await _placeRepo.CreateAsync(placesTypesModel);
+            return CreatedAtAction(nameof(GetById), new { id = placesTypesModel.Id }, placesTypesModel.ToPlaceTypeDto());
+
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+
+        public async Task<IActionResult> Update([FromRoute] int id, UpdatePlaceTypeRequestDto placeTypeDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var placeTypeModel = await _placeRepo.UpdateAsync(id, placeTypeDto);
+
+            if (placeTypeModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(placeTypeModel.ToPlaceTypeDto());
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var placeType = _placeRepo.DeleteAsync(id);
+
+            if (placeType == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
     }
 }

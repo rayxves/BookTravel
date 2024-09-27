@@ -51,13 +51,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f02173ca-e8eb-45c4-97aa-681a8188f140",
+                            Id = "e75a6690-2076-4507-a829-9643a13e7133",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2099d80e-4524-4f56-bd35-93a547c14fdd",
+                            Id = "8d3e1600-ac22-4d49-b97a-4945e2f2a945",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -249,7 +249,7 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<List<string>>("Photos")
+                    b.Property<List<string>>("PhotoUrls")
                         .IsRequired()
                         .HasColumnType("text[]");
 

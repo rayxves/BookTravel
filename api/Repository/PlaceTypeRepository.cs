@@ -1,7 +1,9 @@
 using api.Data;
+using api.Dtos;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
@@ -14,14 +16,26 @@ namespace api.Repository
         {
             _context = context;
         }
-        public Task<PlaceType> CreateAsync(PlaceType PlaceTypeModel)
+        public async Task<PlaceType> CreateAsync(PlaceType placeTypeModel)
         {
-            throw new NotImplementedException();
+            await _context.PlaceTypes.AddAsync(placeTypeModel);
+            await _context.SaveChangesAsync();
+            return placeTypeModel;
         }
 
-        public Task<PlaceType> DeleteAsync(int id)
+        public async Task<PlaceType> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var placeTypeModel = await _context.PlaceTypes.FirstOrDefaultAsync(i => i.Id == id);
+
+            if (placeTypeModel == null)
+            {
+                return null;
+            }
+
+            _context.PlaceTypes.Remove(placeTypeModel);
+            await _context.SaveChangesAsync();
+
+            return placeTypeModel;
         }
 
         public async Task<List<PlaceType>> GetAllAsync(PlaceTypeQueryObject query)
@@ -47,6 +61,10 @@ namespace api.Repository
                 {
                     placesTypes = query.isDecsending ? placesTypes.OrderByDescending(ts => ts.Rating) : placesTypes.OrderBy(ts => ts.Rating);
                 }
+                else if (query.SortBy.Equals("Category", StringComparison.OrdinalIgnoreCase))
+                {
+                    placesTypes = query.isDecsending ? placesTypes.OrderByDescending(ts => ts.Category) : placesTypes.OrderBy(ts => ts.Category);
+                }
             }
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
@@ -55,14 +73,33 @@ namespace api.Repository
             return paginatedplacesTypes;
         }
 
-        public Task<PlaceType> GetByIdAsync(int id)
+        public async Task<PlaceType> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _context.PlaceTypes.Include(pt => pt.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public Task<PlaceType> GetByNameAsync(string name)
+        public async Task<PlaceType> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+           return await _context.PlaceTypes.Include(pt => pt.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(n => n.Name == name);
+        }
+
+        public async Task<PlaceType> UpdateAsync(int id, UpdatePlaceTypeRequestDto placeTypeDto)
+        {
+            var existingPlaceType = await _context.PlaceTypes.FirstOrDefaultAsync(i => i.Id == id);
+
+            if (existingPlaceType == null)
+            {
+                return null;
+            }
+
+            existingPlaceType.Category = placeTypeDto.Category;
+            existingPlaceType.Name = placeTypeDto.Name;
+            existingPlaceType.Description = placeTypeDto.Description;
+            existingPlaceType.Rating = placeTypeDto.Rating;
+            existingPlaceType.PhotoUrls = placeTypeDto.PhotoUrls;
+
+            await _context.SaveChangesAsync();
+            return existingPlaceType;
         }
     }
 }

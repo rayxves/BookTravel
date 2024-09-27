@@ -2,8 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos
 {
-    public class UpdateTouristSpotRequestDto
+    public class UpdatePlaceTypeRequestDto
     {
+        [Required(ErrorMessage = "Category is required.")]
+        [StringLength(100, ErrorMessage = "Category cannot exceed 100 characters.")]
+        public string Category { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public string Name { get; set; } = string.Empty;

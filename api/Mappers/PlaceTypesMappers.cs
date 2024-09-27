@@ -9,12 +9,26 @@ namespace api.Mappers
         {
             return new PlaceTypeDto
             {
+                Id = placeTypeModel.Id,
                 Category = placeTypeModel.Category,
                 Name = placeTypeModel.Name,
                 Description = placeTypeModel.Description,
                 Rating = placeTypeModel.Rating,
-                Photos = placeTypeModel.Photos,
+                PhotoUrls = placeTypeModel.PhotoUrls,
                 Comments = placeTypeModel.Comments.Select(comment => comment.ToCommentDto()).ToList(),
+            };
+        }
+
+         public static PlaceType ToPlaceTypeFromCreatetDto(this CreatePlaceTypeRequestDto PlaceTypeDto)
+        {
+
+            return new PlaceType
+            {
+                Category = PlaceTypeDto.Category,
+                Name = PlaceTypeDto.Name,
+                Description = PlaceTypeDto.Description,
+                Rating = PlaceTypeDto.Rating,
+                PhotoUrls = PlaceTypeDto.PhotoUrls,
             };
         }
     }
