@@ -54,12 +54,6 @@ namespace api.Repository
 
             }
 
-            if (!string.IsNullOrWhiteSpace(query.PlaceName) || !string.IsNullOrWhiteSpace(query.PlaceCategory))
-            {
-                touristSpot = touristSpot.Where(ts => ts.PlaceTypes.Any(pt =>
-                    (string.IsNullOrWhiteSpace(query.PlaceName) || pt.Name.Contains(query.PlaceName)) &&
-                    (string.IsNullOrWhiteSpace(query.PlaceCategory) || pt.Category == query.PlaceCategory)));
-            }
 
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {

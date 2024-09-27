@@ -22,7 +22,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddScoped<ITouristSpotRepository, TouristSpotRepository>();
-
+builder.Services.AddScoped<IPlaceTypeRepository, PlaceTypeRepository>();
 
 var app = builder.Build();
 
