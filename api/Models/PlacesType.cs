@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models
@@ -5,6 +6,8 @@ namespace api.Models
     [Table("PlaceType")]
     public class PlaceType
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Category { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
