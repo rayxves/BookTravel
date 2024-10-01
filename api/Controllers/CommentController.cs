@@ -3,6 +3,7 @@ using api.Extensions;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetALL([FromQuery] CommentQueryObject query)
         {
             if (!ModelState.IsValid)
@@ -45,6 +47,7 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var comment = await _commentRepo.GetByIdAsync(id);
@@ -58,6 +61,7 @@ namespace api.Controllers
 
         [HttpPost]
         [Route("{name:alpha}")]
+        [Authorize]
         public async Task<IActionResult> Create([FromRoute] string name, CreateCommentRequestDto commentDto)
         {
             if (!ModelState.IsValid)
@@ -96,6 +100,7 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, UpdateCommentRequestDto commentDto)
         {
             if (!ModelState.IsValid)
@@ -113,6 +118,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
