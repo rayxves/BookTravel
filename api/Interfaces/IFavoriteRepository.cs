@@ -4,8 +4,8 @@ namespace api.Interfaces
 {
     public interface IFavoriteRepository
     {
-        Task<List<TouristSpot>> GetUserPortfolio(User user);
+        Task<List<TouristSpot>> GetUserFavorite(User user);
         Task<Favorite> CreateAsync(Favorite favorite);
-        Task<Favorite> DeletePortfolio(User user, string name);
+        Task<Favorite> DeleteFavorite(User user, string name);
     }
 }

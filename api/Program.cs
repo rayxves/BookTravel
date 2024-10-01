@@ -99,6 +99,7 @@ builder.Services.AddScoped<ITouristSpotRepository, TouristSpotRepository>();
 builder.Services.AddScoped<IPlaceTypeRepository, PlaceTypeRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 
 var app = builder.Build();
 
