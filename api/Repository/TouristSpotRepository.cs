@@ -50,7 +50,7 @@ namespace api.Repository
 
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
-                touristSpot = touristSpot.Where(n => n.Name.Contains(query.Name));
+                touristSpot = touristSpot.Where(n => n.Name.ToLower().Contains(query.Name.ToLower()));
 
             }
 
@@ -59,7 +59,7 @@ namespace api.Repository
             {
                 if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
-                    touristSpot = query.isDecsending ? touristSpot.OrderByDescending(ts => ts.Name) : touristSpot.OrderBy(ts => ts.Name);
+                    touristSpot = query.isDecsending ? touristSpot.OrderByDescending(ts => ts.Name.ToLower()) : touristSpot.OrderBy(ts => ts.Name.ToLower());
                 }
                 else if (query.SortBy.Equals("Rating", StringComparison.OrdinalIgnoreCase))
                 {
@@ -80,7 +80,7 @@ namespace api.Repository
 
         public async Task<TouristSpot> GetByNameAsync(string name)
         {
-            return await _context.TouristSpots.Include(c => c.Comments).ThenInclude(c => c.User).Include(ts => ts.PlaceTypes).ThenInclude(ts => ts.Comments).FirstOrDefaultAsync(n => n.Name == name);
+            return await _context.TouristSpots.Include(c => c.Comments).ThenInclude(c => c.User).Include(ts => ts.PlaceTypes).ThenInclude(ts => ts.Comments).FirstOrDefaultAsync(n => n.Name.ToLower() == name.ToLower());
         }
 
         public async Task<TouristSpot> UpdateAsync(int id, UpdateTouristSpotRequestDto touristSpotDto)

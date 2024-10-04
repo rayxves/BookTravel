@@ -51,13 +51,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1e843946-24cd-40e4-9bca-5a870ac06646",
+                            Id = "2948b56b-bdc9-4b37-b17c-6b7f8f19794c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ca5c4576-cc6f-44b4-a6bb-a9bd12fb1dc8",
+                            Id = "61eb62bf-740d-43a6-840b-c90996903b41",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -213,7 +213,10 @@ namespace api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("TouristSpotId")
+                    b.Property<int?>("PlaceTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TouristSpotId")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
@@ -221,6 +224,8 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlaceTypeId");
 
                     b.HasIndex("TouristSpotId");
 
@@ -434,17 +439,21 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Favorite", b =>
                 {
+                    b.HasOne("api.Models.PlaceType", "PlaceType")
+                        .WithMany()
+                        .HasForeignKey("PlaceTypeId");
+
                     b.HasOne("api.Models.TouristSpot", "TouristSpot")
                         .WithMany("Favorites")
-                        .HasForeignKey("TouristSpotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TouristSpotId");
 
                     b.HasOne("api.Models.User", "User")
                         .WithMany("Favorites")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PlaceType");
 
                     b.Navigation("TouristSpot");
 

@@ -44,7 +44,7 @@ namespace api.Repository
 
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
-                placesTypes = placesTypes.Where(n => n.Name.Contains(query.Name));
+                placesTypes = placesTypes.Where(n => n.Name.ToLower().Contains(query.Name.ToLower()));
             }
 
             if (!string.IsNullOrWhiteSpace(query.Category))
@@ -55,7 +55,7 @@ namespace api.Repository
             {
                 if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
-                    placesTypes = query.isDecsending ? placesTypes.OrderByDescending(ts => ts.Name) : placesTypes.OrderBy(ts => ts.Name);
+                    placesTypes = query.isDecsending ? placesTypes.OrderByDescending(ts => ts.Name.ToLower()) : placesTypes.OrderBy(ts => ts.Name.ToLower());
                 }
                 else if (query.SortBy.Equals("Rating", StringComparison.OrdinalIgnoreCase))
                 {
@@ -75,12 +75,12 @@ namespace api.Repository
 
         public async Task<PlaceType> GetByIdAsync(int id)
         {
-           return await _context.PlaceTypes.Include(pt => pt.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.PlaceTypes.Include(pt => pt.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<PlaceType> GetByNameAsync(string name)
         {
-           return await _context.PlaceTypes.Include(pt => pt.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(n => n.Name == name);
+            return await _context.PlaceTypes.Include(pt => pt.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(n => n.Name.ToLower() == name.ToLower());
         }
 
         public async Task<PlaceType> UpdateAsync(int id, UpdatePlaceTypeRequestDto placeTypeDto)

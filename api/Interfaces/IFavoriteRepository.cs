@@ -1,11 +1,12 @@
+using api.Dtos;
 using api.Models;
 
 namespace api.Interfaces
 {
     public interface IFavoriteRepository
     {
-        Task<List<TouristSpot>> GetUserFavorite(User user);
+        Task<List<FavoriteDto>> GetUserFavorite(User user);
         Task<Favorite> CreateAsync(Favorite favorite);
-        Task<Favorite> DeleteFavorite(User user, string name);
+        Task<Favorite?> DeleteFavorite(User user, string name);
     }
 }

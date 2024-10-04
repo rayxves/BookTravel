@@ -42,7 +42,7 @@ namespace api.Repository
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
 
-                comments = comments.Where(n => (n.TouristSpot != null && n.TouristSpot.Name == query.Name) || (n.PlaceType != null && n.PlaceType.Name == query.Name));
+                comments = comments.Where(n => (n.TouristSpot != null && n.TouristSpot.Name.ToLower() == query.Name.ToLower()) || (n.PlaceType != null && n.PlaceType.Name.ToLower() == query.Name.ToLower()));
             }
 
             if (query.isDecsending == true)

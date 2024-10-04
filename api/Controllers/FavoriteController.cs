@@ -15,11 +15,15 @@ namespace api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IFavoriteRepository _faveRepo;
         private readonly ITouristSpotRepository _spotRepo;
-        public FavoriteController(IFavoriteRepository faveRepo, UserManager<User> userManager, ITouristSpotRepository spotRepo)
+        private readonly IPlaceTypeRepository _placeRepo;
+
+        [ActivatorUtilitiesConstructor]
+        public FavoriteController(IFavoriteRepository faveRepo, UserManager<User> userManager, ITouristSpotRepository spotRepo, IPlaceTypeRepository placeRepo)
         {
             _userManager = userManager;
             _faveRepo = faveRepo;
             _spotRepo = spotRepo;
+            _placeRepo = placeRepo;
         }
 
         [HttpGet]
@@ -45,65 +49,111 @@ namespace api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddFavorite(string name)
+        public async Task<IActionResult> AddFavorite(string name, string type)
         {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
-            var touristSpot = await _spotRepo.GetByNameAsync(name);
 
-            if (touristSpot == null)
+            if (appUser is null)
+                return Unauthorized("User not found");
+
+            if (type.ToLower() == "touristspot")
             {
-                //falta services api
-                return NotFound("Stock not found");
+                var touristSpot = await _spotRepo.GetByNameAsync(name);
+                if (touristSpot == null)
+                {
+                    return NotFound("Tourist spot not found");
+                }
+
+                var userFavorite = await _faveRepo.GetUserFavorite(appUser);
+                if (userFavorite.Any(n => n.TouristSpot?.Name.ToLower() == name.ToLower()))
+                {
+                    return BadRequest("Cannot add same tourist spot to favorites.");
+                }
+
+                var favoriteModel = new Favorite
+                {
+                    TouristSpotId = touristSpot.Id,
+                    UserId = appUser.Id
+                };
+
+                await _faveRepo.CreateAsync(favoriteModel);
+                return Created();
             }
-
-            var userFavorite = await _faveRepo.GetUserFavorite(appUser);
-
-            if (userFavorite.Any(n => n.Name.ToLower() == name))
+            else if (type.ToLower() == "placetype")
             {
-                return BadRequest("Cannot add same tourist spot to favorites.");
+                var placeType = await _placeRepo.GetByNameAsync(name);
+                if (placeType == null)
+                {
+                    return NotFound("Place type not found");
+                }
+
+                var userFavorite = await _faveRepo.GetUserFavorite(appUser);
+                if (userFavorite.Any(n => n.PlaceType?.Name.ToLower() == name.ToLower()))
+                {
+                    return BadRequest("Cannot add same place type to favorites.");
+                }
+
+                var favoriteModel = new Favorite
+                {
+                    PlaceTypeId = placeType.Id,
+                    UserId = appUser.Id
+                };
+
+                await _faveRepo.CreateAsync(favoriteModel);
+
+
+                if (favoriteModel == null)
+                {
+                    return StatusCode(500, "Could not create");
+                }
+
+                return Created();
             }
-
-
-            var favoriteModel = new Favorite
-            {
-                TouristSpotId = touristSpot.Id,
-                UserId = appUser.Id
-            };
-
-            await _faveRepo.CreateAsync(favoriteModel);
-
-
-            if (favoriteModel == null)
-            {
-                return StatusCode(500, "Could not create");
-            }
-
-            return Created();
-
+            return BadRequest("Invalid favorite type.");
         }
 
         [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> DeleteFavorite(string name)
+        public async Task<IActionResult> DeleteFavorite(string name, string type)
         {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
 
+            if (appUser is null)
+                return Unauthorized("User not found");
+
             var userFavorite = await _faveRepo.GetUserFavorite(appUser);
 
-            var filterTouristSpot = userFavorite.Where(n => n.Name.ToLower() == name.ToLower()).ToList();
-
-            if (filterTouristSpot.Count() == 1)
+            if (type.ToLower() == "touristspot")
             {
-                await _faveRepo.DeleteFavorite(appUser, name);
-            }
-            else
-            {
-                return BadRequest("Tourist spot not in your favorites.");
-            }
+                var filterTouristSpot = userFavorite.Where(f => f.TouristSpot?.Name.ToLower() == name.ToLower()).ToList();
 
-            return Ok();
+                if (filterTouristSpot.Count() == 1)
+                {
+                    await _faveRepo.DeleteFavorite(appUser, name);
+                    return Ok("Tourist spot removed from favorites.");
+                }
+                else
+                {
+                    return BadRequest("Tourist spot not in your favorites.");
+                }
+            }
+            else if (type.ToLower() == "placetype")
+            {
+                var filterPlaceType = userFavorite.Where(f => f.PlaceType?.Name.ToLower() == name.ToLower()).ToList();
+
+                if (filterPlaceType.Count() == 1)
+                {
+                    await _faveRepo.DeleteFavorite(appUser, name);
+                    return Ok("Place type removed from favorites.");
+                }
+                else
+                {
+                    return BadRequest("Place type not in your favorites.");
+                }
+            }
+                return Ok();
+            }
         }
     }
-}
