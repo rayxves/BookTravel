@@ -18,6 +18,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpClient<GooglePlacesServices>();
+
 
 builder.Services.AddSwaggerGen(option =>
 {

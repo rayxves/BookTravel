@@ -20,5 +20,6 @@ namespace api.Dtos
         public decimal Rating { get; set; }
 
         public List<string> PhotoUrls { get; set; } = new List<string>();
+        
     }
 }

@@ -19,10 +19,24 @@ namespace api.Repository
 
         public async Task<TouristSpot> CreateAsync(TouristSpot touristSpotModel)
         {
+
             await _context.TouristSpots.AddAsync(touristSpotModel);
+
+
+            if (touristSpotModel.PlaceTypes != null && touristSpotModel.PlaceTypes.Count > 0)
+            {
+                foreach (var placeType in touristSpotModel.PlaceTypes)
+                {
+                    placeType.TouristSpot = touristSpotModel;
+                    await _context.PlaceTypes.AddAsync(placeType);
+                }
+            }
+
             await _context.SaveChangesAsync();
             return touristSpotModel;
         }
+
+
 
         public async Task<TouristSpot> DeleteAsync(int id)
         {

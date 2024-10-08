@@ -58,19 +58,33 @@ namespace api.Controllers
 
             return Ok(touristSpot.ToTouristSpotDto());
         }
+[HttpPost]
+public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
+{
+    if (touristSpotDto == null)
+    {
+        return BadRequest("Invalid tourist spot data.");
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
+    var touristSpot = new TouristSpot
+    {
+        Name = touristSpotDto.Name,
+        Description = touristSpotDto.Description,
+        Rating = touristSpotDto.Rating,
+        PhotoUrls = touristSpotDto.PhotoUrls,
+        PlaceTypes = touristSpotDto.PlaceTypes?.Select(pt => new PlaceType
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Category = pt.Category,
+            Name = pt.Name,
+            Description = pt.Description,
+            Rating = pt.Rating
+        }).ToList() 
+    };
 
-            var touristSpotModel = touristSpotDto.ToTouristSpotFromCreatetDto();
-            await _spotRepo.CreateAsync(touristSpotModel);
-            return CreatedAtAction(nameof(GetById), new { id = touristSpotModel.Id }, touristSpotModel.ToTouristSpotDto());
-        }
+    var createdTouristSpot = await _spotRepo.CreateAsync(touristSpot);
+    
+    return CreatedAtAction(nameof(GetById), new { id = createdTouristSpot.Id }, createdTouristSpot);
+}
 
         [HttpPut]
         [Route("{id:int}")]
