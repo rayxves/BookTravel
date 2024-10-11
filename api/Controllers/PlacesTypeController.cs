@@ -59,26 +59,37 @@ namespace api.Controllers
 
             if (touristSpot == null)
             {
-                var placeDetails = await _googleServices.GetPlaceDetailsByName(placeTypeDto.Name);
-                if (placeDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
+                var touristSpotDetails = await _googleServices.GetPlaceDetailsByName(placeTypeDto.TouristSpotName);
+                if (touristSpotDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
 
                 var newTouristSpot = new TouristSpot
                 {
-                    Name = placeDetails.Name,
-                    Description = placeDetails.Description,
-                    Rating = placeDetails.Rating,
-                    PhotoUrls = placeDetails.Photos
+                    Name = touristSpotDetails.Name,
+                    Description = touristSpotDetails.Description,
+                    Rating = touristSpotDetails.Rating,
+                    PhotoUrls = touristSpotDetails.Photos
                 };
 
                 await _spotRepo.CreateAsync(newTouristSpot);
                 touristSpot = newTouristSpot;
-
             }
 
-            var placeTypeModel = placeTypeDto.ToPlaceTypeFromCreatetDto();
-            placeTypeModel.TouristSpotId = touristSpot.Id;
-            await _placeRepo.CreateAsync(placeTypeModel);
-            return CreatedAtAction(nameof(GetById), new { id = placeTypeModel.Id }, placeTypeModel.ToPlaceTypeDto());
+            var placeTypeDetails = await _googleServices.GetPlaceDetailsByName(placeTypeDto.Name);
+
+            if (placeTypeDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
+
+            var placeType = new PlaceType
+            {
+                Name = placeTypeDetails.Name,
+                Description = placeTypeDetails.Description,
+                Rating = placeTypeDetails.Rating,
+                PhotoUrls = placeTypeDetails.Photos,
+                TouristSpotId = touristSpot.Id
+            };
+
+            var createdPlaceType = await _placeRepo.CreateAsync(placeType);
+
+            return CreatedAtAction(nameof(GetById), new { id = createdPlaceType.Id }, createdPlaceType.ToPlaceTypeDto());
         }
 
 

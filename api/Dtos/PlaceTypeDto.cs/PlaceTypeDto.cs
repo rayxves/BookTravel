@@ -3,7 +3,7 @@ namespace api.Dtos
     public class PlaceTypeDto
     {
         public int Id { get; set; }
-        public string Category { get; set; } = string.Empty;
+
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Rating { get; set; }

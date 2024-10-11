@@ -10,7 +10,6 @@ namespace api.Mappers
             return new PlaceTypeDto
             {
                 Id = placeTypeModel.Id,
-                Category = placeTypeModel.Category,
                 Name = placeTypeModel.Name,
                 Description = placeTypeModel.Description,
                 Rating = placeTypeModel.Rating,
@@ -24,7 +23,6 @@ namespace api.Mappers
 
             return new PlaceType
             {
-                Category = PlaceTypeDto.Category,
                 Name = PlaceTypeDto.Name,
                 Description = PlaceTypeDto.Description,
                 Rating = PlaceTypeDto.Rating,

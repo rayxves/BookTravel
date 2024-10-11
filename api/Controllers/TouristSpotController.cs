@@ -4,6 +4,7 @@ using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +16,13 @@ namespace api.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly ITouristSpotRepository _spotRepo;
-        public TouristSpotController(ApplicationDBContext context, ITouristSpotRepository spotRepo)
+        private readonly GooglePlacesServices _googleServices;
+
+        public TouristSpotController(ApplicationDBContext context, ITouristSpotRepository spotRepo, GooglePlacesServices googleServices)
         {
             _context = context;
             _spotRepo = spotRepo;
+            _googleServices = googleServices;
         }
 
         [HttpGet]
@@ -58,33 +62,30 @@ namespace api.Controllers
 
             return Ok(touristSpot.ToTouristSpotDto());
         }
-[HttpPost]
-public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
-{
-    if (touristSpotDto == null)
-    {
-        return BadRequest("Invalid tourist spot data.");
-    }
-
-    var touristSpot = new TouristSpot
-    {
-        Name = touristSpotDto.Name,
-        Description = touristSpotDto.Description,
-        Rating = touristSpotDto.Rating,
-        PhotoUrls = touristSpotDto.PhotoUrls,
-        PlaceTypes = touristSpotDto.PlaceTypes?.Select(pt => new PlaceType
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
         {
-            Category = pt.Category,
-            Name = pt.Name,
-            Description = pt.Description,
-            Rating = pt.Rating
-        }).ToList() 
-    };
+            if (touristSpotDto == null)
+            {
+                return BadRequest("Invalid tourist spot data.");
+            }
+         
+            var touristSpotDetails = await _googleServices.GetPlaceDetailsByName(touristSpotDto.Name);
+            if (touristSpotDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
 
-    var createdTouristSpot = await _spotRepo.CreateAsync(touristSpot);
-    
-    return CreatedAtAction(nameof(GetById), new { id = createdTouristSpot.Id }, createdTouristSpot);
-}
+            var touristSpot = new TouristSpot
+            {
+                Name = touristSpotDetails.Name,
+                Description = touristSpotDetails.Description,
+                Rating = touristSpotDetails.Rating,
+                PhotoUrls = touristSpotDetails.Photos
+            };
+
+            var createdTouristSpot = await _spotRepo.CreateAsync(touristSpot);
+
+
+            return CreatedAtAction(nameof(GetById), new { id = createdTouristSpot.Id }, createdTouristSpot);
+        }
 
         [HttpPut]
         [Route("{id:int}")]

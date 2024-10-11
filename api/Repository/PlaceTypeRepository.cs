@@ -47,10 +47,7 @@ namespace api.Repository
                 placesTypes = placesTypes.Where(n => n.Name.ToLower().Contains(query.Name.ToLower()));
             }
 
-            if (!string.IsNullOrWhiteSpace(query.Category))
-            {
-                placesTypes = placesTypes.Where(c => c.Category.Contains(query.Category));
-            }
+
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
                 if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
@@ -61,10 +58,7 @@ namespace api.Repository
                 {
                     placesTypes = query.isDecsending ? placesTypes.OrderByDescending(ts => ts.Rating) : placesTypes.OrderBy(ts => ts.Rating);
                 }
-                else if (query.SortBy.Equals("Category", StringComparison.OrdinalIgnoreCase))
-                {
-                    placesTypes = query.isDecsending ? placesTypes.OrderByDescending(ts => ts.Category) : placesTypes.OrderBy(ts => ts.Category);
-                }
+
             }
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
@@ -92,7 +86,6 @@ namespace api.Repository
                 return null;
             }
 
-            existingPlaceType.Category = placeTypeDto.Category;
             existingPlaceType.Name = placeTypeDto.Name;
             existingPlaceType.Description = placeTypeDto.Description;
             existingPlaceType.Rating = placeTypeDto.Rating;

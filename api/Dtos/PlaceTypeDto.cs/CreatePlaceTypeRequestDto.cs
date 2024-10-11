@@ -4,9 +4,9 @@ namespace api.Dtos
 {
     public class CreatePlaceTypeRequestDto
     {
-        [Required(ErrorMessage = "Category is required.")]
-        [StringLength(100, ErrorMessage = "Category cannot exceed 100 characters.")]
-        public string Category { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Name is required.")]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
+        public string TouristSpotName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
@@ -20,6 +20,6 @@ namespace api.Dtos
         public decimal Rating { get; set; }
 
         public List<string> PhotoUrls { get; set; } = new List<string>();
-        
+
     }
 }

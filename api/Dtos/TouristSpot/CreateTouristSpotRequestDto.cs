@@ -16,6 +16,5 @@ namespace api.Dtos
         public decimal Rating { get; set; }
 
         public List<string> PhotoUrls { get; set; } = new List<string>();
-        public List<CreatePlaceTypeRequestDto>? PlaceTypes { get; set; } = null;
     }
 }
