@@ -15,12 +15,14 @@ namespace api.Controllers
     {
         private readonly ITouristSpotRepository _spotRepo;
         private readonly IPlaceTypeRepository _placeRepo;
+        private readonly ICommentRepository _commentRepo;
         private readonly GooglePlacesServices _googleServices;
 
-        public PlacesTypeController(ITouristSpotRepository spotRepo, IPlaceTypeRepository placeRepo, GooglePlacesServices googleServices)
+        public PlacesTypeController(ITouristSpotRepository spotRepo, IPlaceTypeRepository placeRepo, ICommentRepository commentRepo, GooglePlacesServices googleServices)
         {
             _spotRepo = spotRepo;
             _placeRepo = placeRepo;
+            _commentRepo = commentRepo;
             _googleServices = googleServices;
         }
 
@@ -55,7 +57,7 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var touristSpot = await _spotRepo.GetByNameAsync(placeTypeDto.Name);
+            var touristSpot = await _spotRepo.GetByNameAsync(placeTypeDto.TouristSpotName);
 
             if (touristSpot == null)
             {
@@ -76,7 +78,7 @@ namespace api.Controllers
 
             var placeTypeDetails = await _googleServices.GetPlaceDetailsByName(placeTypeDto.Name);
 
-            if (placeTypeDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
+            if (placeTypeDetails == null) return NotFound("Place Type not found in specified Tourist Spot.");
 
             var placeType = new PlaceType
             {
@@ -92,6 +94,25 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdPlaceType.Id }, createdPlaceType.ToPlaceTypeDto());
         }
 
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePlaceTypeRequestDto updatePlaceType)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var placeTypeModel = await _placeRepo.UpdateAsync(id, updatePlaceType);
+
+            if (placeTypeModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(placeTypeModel.ToPlaceTypeDto());
+        }
+
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -101,13 +122,24 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
+            var placeTypeModel = await _placeRepo.GetByIdAsync(id);
 
-
-            var placeType = await _placeRepo.DeleteAsync(id);
-            if (placeType == null)
+            if (placeTypeModel == null)
             {
                 return NotFound();
             }
+
+            var comments = placeTypeModel.Comments;
+
+            if (comments != null)
+            {
+                for (int i = 0; i < comments.Count; i++)
+                {
+                    await _commentRepo.DeleteAsync(comments[i].Id);
+                }
+            }
+
+            await _placeRepo.DeleteAsync(id);
 
             return NoContent();
         }

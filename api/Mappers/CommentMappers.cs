@@ -19,6 +19,7 @@ namespace api.Dtos
 
             return new CommentDto
             {
+                Id = commentModel.Id,
                 Content = commentModel.Content,
                 CreatedOn = commentModel.CreatedOn,
                 CreatedBy = commentModel.User.UserName,

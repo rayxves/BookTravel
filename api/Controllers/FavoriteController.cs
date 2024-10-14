@@ -49,7 +49,7 @@ namespace api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddFavorite(string name, string type)
+        public async Task<IActionResult> AddFavorite(string name)
         {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
@@ -57,60 +57,54 @@ namespace api.Controllers
             if (appUser is null)
                 return Unauthorized("User not found");
 
-            if (type.ToLower() == "touristspot")
-            {
-                var touristSpot = await _spotRepo.GetByNameAsync(name);
-                if (touristSpot == null)
-                {
-                    return NotFound("Tourist spot not found");
-                }
-
-                var userFavorite = await _faveRepo.GetUserFavorite(appUser);
-                if (userFavorite.Any(n => n.TouristSpot?.Name.ToLower() == name.ToLower()))
-                {
-                    return BadRequest("Cannot add same tourist spot to favorites.");
-                }
-
-                var favoriteModel = new Favorite
-                {
-                    TouristSpotId = touristSpot.Id,
-                    UserId = appUser.Id
-                };
-
-                await _faveRepo.CreateAsync(favoriteModel);
-                return Created();
-            }
-            else if (type.ToLower() == "placetype")
+            var touristSpot = await _spotRepo.GetByNameAsync(name);
+            if (touristSpot == null)
             {
                 var placeType = await _placeRepo.GetByNameAsync(name);
                 if (placeType == null)
                 {
-                    return NotFound("Place type not found");
+                    return NotFound();
                 }
 
-                var userFavorite = await _faveRepo.GetUserFavorite(appUser);
-                if (userFavorite.Any(n => n.PlaceType?.Name.ToLower() == name.ToLower()))
+                var userFavoritePlaceType = await _faveRepo.GetUserFavorite(appUser);
+                if (userFavoritePlaceType.Any(n => n.PlaceType?.Name.ToLower() == name.ToLower()))
                 {
                     return BadRequest("Cannot add same place type to favorites.");
                 }
 
-                var favoriteModel = new Favorite
+                var favoriteModelPlaceType = new Favorite
                 {
                     PlaceTypeId = placeType.Id,
-                    UserId = appUser.Id
+                    UserId = appUser.Id,
                 };
 
-                await _faveRepo.CreateAsync(favoriteModel);
+                await _faveRepo.CreateAsync(favoriteModelPlaceType);
 
 
-                if (favoriteModel == null)
+                if (favoriteModelPlaceType == null)
                 {
                     return StatusCode(500, "Could not create");
                 }
 
                 return Created();
+
             }
-            return BadRequest("Invalid favorite type.");
+
+            var userFavoriteTouristSpot = await _faveRepo.GetUserFavorite(appUser);
+            if (userFavoriteTouristSpot.Any(n => n.TouristSpot?.Name.ToLower() == name.ToLower()))
+            {
+                return BadRequest("Cannot add same tourist spot to favorites.");
+            }
+
+            var favoriteModelTouristSpot = new Favorite
+            {
+                TouristSpotId = touristSpot.Id,
+                UserId = appUser.Id
+            };
+
+            await _faveRepo.CreateAsync(favoriteModelTouristSpot);
+            return Created();
+
         }
 
         [HttpDelete]
@@ -125,21 +119,14 @@ namespace api.Controllers
 
             var userFavorite = await _faveRepo.GetUserFavorite(appUser);
 
-            if (type.ToLower() == "touristspot")
-            {
-                var filterTouristSpot = userFavorite.Where(f => f.TouristSpot?.Name.ToLower() == name.ToLower()).ToList();
+            var filterTouristSpot = userFavorite.Where(f => f.TouristSpot?.Name.ToLower() == name.ToLower()).ToList();
 
-                if (filterTouristSpot.Count() == 1)
-                {
-                    await _faveRepo.DeleteFavorite(appUser, name);
-                    return Ok("Tourist spot removed from favorites.");
-                }
-                else
-                {
-                    return BadRequest("Tourist spot not in your favorites.");
-                }
+            if (filterTouristSpot.Count() == 1)
+            {
+                await _faveRepo.DeleteFavorite(appUser, name);
+                return Ok("Tourist spot removed from favorites.");
             }
-            else if (type.ToLower() == "placetype")
+            else
             {
                 var filterPlaceType = userFavorite.Where(f => f.PlaceType?.Name.ToLower() == name.ToLower()).ToList();
 
@@ -150,10 +137,10 @@ namespace api.Controllers
                 }
                 else
                 {
-                    return BadRequest("Place type not in your favorites.");
+                    return BadRequest("Not in your favorites.");
                 }
             }
-                return Ok();
-            }
+
         }
     }
+}

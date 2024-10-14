@@ -8,5 +8,6 @@ namespace api.Models
         public List<string> Photos { get; set; } = new List<string>();    
         public string[] Types { get; set; } = Array.Empty<string>();
         public int? TouristSpotId { get; set; }
+        public TouristSpot? TouristSpot { get; set; }
     }
 }

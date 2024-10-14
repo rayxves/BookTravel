@@ -16,12 +16,14 @@ namespace api.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly ITouristSpotRepository _spotRepo;
+        private readonly ICommentRepository _commentRepo;
         private readonly GooglePlacesServices _googleServices;
 
-        public TouristSpotController(ApplicationDBContext context, ITouristSpotRepository spotRepo, GooglePlacesServices googleServices)
+        public TouristSpotController(ApplicationDBContext context, ITouristSpotRepository spotRepo, ICommentRepository commentRepo, GooglePlacesServices googleServices)
         {
             _context = context;
             _spotRepo = spotRepo;
+            _commentRepo = commentRepo;
             _googleServices = googleServices;
         }
 
@@ -62,6 +64,8 @@ namespace api.Controllers
 
             return Ok(touristSpot.ToTouristSpotDto());
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
         {
@@ -69,7 +73,7 @@ namespace api.Controllers
             {
                 return BadRequest("Invalid tourist spot data.");
             }
-         
+
             var touristSpotDetails = await _googleServices.GetPlaceDetailsByName(touristSpotDto.Name);
             if (touristSpotDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
 
@@ -115,12 +119,32 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var touristSpot = await _spotRepo.DeleteAsync(id);
+            var touristSpotModel = await _spotRepo.GetByIdAsync(id);
 
-            if (touristSpot == null)
+            if (touristSpotModel == null)
             {
                 return NotFound();
             }
+            var comments = touristSpotModel.Comments;
+            var placeTypes = touristSpotModel.PlaceTypes;
+
+            if (comments != null)
+            {
+                for (int i = 0; i < comments.Count; i++)
+                {
+                    await _commentRepo.DeleteAsync(comments[i].Id);
+                }
+            }
+
+            if (placeTypes != null)
+            {
+                for (int i = 0; i < placeTypes.Count; i++)
+                {
+                    await _commentRepo.DeleteAsync(placeTypes[i].Id);
+                }
+            }
+
+            await _spotRepo.DeleteAsync(id);
 
             return NoContent();
         }

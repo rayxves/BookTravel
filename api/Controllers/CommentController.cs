@@ -62,15 +62,15 @@ namespace api.Controllers
         [HttpPost]
         [Route("{name:alpha}")]
         [Authorize]
-        public async Task<IActionResult> Create([FromRoute] string name, CreateCommentRequestDto commentDto)
+        public async Task<IActionResult> Create(CreateCommentRequestDto commentDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var touristSpot = await _spotRepo.GetByNameAsync(name);
-            var placeType = await _placeRepo.GetByNameAsync(name);
+            var touristSpot = await _spotRepo.GetByNameAsync(commentDto.TouristSpotName);
+            var placeType = await _placeRepo.GetByNameAsync(commentDto.TouristSpotName);
 
             if (touristSpot == null && placeType == null)
             {

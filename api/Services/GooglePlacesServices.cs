@@ -62,11 +62,11 @@ namespace api.Services
                         Description = result.TryGetProperty("formatted_address", out var address) ? address.GetString() ?? string.Empty : string.Empty,
                         Rating = result.TryGetProperty("rating", out var rating) ? rating.GetDecimal() : 0,
                         Photos = result.TryGetProperty("photos", out var photos)
-                            ? photos.EnumerateArray().Select(photo => photo.GetProperty("photo_reference").GetString()).ToList()
-                            : new List<string>(),
+                        ? photos.EnumerateArray().Take(5).Select(photo => photo.GetProperty("photo_reference").GetString() ?? string.Empty).ToList() // Limitando a 5 fotos.
+                        : new List<string>(),
                         Types = result.TryGetProperty("types", out var types)
-                            ? types.EnumerateArray().Select(type => type.GetString()).ToArray()
-                            : Array.Empty<string>()
+                        ? types.EnumerateArray().Select(type => type.GetString() ?? string.Empty).ToArray()
+                        : Array.Empty<string>()
                     };
 
                     return googlePlaceData;
