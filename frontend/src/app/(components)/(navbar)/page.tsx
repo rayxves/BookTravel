@@ -1,3 +1,4 @@
+import Link from "next/link"; // Importando Link do Next.js
 import logo from "../../assets/logo.png";
 import Image from "next/image";
 import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +19,7 @@ export default function Navbar() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
   return (
     <>
       <NavbarContainer>
@@ -31,14 +33,14 @@ export default function Navbar() {
         <UserIcon icon={faUser} />
 
         <AccountLinks>
-          <a className="login" href="/login">
+          <Link className="login" href="/login">
             Login
-          </a>
-          <a href="/register">Cadastrar</a>
+          </Link>
+          <Link href="/register">Cadastrar</Link>
         </AccountLinks>
       </NavbarContainer>
 
-      {menuOpen && <Menu />}
+      {menuOpen && <Menu isVisible={menuOpen} />}
     </>
   );
 }

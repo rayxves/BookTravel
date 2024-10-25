@@ -64,23 +64,24 @@ export const AccountLinks = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3.3rem;
-  margin-right: 3rem;
-  max-width: fit-content;
+  gap: 2rem;
+
+  margin-right: 3.2rem;
+  width: 16rem;
   height: 5rem;
 
   a {
     font-family: "Inter", sans-serif;
     font-weight: 600;
+    font-size: 1.05rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1.3;
-    padding: 0.3rem;
-    height: 3.25rem;
-    width: 6rem;
-    border: 1px solid ${colors.black};
-    border-radius: 8px;
+
+    height: 2.65rem;
+    width: 100%;
+    border: 2px solid ${colors.gray};
+    border-radius: 10px;
     background-color: transparent;
     color: ${colors.black};
     text-decoration: none;
@@ -88,39 +89,6 @@ export const AccountLinks = styled.div`
 
     &:hover {
       background-color: ${colors.mostLightGray};
-
-    }
-  }
-
-  @media (max-width: 867px) {
-    display: none;
-  }
-`;
-
-export const NavLinks = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-right: 3rem;
-  max-width: fit-content;
-  height: 5rem;
-
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 3.25rem;
-    width: 7.5rem;
-
-    background-color: transparent;
-    color: ${colors.black};
-    text-decoration: none;
-
-    &:hover {
-      color: ${colors.darkGray};
-      opacity: 0.6;
     }
   }
 

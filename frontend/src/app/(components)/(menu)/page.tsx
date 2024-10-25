@@ -1,21 +1,32 @@
-import { MenuContainer, MenuItem } from "./menu.styles";
+import Link from "next/link"; // Importando Link do Next.js
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MenuContainer, MenuIcons, MenuItem } from "./menu.styles";
+import {
+  faHouse,
+  faLocationDot,
+  faUsers,
+  faRocket,
+} from "@fortawesome/free-solid-svg-icons";
 
-export default function Menu() {
+export default function Menu({ isVisible }) {
   return (
     <>
-      <MenuContainer>
+      <MenuContainer className={isVisible ? "visible" : ""}>
         <MenuItem>
-          <a href="/about">Sobre nós</a>
+          <MenuIcons icon={faHouse} />
+          <Link href="/home">Home</Link>
         </MenuItem>
         <MenuItem>
-          <a href="/home">Home</a>
+          <MenuIcons icon={faLocationDot} />
+          <Link href="/search">Procurar Destinos</Link>
         </MenuItem>
         <MenuItem>
-          <a href="/search">Procurar Destinos</a>
+          <MenuIcons icon={faUsers} />
+          <Link href="/userPage">Página do Usuário</Link>
         </MenuItem>
         <MenuItem>
-          {" "}
-          <a href="/userPage">Página do usúario</a>
+          <MenuIcons icon={faRocket} />
+          <Link href="/about">Sobre Nós</Link>
         </MenuItem>
       </MenuContainer>
     </>
