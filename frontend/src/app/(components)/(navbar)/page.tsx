@@ -4,26 +4,31 @@ import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import {
   Logo,
   NavbarContainer,
-  StyledIcon,
   AccountLinks,
-  NavLinks,
+  MenuIcon,
+  UserIcon,
+  Button,
 } from "./navbar.styles";
+import { useState } from "react";
+import Menu from "../(menu)/page";
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
   return (
     <>
       <NavbarContainer>
-        <StyledIcon icon={faBars} />
-        <NavLinks>
-          {/* <a href="/about">Sobre nós</a> */}
-          <a href="/home">Home</a>
-          <a href="/search">Procurar Destinos</a>
-          {/* <a href="/userPage">Página do usúario</a> */}
-        </NavLinks>
+        <Button onClick={toggleMenu}>
+          <MenuIcon icon={faBars} />
+        </Button>
+
         <Logo>
           <Image src={logo} alt="Logo" />
         </Logo>
-        <StyledIcon icon={faUser} />
+        <UserIcon icon={faUser} />
 
         <AccountLinks>
           <a className="login" href="/login">
@@ -32,6 +37,8 @@ export default function Navbar() {
           <a href="/register">Cadastrar</a>
         </AccountLinks>
       </NavbarContainer>
+
+      {menuOpen && <Menu />}
     </>
   );
 }
