@@ -14,7 +14,7 @@ export default function Menu({ isVisible }) {
       <MenuContainer className={isVisible ? "visible" : ""}>
         <MenuItem>
           <MenuIcons icon={faHouse} />
-          <Link href="/home">Home</Link>
+          <Link href="./">Home</Link>
         </MenuItem>
         <MenuItem>
           <MenuIcons icon={faLocationDot} />
