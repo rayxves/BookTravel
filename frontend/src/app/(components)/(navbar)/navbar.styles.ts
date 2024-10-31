@@ -6,7 +6,7 @@ export const NavbarContainer = styled.div`
   margin: 0;
   width: 100%;
   height: 5rem;
-  background: ${colors.lightGray};
+  background: ${colors.mediumGreen};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -14,7 +14,7 @@ export const NavbarContainer = styled.div`
 `;
 
 export const Logo = styled.div`
-  width: 12rem;
+  width: 15rem;
   height: 5rem;
   img {
     object-fit: cover;
@@ -37,7 +37,7 @@ export const UserIcon = styled(FontAwesomeIcon)`
   padding: 1.75rem 1.4rem;
   width: 3.5rem;
   &:hover {
-    color: ${colors.gray};
+    color: ${colors.lightGreen};
   }
 
   @media (min-width: 868px) {
@@ -56,7 +56,7 @@ export const MenuIcon = styled(FontAwesomeIcon)`
   transform: translate(-50%, -50%);
 
   &:hover {
-    color: ${colors.gray};
+    color: ${colors.lightGreen};
   }
 `;
 
@@ -80,15 +80,16 @@ export const AccountLinks = styled.div`
 
     height: 2.65rem;
     width: 100%;
-    border: 2px solid ${colors.gray};
+    border: 2px solid ${colors.black};
     border-radius: 10px;
     background-color: transparent;
-    color: ${colors.black};
+    color: ${colors.darkGray};
     text-decoration: none;
     transition: background-color 0.2s ease-in-out;
 
     &:hover {
-      background-color: ${colors.mostLightGray};
+      color: ${colors.black};
+      background-color: ${colors.lightGreen};
     }
   }
 

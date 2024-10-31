@@ -1,12 +1,14 @@
 "use client";
-import Navbar from "./(components)/(navbar)/page";
 
+import Navbar from "./(components)/(navbar)/page";
+import TravelHighlights from "./(components)/(travelHighlights)/page";
+import { InicialPageContainer } from "./global.styles";
 
 export default function Home() {
   return (
-    <>
-    <Navbar />
-      <h1>loading...</h1>
-    </>
+    <InicialPageContainer>
+      <Navbar />
+      <TravelHighlights />
+    </InicialPageContainer>
   );
 }

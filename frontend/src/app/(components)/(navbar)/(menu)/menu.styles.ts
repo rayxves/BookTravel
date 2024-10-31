@@ -3,10 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 export const MenuContainer = styled.nav`
-  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  z-index: 4;
+  top: 4.5rem;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  background: ${colors.lightGray};
+  background: ${colors.mediumGreen};
   max-width: fit-content;
   max-height: 40vh;
 
@@ -47,7 +50,7 @@ export const MenuItem = styled.li`
 
     &:hover {
       outline: none;
-      color: ${colors.gray};
+      color: ${colors.lightGreen};
 
       font-weight: 600;
     }
@@ -68,6 +71,6 @@ export const MenuIcons = styled(FontAwesomeIcon)`
   margin-left: 0.5rem;
 
   &:hover {
-    color: ${colors.gray};
+    color: ${colors.lightGreen};
   }
 `;
