@@ -1,5 +1,5 @@
 import Link from "next/link"; // Importando Link do Next.js
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { MenuContainer, MenuIcons, MenuItem } from "./menu.styles";
 import {
   faHouse,
@@ -8,7 +8,11 @@ import {
   faRocket,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function Menu({ isVisible }) {
+interface props {
+  isVisible: boolean;
+}
+
+export default function Menu({ isVisible }: props) {
   return (
     <>
       <MenuContainer className={isVisible ? "visible" : ""}>
@@ -18,7 +22,7 @@ export default function Menu({ isVisible }) {
         </MenuItem>
         <MenuItem>
           <MenuIcons icon={faLocationDot} />
-          <Link href="/search">Procurar Destinos</Link>
+          <Link href="/searchPlaces">Procurar Destinos</Link>
         </MenuItem>
         <MenuItem>
           <MenuIcons icon={faUsers} />

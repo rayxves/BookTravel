@@ -3,8 +3,9 @@ import styled, { createGlobalStyle } from "styled-components";
 export const colors = {
   black: "black",
   mediumGreen: "#395B46",
+  green: "#24422F",
   darkGray: "rgba(17, 17, 17, 6.67)",
-  gray: "#626262",
+  gray: "#1B1B1B",
   slaterGray: "#788AA3",
   paynesGray: "#666A86",
   lightGray: "#BDBDBD",
