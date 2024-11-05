@@ -6,7 +6,7 @@ export const SearchPageContainer = styled.div`
   background: ${colors.darkGray};
   display: flex;
   flex-direction: column;
-
+  overflow: auto;
   width: 100%;
 `;
 
@@ -18,7 +18,7 @@ export const SearchContainer = styled.div`
   border-radius: 5px;
   margin-bottom: 1rem;
   margin-top: 0.1rem;
-  background: ${colors.gray};
+
   box-shadow: 0px 4px 0px rgba(1, 1, 1, 0.2);
   width: 100%;
   height: 22%;
@@ -27,7 +27,7 @@ export const SearchContainer = styled.div`
 export const InputContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  margin-top: 1.5rem;
   width: 60%;
   max-width: 650px;
   height: 2rem;
@@ -54,6 +54,7 @@ export const SearchIcon = styled(FontAwesomeIcon)`
   width: 2rem;
   margin: 0.5rem;
   color: ${colors.darkGray};
+  cursor: pointer;
 `;
 
 export const SearchDescription = styled.p`
@@ -65,9 +66,10 @@ export const SearchDescription = styled.p`
   width: 100%;
   height: 3rem;
   padding: 1rem;
+  margin-top: 0.5rem;
 
   @media (min-width: 868px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 `;
 

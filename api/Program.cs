@@ -20,6 +20,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<GooglePlacesServices>();
 
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAllOrigins",
+            builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+    });
 
 builder.Services.AddSwaggerGen(option =>
 {

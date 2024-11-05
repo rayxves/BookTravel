@@ -1,15 +1,22 @@
-import { Button, Card, CardContainer, Description, Titulo } from "./searchCards.styles";
+import Card from "./(card)/page";
+import { CardContainer } from "./searchCards.styles";
 
-export default function Cards() {
+interface Props {
+  isSearching: boolean;
+  results: any[];
+}
+
+export default function Cards({ isSearching, results }: Props) {
   return (
     <>
       <CardContainer>
-        <Card>
-          <Titulo>Ver Favoritos</Titulo>
-          <Description>Confira todos os seus destinos salvos. </Description>
-          <Button>Ver Favoritos</Button>
-        </Card>
-     
+        {isSearching ? (
+          <p>Buscando...</p>
+        ) : results.length > 0 ? (
+          results.map((place) => <Card key={place.id} place={place} />)
+        ) : (
+          <></>
+        )}
       </CardContainer>
     </>
   );

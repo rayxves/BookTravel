@@ -28,7 +28,6 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetALL([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
