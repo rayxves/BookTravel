@@ -6,7 +6,6 @@ export const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 `;
 
 export const TravelsContainer = styled.div`
@@ -17,7 +16,7 @@ export const TravelsContainer = styled.div`
   box-shadow: 4px 4px 15px rgba(1, 1, 1, 1);
 
   @media (min-width: 868px) {
-    width: 70vw;
+    width: 65vw;
   }
 `;
 
@@ -58,16 +57,16 @@ export const AviaoImageContainer = styled.div`
     50% {
       transform: rotate(8deg) translate(15px, -15px);
     }
-      100% {
+    100% {
       transform: rotate(-13deg) translate(0, 0);
     }
   }
 `;
 export const Title = styled.p`
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: end;
-  padding-bottom: 1rem;
+  padding-bottom: 1.2rem;
   padding-right: 2rem;
   height: 4rem;
   font-family: "Inter", sans-serif;
@@ -123,7 +122,7 @@ export const SubTitle = styled.p`
   font-family: "Inter", sans-serif;
   font-size: 1.2rem;
   padding-left: 2rem;
-  padding-top: 1rem;
+  padding-top: 1.2rem;
   font-weight: 500;
   color: ${colors.lightGray};
 
@@ -139,4 +138,76 @@ export const SubTitle = styled.p`
     padding-left: 8rem;
     font-size: 1.6rem;
   }
+`;
+
+export const TouristSpotContainer = styled.div`
+  display: flex;
+  gap: 0rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  height: 100%;
+`;
+
+export const TouristSpotName = styled.h1`
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  height: 3rem;
+  padding-bottom: 1.5rem;
+
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: ${colors.lightGray};
+  font-family: "Roboto", sans-serif;
+`;
+
+export const TouristSpotImg = styled.h1`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+
+  font-size: 1.8rem;
+  font-weight: 700;
+
+  img {
+    height: 90%;
+    width: 90%;
+    border: 5px solid ${colors.green};
+    box-shadow: 4px 4px 4px 4px rgba(1, 1, 1, 0.3);
+  }
+
+  @media (min-width: 570px) {
+    img {
+      height: 90%;
+      width: 80%;
+    }
+  }
+
+  @media (min-width: 870px) {
+    img {
+      height: 85%;
+      width: 60%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    img {
+      height: 80%;
+      width: 45%;
+    }
+  }
+`;
+
+export const TouristSpotDescription = styled.p`
+  display: flex;
+  height: 5rem;
+  font-family: "Inter", sans-serif;
+  color: ${colors.lightGray};
+  font-size: 1rem;
+  padding-left: 2rem;
+  padding-top: 0.5rem;
+  font-weight: 500;
 `;

@@ -2,24 +2,24 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const url = "http://localhost:5020/api/tourist-spot";
+  const url = new URL("http://localhost:5020/api/tourist-spot");
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url.toString());
 
-    if (!response.data || !Array.isArray(response.data.results)) {
+    if (!response.data || !Array.isArray(response.data)) {
       return NextResponse.json(
         { error: "Invalid API response structure" },
         { status: 500 }
       );
     }
 
-    const places = response.data.results.map((place: any) => ({
-      id: place?.Id || null,
-      name: place?.Name || "Unnamed",
-      description: place?.Description || "No description available",
-      rating: place?.Rating || 0,
-      imageUrl: place?.PhotoUrls?.[0] || null,
+    const places = response.data.map((place: any) => ({
+      id: place?.id || null,
+      name: place?.name || "Unnamed",
+      description: place.description || "No description available",
+      rating: place?.rating || 0,
+      imageUrl: place?.photoUrls?.[0] || null,
     }));
 
     return NextResponse.json(places);

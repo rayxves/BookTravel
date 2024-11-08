@@ -46,7 +46,7 @@ export const Titulo = styled.h1`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 5rem;
+  height: 6rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid black;
   font-size: 1.8rem;

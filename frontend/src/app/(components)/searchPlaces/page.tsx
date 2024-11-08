@@ -5,6 +5,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Navbar from "../(navbar)/page";
 import {
+  ErrorMessage,
   InputContainer,
   ResponsiveImageContainer,
   SearchBar,
@@ -22,6 +23,7 @@ export async function fetchPlaces(query: string) {
   if (!res.ok) {
     throw new Error("Failed to fetch places");
   }
+
   return res.json();
 }
 
@@ -67,9 +69,8 @@ export default function SearchPlaces() {
         <Image src={placesImg} alt="Small Screen" className="small-screen" />
         <Image src={bsPlacesImg} alt="Large Screen" className="large-screen" />
         <Cards isSearching={isSearching} results={places} />
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}{" "}
       </ResponsiveImageContainer>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}{" "}
-      {/* Error message display */}
 
     </SearchPageContainer>
   );

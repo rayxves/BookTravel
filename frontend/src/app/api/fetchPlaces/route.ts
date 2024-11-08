@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     );
   }
 
-  const url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent( query)}&key=${API_KEY}";
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent( query)}&key=${API_KEY}`;
 
   try {
     const response = await axios.get(url);
@@ -25,13 +25,13 @@ export async function GET(req: Request) {
       );
     }
 
-    const places = response.data.results.map((place: any) => ({
+    const places = response.data.results.slice(0, 6).map((place: any) => ({
       id: place.place_id,
       name: place.name,
       description: place.formatted_address,
       rating: place.rating,
       imageUrl: place.photos
-        ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${API_KEY}"
+        ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${API_KEY}`
         : null,
     }));
 

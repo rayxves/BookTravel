@@ -13,7 +13,15 @@ export const CardContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   padding: 1.3rem;
   gap: 1.3rem;
-  place-items: center
+  place-items: center;
+`;
 
-  
+export const SpinnerContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
 `;

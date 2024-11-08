@@ -1,5 +1,6 @@
+import Spinner from "../../(spinner)/page";
 import Card from "./(card)/page";
-import { CardContainer } from "./searchCards.styles";
+import { CardContainer, SpinnerContainer } from "./searchCards.styles";
 
 interface Props {
   isSearching: boolean;
@@ -11,7 +12,9 @@ export default function Cards({ isSearching, results }: Props) {
     <>
       <CardContainer>
         {isSearching ? (
-          <p>Buscando...</p>
+          <SpinnerContainer>
+          <Spinner loading={isSearching} />
+        </SpinnerContainer>
         ) : results.length > 0 ? (
           results.map((place) => <Card key={place.id} place={place} />)
         ) : (

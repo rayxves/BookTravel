@@ -53,40 +53,42 @@ namespace api.Repository
             return touristSpotModel;
         }
 
-        public async Task<List<TouristSpot>> GetAllAsync(QueryObject query)
+       public async Task<List<TouristSpot>> GetAllAsync(QueryObject query)
+{
+    var touristSpot = _context.TouristSpots
+        .Include(ts => ts.Comments)
+            .ThenInclude(c => c.User)
+        .Include(ts => ts.PlaceTypes)
+            .ThenInclude(pt => pt.Comments)
+        .AsSplitQuery()
+        .AsQueryable();
+
+    if (!string.IsNullOrWhiteSpace(query.Name))
+    {
+        touristSpot = touristSpot.Where(n => n.Name.ToLower().Contains(query.Name.ToLower()));
+    }
+
+    if (!string.IsNullOrWhiteSpace(query.SortBy))
+    {
+        if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
         {
-            var touristSpot = _context.TouristSpots
-                .Include(ts => ts.Comments)
-                .ThenInclude(c => c.User)
-                .Include(ts => ts.PlaceTypes)
-                .ThenInclude(pt => pt.Comments)
-                .AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(query.Name))
-            {
-                touristSpot = touristSpot.Where(n => n.Name.ToLower().Contains(query.Name.ToLower()));
-
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(query.SortBy))
-            {
-                if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
-                {
-                    touristSpot = query.isDecsending ? touristSpot.OrderByDescending(ts => ts.Name.ToLower()) : touristSpot.OrderBy(ts => ts.Name.ToLower());
-                }
-                else if (query.SortBy.Equals("Rating", StringComparison.OrdinalIgnoreCase))
-                {
-                    touristSpot = query.isDecsending ? touristSpot.OrderByDescending(ts => ts.Rating) : touristSpot.OrderBy(ts => ts.Rating);
-                }
-            }
-
-            var skipNumber = (query.PageNumber - 1) * query.PageSize;
-            var paginatedTouristSpots = await touristSpot.Skip(skipNumber).Take(query.PageSize).ToListAsync();
-
-            return paginatedTouristSpots;
+            touristSpot = query.isDecsending ? touristSpot.OrderByDescending(ts => ts.Name) : touristSpot.OrderBy(ts => ts.Name);
         }
+        else if (query.SortBy.Equals("Rating", StringComparison.OrdinalIgnoreCase))
+        {
+            touristSpot = query.isDecsending ? touristSpot.OrderByDescending(ts => ts.Rating) : touristSpot.OrderBy(ts => ts.Rating);
+        }
+    }
+    else
+    {
+        touristSpot = touristSpot.OrderBy(ts => ts.Id);
+    }
 
+    var skipNumber = (query.PageNumber - 1) * query.PageSize;
+    var paginatedTouristSpots = await touristSpot.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+
+    return paginatedTouristSpots;
+}
         public async Task<TouristSpot> GetByIdAsync(int id)
         {
             return await _context.TouristSpots.Include(c => c.Comments).ThenInclude(c => c.User).Include(ts => ts.PlaceTypes).ThenInclude(ts => ts.Comments).FirstOrDefaultAsync(i => i.Id == id);
