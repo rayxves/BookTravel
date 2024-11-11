@@ -11,6 +11,7 @@ export const colors = {
   lightGray: "#BDBDBD",
   lightGreen: "#548568",
   white: "#FFFFF",
+  darkGreen: "#13271b",
 };
 
 export const GlobalStyle = createGlobalStyle`

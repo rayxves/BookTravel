@@ -10,21 +10,23 @@ import {
   Input,
   Button,
   Text,
-  TextContainer,
-
-} from "./login.styles";
+  TextContainer
+} from "./registro.style";
 import Link from "next/link";
 
-export default function Login() {
+export default function Register() {
   return (
     <>
       <Navbar />
       <AccountContainer>
         <FormContainer>
-          <Title>Login</Title>
+          <Title>Cadastrar</Title>
           <Form action="./">
             <Label>Nome de usuário:</Label>
             <Input type="text" placeholder="Username" />
+
+            <Label>Email:</Label>
+            <Input type="email" placeholder="Email" />
 
             <Label>Senha:</Label>
             <Input type="password" placeholder="Password" />
@@ -32,8 +34,8 @@ export default function Login() {
           <Button>Enviar</Button>
           <TextContainer>
             {" "}
-            <Text>Ainda não tem uma conta? </Text>
-            <Link href="./register">Cadastrar</Link>
+            <Text>Já tem uma conta? </Text>
+            <Link href="./login">Logar</Link>
           </TextContainer>
         </FormContainer>
       </AccountContainer>
