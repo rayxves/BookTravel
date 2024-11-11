@@ -8,7 +8,6 @@ export const CardContainer = styled.div`
   justify-content: flex-start;
   gap: 0.5rem;
   margin: 0.5rem;
-
   width: 100%;
   max-width: 25rem;
   min-height: 31rem;

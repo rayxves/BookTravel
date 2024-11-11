@@ -36,6 +36,10 @@ export const UserIcon = styled(FontAwesomeIcon)`
   font-size: 1.5rem;
   padding: 1.75rem 1.4rem;
   width: 3.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   &:hover {
     color: ${colors.lightGreen};
   }
@@ -94,6 +98,19 @@ export const AccountLinks = styled.div`
   }
 
   @media (max-width: 867px) {
+    display: none;
+  }
+`;
+
+export const IconLink = styled.a`
+  position: relative;
+
+  font-size: 1.5rem;
+  padding: 1.75rem 1.4rem;
+  width: 3.5rem;
+  height: 5rem;
+
+  @media (min-width: 868px) {
     display: none;
   }
 `;

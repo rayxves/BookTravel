@@ -17,7 +17,6 @@ export const CardContainer = styled.div`
 `;
 
 export const SpinnerContainer = styled.div`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;

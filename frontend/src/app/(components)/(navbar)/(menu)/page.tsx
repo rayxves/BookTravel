@@ -4,7 +4,7 @@ import { MenuContainer, MenuIcons, MenuItem } from "./menu.styles";
 import {
   faHouse,
   faLocationDot,
-  faUsers,
+  faHeart,
   faRocket,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,8 +25,8 @@ export default function Menu({ isVisible }: props) {
           <Link href="/searchPlaces">Procurar Destinos</Link>
         </MenuItem>
         <MenuItem>
-          <MenuIcons icon={faUsers} />
-          <Link href="/userPage">Página do Usuário</Link>
+          <MenuIcons icon={faHeart} />
+          <Link href="/favorites">Meus favoritos</Link>
         </MenuItem>
         <MenuItem>
           <MenuIcons icon={faRocket} />

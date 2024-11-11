@@ -13,8 +13,8 @@ interface Place {
   id: string;
   name: string;
   description: string;
-  rating: number | null; // Permitir que a avaliação seja nula
-  imageUrl: string | null; // Permitir que a imagem seja nula
+  rating: number | null; 
+  imageUrl: string | null;
 }
 
 interface Props {

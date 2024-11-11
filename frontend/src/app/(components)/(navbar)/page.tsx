@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import Link from "next/link"; 
+import Link from "next/link";
 import logo from "../../assets/logo.png";
 import Image from "next/image";
 import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +11,7 @@ import {
   MenuIcon,
   UserIcon,
   Button,
+  IconLink,
 } from "./navbar.styles";
 import { useState } from "react";
 import Menu from "./(menu)/page";
@@ -32,8 +33,10 @@ export default function Navbar() {
         <Logo>
           <Image src={logo} alt="Logo" />
         </Logo>
-        
-        <UserIcon icon={faUser} />
+
+        <IconLink href="/login">
+          <UserIcon icon={faUser} />
+        </IconLink>
 
         <AccountLinks>
           <Link className="login" href="/login">
