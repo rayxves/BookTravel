@@ -27,6 +27,7 @@ export const MessageContainer = styled.div`
     justify-content: center;
     text-decoration: none;
     color: ${colors.lightGreen};
+    font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-size: 1.2rem;
 
@@ -39,7 +40,7 @@ export const MessageContainer = styled.div`
     }
 
     @media (min-width: 1124px) {
-      font-size: 2rem;
+      font-size: 1.9rem;
       height: fit-content;
       width: fit-content;
     }
