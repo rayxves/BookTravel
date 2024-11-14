@@ -57,7 +57,7 @@ export const Title = styled.h1`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  height: 65%;
+  height: 72%;
   width: 100%;
   gap: 0.2rem;
   padding: 0.5rem;
@@ -89,15 +89,14 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  height: 2.7rem;
+  height: 4rem;
+  margin: auto;
+  margin-top: 2rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   width: 30%;
   border-radius: 0.8rem;
-  background: #173113;
+  background: ${colors.darkGreen};
   border: 2px solid ${colors.darkGray};
   color: ${colors.lightGray};
   font-weight: 500;

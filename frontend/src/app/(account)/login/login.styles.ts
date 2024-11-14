@@ -56,7 +56,7 @@ export const Title = styled.h1`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  height: 55%;
+  height: 60%;
   width: 100%;
   gap: 0.3rem;
   padding: 0.5rem;
@@ -88,15 +88,14 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  height: 2.7rem;
+  height: 3rem;
+  margin: auto;
+  margin-top: 2rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   width: 30%;
   border-radius: 0.8rem;
-  background: #173113;
+  background: ${colors.darkGreen};
   border: 2px solid ${colors.darkGray};
   color: ${colors.lightGray};
   font-weight: 500;
@@ -108,7 +107,6 @@ export const Button = styled.button`
     background: #122a0f;
   }
 `;
-
 export const TextContainer = styled.div`
   display: flex;
 
