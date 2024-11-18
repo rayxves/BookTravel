@@ -18,8 +18,7 @@ export default function Favorites() {
       <FavContainer>
         <MessageContainer>
         <Message>
-            Nada por aqui... que tal explorar e adicionar seus lugares favoritos?
-            
+            Nada por aqui... que tal explorar e adicionar seus lugares favoritos?  
           </Message>
           <Link href="./searchPlaces">Buscar destinos</Link>
         </MessageContainer>

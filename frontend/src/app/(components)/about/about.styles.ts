@@ -48,7 +48,10 @@ export const Paragraph = styled.p`
   }
 
   @media (min-width: 887px) {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+  }
+  @media (min-width: 1024px) {
+    font-size: 1.5rem;
   }
 `;
 

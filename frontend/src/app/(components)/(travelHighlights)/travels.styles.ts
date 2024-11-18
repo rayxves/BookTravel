@@ -211,3 +211,67 @@ export const TouristSpotDescription = styled.p`
   padding-top: 0.5rem;
   font-weight: 500;
 `;
+
+export const Button = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: end;
+  justify-content: start;
+  padding-bottom: 1rem;
+  width: fit-content;
+  height: 4rem;
+  font-family: "Inter", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: ${colors.lightGreen};
+  padding-left: 1rem;
+  padding-right: 2rem;
+  z-index: 10; 
+
+  @media (min-width: 560px) {
+    padding-bottom: 1.2rem;
+
+    padding-right: 4rem;
+    font-size: 1.4rem;
+  }
+
+  @media (min-width: 868px) {
+    padding-right: 12rem;
+    font-size: 1.6rem;
+  }
+`;
+
+export const AuthTitle = styled.p`
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  padding-bottom: 1rem;
+  width: fit-content;
+  height: 4rem;
+  font-family: "Inter", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: ${colors.lightGray};
+
+  @media (min-width: 560px) {
+    padding-bottom: 1.2rem;
+
+    font-size: 1.4rem;
+  }
+
+  @media (min-width: 868px) {
+    align-items: end;
+
+    font-size: 1.6rem;
+  }
+`;
+
+export const AuthContainer = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
+  height: 4rem;
+`;

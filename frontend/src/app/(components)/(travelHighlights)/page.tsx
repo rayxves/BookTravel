@@ -1,5 +1,8 @@
 import {
+  AuthContainer,
+  AuthTitle,
   AviaoImageContainer,
+  Button,
   MundoImageContainer,
   PageContainer,
   SubTitle,
@@ -14,6 +17,7 @@ import aviao from "../../assets/aviao.png";
 import mundo from "../../assets/mundo.png";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/app/(authContext)/authContext";
 
 interface TouristSpot {
   id: number;
@@ -39,6 +43,7 @@ export async function fetchTouristSpots() {
 }
 
 export default function TravelHighlights() {
+  const { isAuthenticated, logout, username } = useAuth();
   const [touristSpot, setTouristSpot] = useState<TouristSpot[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -69,13 +74,12 @@ export default function TravelHighlights() {
   const getImageUrl = () => {
     const spot = touristSpot[currentIndex];
     if (!spot || !spot.imageUrl?.length) {
-      console.log("URL padrão usada");
       return "/caminho/para/imagem-padrao.jpg";
     }
 
     const photoReference = spot.imageUrl;
     const imageUrls = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`;
-    console.log("Imagem gerada URL:", imageUrls);
+
     return imageUrls;
   };
 
@@ -83,7 +87,15 @@ export default function TravelHighlights() {
     <PageContainer>
       <AviaoImageContainer>
         <Image src={aviao} alt="" priority />
-        <Title>Planeje sua próxima viagem.</Title>
+        {isAuthenticated ? (
+          <AuthContainer>
+            {" "}
+            <AuthTitle>Bem-vindo, {username} ♥︎.</AuthTitle>
+            <Button type="button" onClick={logout}>Clique para logout.</Button>
+          </AuthContainer>
+        ) : (
+          <Title>Planeje sua próxima viagem.</Title>
+        )}
       </AviaoImageContainer>
 
       <TravelsContainer>
@@ -96,7 +108,6 @@ export default function TravelHighlights() {
                 width={600}
                 height={400}
                 style={{
-        
                   borderRadius: "3%",
                 }}
                 priority
@@ -113,7 +124,12 @@ export default function TravelHighlights() {
       </TravelsContainer>
 
       <MundoImageContainer>
-        <SubTitle>Descubra novos destinos!</SubTitle>
+        {isAuthenticated ? (
+          <></>
+        ) : (
+          <SubTitle>Descubra novos destinos!</SubTitle>
+        )}
+
         <Image src={mundo} alt="" priority />
       </MundoImageContainer>
     </PageContainer>
