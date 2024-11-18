@@ -14,7 +14,7 @@ export async function GET() {
       );
     }
 
-    const places = response.data.map((place: any) => ({
+    const places = response.data.map((place) => ({
       id: place?.id || null,
       name: place?.name || "Unnamed",
       description: place.description || "No description available",

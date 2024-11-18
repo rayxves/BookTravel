@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Navbar from "@/app/(components)/(navbar)/page";
 import {
   AccountContainer,
@@ -14,31 +14,46 @@ import {
   TextContainer,
 } from "./login.styles";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/(authContext)/authContext";
 
 export default function Login() {
+  const router = useRouter();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let valid = true;
-    let newErrors = { username: "", password: "" };
+    const newErrors = { username: "", password: "" };
 
     if (!username) {
       newErrors.username = "Nome de usuário é obrigatório!";
-      valid = false;
     }
     if (!password) {
       newErrors.password = "Senha é obrigatória!";
-      valid = false;
     }
 
     setErrors(newErrors);
 
-    if (valid) {
-      console.log("Login válido!");
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        login(username);
+        router.push("/");
+      } else {
+        console.error("Erro ao logar:", data.error);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a requisição:", error);
     }
   };
 

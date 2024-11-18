@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Navbar from "@/app/(components)/(navbar)/page";
 import {
   AccountContainer,
@@ -14,8 +14,10 @@ import {
   TextContainer,
 } from "./registro.style";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,35 +27,42 @@ export default function Register() {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let valid = true;
     let newErrors = { username: "", email: "", password: "" };
 
     if (!username) {
       newErrors.username = "Nome de usuário é obrigatório!";
-      valid = false;
     }
     if (!email) {
       newErrors.email = "Email é obrigatório!";
-      valid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email inválido!";
-      valid = false;
     }
     if (!password) {
       newErrors.password = "Senha é obrigatória!";
-      valid = false;
     } else if (password.length < 6) {
       newErrors.password = "A senha deve ter pelo menos 6 caracteres!";
-      valid = false;
     }
 
     setErrors(newErrors);
 
-    if (valid) {
-      console.log("Registro válido!");
+    try {
+      const response = await fetch("/api/registerUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        router.push("/");
+      } else {
+        console.error("Erro ao registrar:", data.error);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a requisição:", error);
     }
   };
 
@@ -95,7 +104,7 @@ export default function Register() {
             {errors.password && <Text>{errors.password}</Text>}
             <Button type="submit">Enviar</Button>
           </Form>
-       
+
           <TextContainer>
             <Text>Já tem uma conta? </Text>
             <Link href="./login">Logar</Link>
