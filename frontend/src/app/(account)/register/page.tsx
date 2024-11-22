@@ -30,7 +30,7 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let newErrors = { username: "", email: "", password: "" };
+    const newErrors = { username: "", email: "", password: "" };
 
     if (!username) {
       newErrors.username = "Nome de usuário é obrigatório!";

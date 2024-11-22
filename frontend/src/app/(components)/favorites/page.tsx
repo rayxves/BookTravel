@@ -20,7 +20,7 @@ interface FavoritesPlaces {
   name: string;
   rating: number;
   description: string;
-  imageUrl: string[];
+  photoUrls: string[];
 }
 
 async function fetchFavoritesPlaces() {
@@ -36,7 +36,7 @@ async function fetchFavoritesPlaces() {
     },
   });
 
-  return response.data.places;
+  return response.data;
 }
 
 export default function Favorites() {
@@ -54,9 +54,8 @@ export default function Favorites() {
     try {
       setError(null);
       const results = await fetchFavoritesPlaces();
-      console.log("results: ", results);
-      setFavorites(results || []);
-      console.log("fvs: ", favorites);
+
+      setFavorites(results.map((item) => item.touristSpot) || null);
     } catch (error: any) {
       setError(error.message);
       setFavorites([]);
@@ -64,7 +63,6 @@ export default function Favorites() {
   };
 
   useEffect(() => {
-    console.log("useEffect is running");
     localStorage.setItem("token", `${token}`);
     handleSearch();
   }, []);
@@ -81,7 +79,39 @@ export default function Favorites() {
               </MessageContainer>
             </FavContainer>
           ) : favorites.length > 0 ? (
-            favorites.map((place) => <Card key={place.id} place={place} />)
+            <>
+              {favorites.map((place) => {
+                // Geração da URL da imagem fora do JSX para evitar problemas
+                const imageUrl = place.photoUrls
+                  ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photoUrls[0]}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
+                  : null;
+
+                return (
+                  <div key={place.id} style={{ marginBottom: "20px" }}>
+                    <ImageContainer>
+                      {imageUrl ? (
+                        <Image
+                          src={imageUrl}
+                          alt={place.name}
+                          width={300}
+                          height={200}
+                          style={{ objectFit: "contain" }}
+                          priority
+                        />
+                      ) : (
+                        <p>Imagem indisponível</p>
+                      )}
+                    </ImageContainer>
+                    <h3>{place.name}</h3>
+                    <p>{place.description}</p>
+                    {place.rating && <p>Avaliação: {place.rating}</p>}
+                    <button>Remover Favorito</button>
+                  </div>
+                );
+              })}
+              {/* Testar a renderização do estado favorites */}
+              <div>json favs: {JSON.stringify(favorites, null, 2)}</div>
+            </>
           ) : (
             <FavContainer>
               <MessageContainer>

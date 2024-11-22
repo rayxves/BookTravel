@@ -23,37 +23,41 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newErrors = { username: "", password: "" };
 
-    if (!username) {
-      newErrors.username = "Nome de usuário é obrigatório!";
-    }
-    if (!password) {
-      newErrors.password = "Senha é obrigatória!";
-    }
+    if (!username.trim()) newErrors.username = "Nome de usuário é obrigatório!";
+    if (!password.trim()) newErrors.password = "Senha é obrigatória!";
 
     setErrors(newErrors);
+    if (newErrors.username || newErrors.password) return;
+
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: username.trim(), password }),
       });
 
       const data = await response.json();
+
       if (response.ok) {
-        login(username);
+        const token = data.token;
+        login(username, token);
         router.push("/");
       } else {
-        console.error("Erro ao logar:", data.error);
+        setErrors({ username: "", password: data.error || "Erro ao logar." });
       }
     } catch (error) {
-      console.error("Erro ao fazer a requisição:", error);
+      setErrors({ username: "", password: "Erro ao se conectar ao servidor." });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,27 +68,33 @@ export default function Login() {
         <FormContainer>
           <Title>Login</Title>
           <Form onSubmit={handleSubmit}>
-            <Label>Nome de usuário:</Label>
+            <Label htmlFor="username">Nome de usuário:</Label>
             <Input
+              id="username"
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              aria-label="Nome de usuário"
             />
             {errors.username && <Text>{errors.username}</Text>}
 
-            <Label>Senha:</Label>
+            <Label htmlFor="password">Senha:</Label>
             <Input
+              id="password"
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              aria-label="Senha"
             />
             {errors.password && <Text>{errors.password}</Text>}
 
-            <Button type="submit">Enviar</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Carregando..." : "Enviar"}
+            </Button>
           </Form>
 
           <TextContainer>
