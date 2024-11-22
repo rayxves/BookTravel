@@ -51,7 +51,6 @@ export default function TravelHighlights() {
     try {
       const results = await fetchTouristSpots();
       setTouristSpot(results || []);
-      console.log("tourist spot:", results);
     } catch (error) {
       console.error(error);
     }
@@ -91,7 +90,9 @@ export default function TravelHighlights() {
           <AuthContainer>
             {" "}
             <AuthTitle>Bem-vindo, {username} ♥︎.</AuthTitle>
-            <Button type="button" onClick={logout}>Clique para logout.</Button>
+            <Button type="button" onClick={logout}>
+              Fazer logout.
+            </Button>
           </AuthContainer>
         ) : (
           <Title>Planeje sua próxima viagem.</Title>

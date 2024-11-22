@@ -21,6 +21,7 @@ export const Header = styled.h1`
   width: 100%;
   height: 10%;
   color: ${colors.lightGray};
+  border-bottom: 1px solid ${colors.lightGray};
   text-align: center;
   margin-bottom: 1rem;
 `;
@@ -93,7 +94,12 @@ export const ListItem = styled.li`
   }
   @media (min-width: 887px) {
     max-width: 450px;
-    height: auto;
+
+    font-size: 1.1rem;
+  }
+  @media (min-width: 1124px) {
+    max-width: 450px;
+
     font-size: 1.4rem;
   }
 `;

@@ -10,6 +10,8 @@ export async function POST(request: Request) {
       UserName: username,
       Password: password,
     });
+
+
     return NextResponse.json(response.data);
   } catch (error) {
     console.error("Erro ao logar usuário:", error);
