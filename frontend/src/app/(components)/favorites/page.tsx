@@ -2,30 +2,31 @@
 
 import Navbar from "../(navbar)/page";
 import {
+  FavCardsContainer,
   FavContainer,
   ImageContainer,
   Message,
   MessageContainer,
+  Titulo,
 } from "./favorites.styles";
 import favImg from "./../../assets/nothingHere.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/(authContext)/authContext";
-import Card from "../searchPlaces/(cards)/(card)/page";
 import axios from "axios";
+import FavCard from "./(card)/page";
 
 interface FavoritesPlaces {
-  id: number;
+  id: string;
   name: string;
   rating: number;
   description: string;
-  photoUrls: string[];
+  photoUrls: string[] | null;
+  placeType: [];
 }
 
-async function fetchFavoritesPlaces() {
-  const token = localStorage.getItem("token");
-
+async function fetchFavoritesPlaces(token: string) {
   if (!token) {
     throw new Error("Token not available");
   }
@@ -39,9 +40,27 @@ async function fetchFavoritesPlaces() {
   return response.data;
 }
 
+async function deleteFavoritePlace(name: string, type: string, token: string) {
+  console.log(name, type, token);
+  if (!token) {
+    throw new Error("Token not available");
+  }
+
+  const response = await axios.delete("http://localhost:5020/api/favorite/delete", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      name,
+      type,
+    },
+  });
+
+  return response.status;
+}
+
 export default function Favorites() {
-  const { token } = useAuth();
-  const { isAuthenticated } = useAuth();
+  const { token, isAuthenticated } = useAuth();
   const [favorites, setFavorites] = useState<FavoritesPlaces[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,23 +72,78 @@ export default function Favorites() {
 
     try {
       setError(null);
-      const results = await fetchFavoritesPlaces();
 
-      setFavorites(results.map((item) => item.touristSpot) || null);
+      if (!token) {
+        return null;
+      }
+      const results = await fetchFavoritesPlaces(token);
+
+      const formattedResults = results
+        .map((item: any) => {
+          if (item.touristSpot) {
+            return {
+              id: item.touristSpot.id,
+              name: item.touristSpot.name,
+              rating: item.touristSpot.rating,
+              description: item.touristSpot.description,
+              photoUrls: item.touristSpot.photoUrls[0] || null,
+              placeType: item.touristSpot.placeTypes?.[0] || null,
+            };
+          } else if (item.placeType) {
+            return {
+              id: item.placeType.id,
+              name: item.placeType.name,
+              rating: item.placeType.rating,
+              description: item.placeType.description,
+              photoUrls: item.placeType.photoUrls[0] || null,
+              touristSpotId: item.placeType.touristSpotId || null,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
+
+      setFavorites(formattedResults);
     } catch (error: any) {
       setError(error.message);
       setFavorites([]);
     }
   };
 
+  const handleDelete = async (name: string, type: string) => {
+    console.log(name, type);
+    if (!isAuthenticated) {
+      setError("You need to be logged in to access your favorites.");
+      return;
+    }
+
+    try {
+      setError(null);
+      if (!token) {
+        return null;
+      }
+      const status = await deleteFavoritePlace(name, type, token);
+
+      if (status === 200) {
+        setFavorites(favorites.filter((fav) => fav.name !== name));
+      } else {
+        setError("Error trying to remove the favorite.");
+      }
+    } catch (error: any) {
+      setError("Failed to delete the favorite. Please try again.");
+    }
+  };
+
   useEffect(() => {
-    localStorage.setItem("token", `${token}`);
-    handleSearch();
-  }, []);
+    if (token) {
+      handleSearch();
+    }
+  }, [token]);
 
   return (
     <>
       <Navbar />
+
       {isAuthenticated ? (
         <>
           {error ? (
@@ -80,37 +154,19 @@ export default function Favorites() {
             </FavContainer>
           ) : favorites.length > 0 ? (
             <>
-              {favorites.map((place) => {
-                // Geração da URL da imagem fora do JSX para evitar problemas
-                const imageUrl = place.photoUrls
-                  ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photoUrls[0]}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
-                  : null;
+              <Titulo>Favoritos </Titulo>
 
-                return (
-                  <div key={place.id} style={{ marginBottom: "20px" }}>
-                    <ImageContainer>
-                      {imageUrl ? (
-                        <Image
-                          src={imageUrl}
-                          alt={place.name}
-                          width={300}
-                          height={200}
-                          style={{ objectFit: "contain" }}
-                          priority
-                        />
-                      ) : (
-                        <p>Imagem indisponível</p>
-                      )}
-                    </ImageContainer>
-                    <h3>{place.name}</h3>
-                    <p>{place.description}</p>
-                    {place.rating && <p>Avaliação: {place.rating}</p>}
-                    <button>Remover Favorito</button>
-                  </div>
-                );
-              })}
-              {/* Testar a renderização do estado favorites */}
-              <div>json favs: {JSON.stringify(favorites, null, 2)}</div>
+              <FavCardsContainer>
+                {favorites.map((place) => (
+                  <FavCard
+                    key={place.id}
+                    place={place}
+                    onDelete={(name: string, type: string) =>
+                      handleDelete(name, type)
+                    }
+                  />
+                ))}
+              </FavCardsContainer>
             </>
           ) : (
             <FavContainer>

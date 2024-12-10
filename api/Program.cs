@@ -13,23 +13,21 @@ using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<GooglePlacesServices>();
 
 builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAllOrigins",
-            builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            });
-    });
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -66,9 +64,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); //obtém a string de conexão do appsettings.json
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-    options.UseNpgsql(connectionString); //configura o contexto para usar PostgreSQL
+    options.UseNpgsql(connectionString);
 });
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -104,7 +102,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddScoped<ITouristSpotRepository, TouristSpotRepository>();
@@ -115,13 +112,15 @@ builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAllOrigins");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

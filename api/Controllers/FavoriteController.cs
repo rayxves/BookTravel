@@ -108,6 +108,7 @@ namespace api.Controllers
         }
 
         [HttpDelete]
+        [Route("delete")]
         [Authorize]
         public async Task<IActionResult> DeleteFavorite(string name, string type)
         {

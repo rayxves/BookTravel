@@ -120,7 +120,7 @@ export default function TravelHighlights() {
             </TouristSpotDescription>
           </TouristSpotContainer>
         ) : (
-          <p>Carregando...</p>
+          <></>
         )}
       </TravelsContainer>
 

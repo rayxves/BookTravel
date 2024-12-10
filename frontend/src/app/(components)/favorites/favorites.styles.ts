@@ -9,7 +9,23 @@ export const FavContainer = styled.div`
   justify-content: center;
   background: ${colors.darkGray};
   width: 100%;
-  height: 100%;
+  height: 100vh;
+
+`;
+
+export const FavCardsContainer = styled.div`
+  width: 100%;
+
+  flex: 1;
+  overflow-y: auto;
+
+  background: ${colors.darkGray};
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  padding: 1.3rem;
+
+  gap: 1.3rem;
+  place-items: start;
 `;
 
 export const MessageContainer = styled.div`
@@ -51,7 +67,7 @@ export const MessageContainer = styled.div`
   }
 `;
 
-export const Message = styled.p`
+export const Message = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,10 +101,25 @@ export const ImageContainer = styled.div`
   }
 
   @media (min-width: 787px) {
-    img {s
+    img {
       width: 100%;
 
       margin-bottom: 2rem;
     }
   }
+`;
+
+export const Titulo = styled.h1`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6rem;
+  padding: 0.5rem 0;
+  background: ${colors.darkGray};
+  border-bottom: 1px solid ${colors.black};
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: "Ariel", sans-serif;
+  color: ${colors.lightGray};
+  flex-shrink: 0;
 `;
