@@ -18,6 +18,7 @@ import placesImg from "../../assets/placesimg.png";
 import bsPlacesImg from "../../assets/bsPlacesimg.png";
 import Cards from "./(cards)/page";
 
+
 export async function fetchPlaces(query: string) {
   const res = await fetch(`/api/fetchPlaces?query=${encodeURIComponent(query)}`);
   if (!res.ok) {
@@ -28,10 +29,13 @@ export async function fetchPlaces(query: string) {
 }
 
 export default function SearchPlaces() {
+
   const [query, setQuery] = useState("");
   const [places, setPlaces] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
 
   const handleSearch = async () => {
     if (query.trim() === "") return;

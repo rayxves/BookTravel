@@ -24,7 +24,6 @@ export const CardContainer = styled.div`
     scale: 1.03;
     box-shadow: 0px 4px 8px rgba(36, 66, 47, 1);
   }
-
 `;
 
 export const ImageContainer = styled.div`
@@ -74,6 +73,7 @@ export const Rating = styled.p`
 `;
 
 export const Button = styled.button`
+  cursor: pointer;
   border: none;
   background: ${colors.green};
   padding: 0.3rem;
@@ -84,7 +84,7 @@ export const Button = styled.button`
   font-family: "Roboto", sans-serif;
   font-weight: 600;
   transition: 0.2s ease;
-
+  z-index: 10;
   &:hover {
     background-color: ${colors.mediumGreen};
   }

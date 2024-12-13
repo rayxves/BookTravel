@@ -149,7 +149,7 @@ export const TouristSpotContainer = styled.div`
   height: 100%;
 `;
 
-export const TouristSpotName = styled.h1`
+export const TouristSpotName = styled.div`
   display: flex;
   align-items: start;
   justify-content: center;
@@ -201,7 +201,7 @@ export const TouristSpotImg = styled.h1`
   }
 `;
 
-export const TouristSpotDescription = styled.p`
+export const TouristSpotDescription = styled.div`
   display: flex;
   height: 5rem;
   font-family: "Inter", sans-serif;
@@ -228,7 +228,7 @@ export const Button = styled.button`
   color: ${colors.lightGreen};
   padding-left: 1rem;
   padding-right: 2rem;
-  z-index: 10; 
+  z-index: 10;
 
   @media (min-width: 560px) {
     padding-bottom: 1.2rem;

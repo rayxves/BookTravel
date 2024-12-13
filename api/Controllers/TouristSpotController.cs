@@ -66,6 +66,7 @@ namespace api.Controllers
 
 
         [HttpPost]
+        [Route("add")]
         public async Task<IActionResult> Create([FromBody] CreateTouristSpotRequestDto touristSpotDto)
         {
             if (touristSpotDto == null)

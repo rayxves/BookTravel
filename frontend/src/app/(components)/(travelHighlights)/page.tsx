@@ -19,6 +19,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/(authContext)/authContext";
 
+
 interface TouristSpot {
   id: number;
   name: string;
@@ -41,6 +42,7 @@ export async function fetchTouristSpots() {
 
   return data;
 }
+
 
 export default function TravelHighlights() {
   const { isAuthenticated, logout, username } = useAuth();

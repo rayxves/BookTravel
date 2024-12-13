@@ -46,7 +46,6 @@ export default function Login() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         const token = data.token;
         login(username, token);
@@ -93,7 +92,7 @@ export default function Login() {
             {errors.password && <Text>{errors.password}</Text>}
 
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Carregando..." : "Enviar"}
+              {isLoading ? "Enviando..." : "Enviar"}
             </Button>
           </Form>
 

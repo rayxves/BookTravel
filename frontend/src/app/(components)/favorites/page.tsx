@@ -41,7 +41,7 @@ async function fetchFavoritesPlaces(token: string) {
 }
 
 async function deleteFavoritePlace(name: string, type: string, token: string) {
-  console.log(name, type, token);
+  
   if (!token) {
     throw new Error("Token not available");
   }
@@ -79,6 +79,7 @@ export default function Favorites() {
       const results = await fetchFavoritesPlaces(token);
 
       const formattedResults = results
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map((item: any) => {
           if (item.touristSpot) {
             return {
@@ -104,6 +105,8 @@ export default function Favorites() {
         .filter(Boolean);
 
       setFavorites(formattedResults);
+  
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message);
       setFavorites([]);
@@ -129,7 +132,8 @@ export default function Favorites() {
       } else {
         setError("Error trying to remove the favorite.");
       }
-    } catch (error: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       setError("Failed to delete the favorite. Please try again.");
     }
   };
