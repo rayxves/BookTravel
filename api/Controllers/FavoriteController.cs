@@ -52,6 +52,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> AddFavorite([FromBody] string name)
         {
+
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
 

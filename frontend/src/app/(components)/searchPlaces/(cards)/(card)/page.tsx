@@ -42,13 +42,15 @@ export default function Card({ place }: Props) {
       );
 
       if (touristSpotResponse.status !== 201) {
-        setSuccess("Não foi possível adicionar o local como favorito.");
+        setSuccess("Não foi possível adicionar o local.");
         return null;
       }
 
+      const normalizedPlaceName = place.name.trim().toLowerCase();
+
       const favoriteResponse = await axios.post(
         "http://localhost:5020/api/favorite/add",
-        `"${place.name}"`,
+        normalizedPlaceName,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,6 +71,7 @@ export default function Card({ place }: Props) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           console.error(`Erro na resposta: ${error.response.status}`);
+          console.error("Erro detalhado:", error.response.data);
         } else if (error.request) {
           console.error("Sem resposta do servidor.");
         } else {
@@ -101,7 +104,7 @@ export default function Card({ place }: Props) {
       <Titulo>{place.name}</Titulo>
       <Description>{place.description}</Description>
       {place.rating && <Rating>Avaliação: {place.rating}</Rating>}
-      <Button onClick={() => addFavTouristSpots()}>Add aos Favoritos</Button>
+      <Button onClick={addFavTouristSpots}>Add aos Favoritos</Button>
       {success}
     </CardContainer>
   );

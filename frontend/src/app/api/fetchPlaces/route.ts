@@ -13,7 +13,9 @@ export async function GET(req: Request) {
     );
   }
 
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent( query)}&key=${API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+    query
+  )}&key=${API_KEY}`;
 
   try {
     const response = await axios.get(url);
