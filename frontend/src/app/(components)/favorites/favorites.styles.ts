@@ -2,6 +2,11 @@
 import { colors } from "@/app/global.styles";
 import { styled } from "styled-components";
 
+export const Container = styled.div`
+  background: ${colors.darkGray};
+  width: 100%;
+  height: 100vh;
+`;
 export const FavContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,28 +15,29 @@ export const FavContainer = styled.div`
   background: ${colors.darkGray};
   width: 100%;
   height: 100vh;
-
 `;
 
 export const FavCardsContainer = styled.div`
   width: 100%;
-
-  flex: 1;
-  overflow-y: auto;
-
+  height: 70%;
+  flex-grow: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background: ${colors.darkGray};
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 1.3rem;
 
-  gap: 1.3rem;
-  place-items: start;
+  gap: 2rem;
+  place-items: center;
+  position: relative;
+
 `;
 
 export const MessageContainer = styled.div`
   padding: 2rem;
   width: 100%;
-  height: 30%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;

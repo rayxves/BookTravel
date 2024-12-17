@@ -2,6 +2,7 @@
 
 import Navbar from "../(navbar)/page";
 import {
+  Container,
   FavCardsContainer,
   FavContainer,
   ImageContainer,
@@ -145,7 +146,7 @@ export default function Favorites() {
   }, [token]);
 
   return (
-    <>
+    <Container>
       <Navbar />
 
       {isAuthenticated ? (
@@ -211,6 +212,6 @@ export default function Favorites() {
           </ImageContainer>
         </FavContainer>
       )}
-    </>
+    </Container>
   );
 }

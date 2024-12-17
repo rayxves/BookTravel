@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export const InicialPageContainer = styled.div`
   background: ${colors.darkGray};
-   margin: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
 `;

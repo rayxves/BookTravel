@@ -6,11 +6,11 @@ export const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin: 0.5rem;
-  width: 100%;
-  max-width: 25rem;
-  height: 34rem;
+
+  margin: 0rem;
+  width: 90%;
+
+  height: 30rem;
   padding: 1.5rem;
 
   background: rgba(255, 255, 255, 0.25);
@@ -47,7 +47,7 @@ export const Titulo = styled.h1`
   border-bottom: 1px solid black;
   font-size: 1.8rem;
   font-weight: 700;
-  @media (max-width: 878px and min-width: 560px){
+  @media (max-width: 878px and min-width: 560px) {
     margin-bottom: 0.2rem;
     height: 4rem;
     font-size: 1.6rem;
@@ -80,8 +80,8 @@ export const Rating = styled.p`
 `;
 
 export const Button = styled.button`
-pointer-events: auto;
-z-index: 10;
+  pointer-events: auto;
+  z-index: 10;
 
   border: none;
   background: ${colors.green};
@@ -113,4 +113,3 @@ export const Link = styled.a`
   font-weight: 600;
   transition: 0.2s ease;
 `;
-
