@@ -10,9 +10,9 @@ export const CardContainer = styled.div`
   transform: translate(50%, -50%);
   background: transparent;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  padding: 1.3rem;
-  gap: 1.3rem;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  padding: 2rem 1.5rem;
+  gap: 1rem;
   place-items: center;
 `;
 

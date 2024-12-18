@@ -60,7 +60,7 @@ export default function Card({ place }: Props) {
       );
       console.log(favoriteResponse);
 
-      if (favoriteResponse.status === 201 || favoriteResponse.status === 200) {
+      if (favoriteResponse.status === 204 || favoriteResponse.status === 201) {
         setSuccess("Adicionado aos favoritos com sucesso!");
         return favoriteResponse.status;
       } else {

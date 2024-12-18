@@ -45,9 +45,16 @@ export const SearchBar = styled.input`
   border: none;
   outline: none;
   background: transparent;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
   font-size: inherit;
   padding: 1rem;
+
+  &:focus,
+  &:hover {
+  font-size: inherit;
+    font-family: "Inter", sans-serif;
+    color: ${colors.darkGray};
+  }
 `;
 
 export const SearchIcon = styled(FontAwesomeIcon)`

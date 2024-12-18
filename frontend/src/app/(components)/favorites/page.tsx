@@ -42,20 +42,22 @@ async function fetchFavoritesPlaces(token: string) {
 }
 
 async function deleteFavoritePlace(name: string, type: string, token: string) {
-  
   if (!token) {
     throw new Error("Token not available");
   }
 
-  const response = await axios.delete("http://localhost:5020/api/favorite/delete", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    params: {
-      name,
-      type,
-    },
-  });
+  const response = await axios.delete(
+    "http://localhost:5020/api/favorite/delete",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        name,
+        type,
+      },
+    }
+  );
 
   return response.status;
 }
@@ -106,8 +108,8 @@ export default function Favorites() {
         .filter(Boolean);
 
       setFavorites(formattedResults);
-  
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message);
       setFavorites([]);
@@ -133,7 +135,7 @@ export default function Favorites() {
       } else {
         setError("Error trying to remove the favorite.");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setError("Failed to delete the favorite. Please try again.");
     }
@@ -146,7 +148,7 @@ export default function Favorites() {
   }, [token]);
 
   return (
-    <Container>
+    <>
       <Navbar />
 
       {isAuthenticated ? (
@@ -160,18 +162,19 @@ export default function Favorites() {
           ) : favorites.length > 0 ? (
             <>
               <Titulo>Favoritos </Titulo>
-
-              <FavCardsContainer>
-                {favorites.map((place) => (
-                  <FavCard
-                    key={place.id}
-                    place={place}
-                    onDelete={(name: string, type: string) =>
-                      handleDelete(name, type)
-                    }
-                  />
-                ))}
-              </FavCardsContainer>
+              <Container>
+                <FavCardsContainer>
+                  {favorites.map((place) => (
+                    <FavCard
+                      key={place.id}
+                      place={place}
+                      onDelete={(name: string, type: string) =>
+                        handleDelete(name, type)
+                      }
+                    />
+                  ))}
+                </FavCardsContainer>
+              </Container>
             </>
           ) : (
             <FavContainer>
@@ -212,6 +215,6 @@ export default function Favorites() {
           </ImageContainer>
         </FavContainer>
       )}
-    </Container>
+    </>
   );
 }

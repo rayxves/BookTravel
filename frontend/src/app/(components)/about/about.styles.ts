@@ -3,34 +3,45 @@
 import { colors } from "@/app/global.styles";
 import styled from "styled-components";
 
+export const AboutContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 2rem;
+  background: ${colors.darkGray};
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 1;
-  height: 100vh;
+
+  height: auto;
+  min-height: 100vh;
   padding: 1.5rem;
   font-family: Inter, sans-serif;
   background: ${colors.darkGray};
 
-  overflow: scroll;
+  overflow-y: auto;
+  position: relative;
+  flex-grow: 1;
 `;
 
 export const Header = styled.h1`
-  padding: 1rem;
+  padding: 1.2rem;
   width: 100%;
-  height: 10%;
+  height: auto;
   color: ${colors.lightGray};
   border-bottom: 1px solid ${colors.lightGray};
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 `;
 
 export const SubHeader = styled.h2`
   width: 100%;
-  height: fit-content;
+  height: auto;
   color: ${colors.lightGray};
-  margin: 2rem 0;
+  margin: 1.2rem 0;
 `;
 
 export const Paragraph = styled.p`
@@ -38,10 +49,10 @@ export const Paragraph = styled.p`
   align-items: center;
   width: 100%;
   height: auto;
-  padding-bottom: 1rem;
+  padding: 1rem 0;
   color: ${colors.lightGray};
   font-size: 0.9rem;
-  line-height: 1.3;
+  line-height: 1.1;
 
   @media (min-width: 560px) {
     font-size: 1.05rem;
@@ -60,56 +71,51 @@ export const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  list-style-type: disc;
 
-  height: auto;
+  place-items: center;
+  height: 100%;
   width: 100%;
-
+  padding: 1rem;
+  flex-grow: 1;
   @media (min-width: 560px) {
     gap: 1.5rem;
-    flex-direction: row;
-    width: 95%;
   }
 
-  @media (min-width: 887px) {
+  @media (min-width: 1124px) {
+    flex-direction: row;
     gap: 2rem;
+    height: 10rem;
   }
 `;
 
 export const ListItem = styled.li`
+  display: flex;
+  align-items: center;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   box-shadow: 4px 4px 4px rgba(1, 1, 1, 1);
-  padding: 1rem;
-  padding-bottom: 1.3rem;
+  padding: 1.5rem;
+  padding: 1.3rem;
   height: 100%;
   width: 100%;
   color: ${colors.lightGray};
-  font-size: 0.7rem;
-  line-height: 1;
+  font-size: 0.9rem;
+  line-height: 1.2;
 
   @media (min-width: 560px) {
-    font-size: 0.9rem;
-    line-height: 1.2;
+    font-size: 1rem;
   }
   @media (min-width: 887px) {
-    max-width: 450px;
-
-    font-size: 1.1rem;
-  }
-  @media (min-width: 1124px) {
-    max-width: 450px;
-
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 `;
 
 export const ImageContainer = styled.div`
   display: flex;
   justify-content: start;
-  align-items: start;
+  align-items: end;
   width: 50%;
-  height: 100%;
+  height: auto;
 
   img {
     width: 100%;
@@ -118,16 +124,14 @@ export const ImageContainer = styled.div`
 `;
 
 export const FooterContainer = styled.div`
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 35vh;
+  height: auto;
+  flex-grow: 1;
 
-  @media (min-width: 560px) {
-    height: 40vh;
-  }
-  @media (min-width: 887px) {
-    height: 43vh;
+  @media (min-width: 878px) {
+    padding-bottom: 1rem;
   }
 `;

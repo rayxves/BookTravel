@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const expiration = new Date().getTime() + 30 * 60 * 1000;
     if (typeof window !== "undefined") {
       localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
       localStorage.setItem("token_expiration", expiration.toString());
     }
     setIsAuthenticated(true);
@@ -31,25 +32,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("token");
+      localStorage.removeItem("username");
       localStorage.removeItem("token_expiration");
     }
     setIsAuthenticated(false);
     setUsername(null);
     setToken(null);
-    
   };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedToken = localStorage.getItem("token");
+      const storedUsername = localStorage.getItem("username");
       const expiration = localStorage.getItem("token_expiration");
+
       if (
         storedToken &&
+        storedUsername &&
         expiration &&
         new Date().getTime() < parseInt(expiration)
       ) {
         setIsAuthenticated(true);
         setToken(storedToken);
+        setUsername(storedUsername);
       } else {
         logout();
       }

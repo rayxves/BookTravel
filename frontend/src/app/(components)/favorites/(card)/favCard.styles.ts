@@ -6,10 +6,10 @@ export const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
+  gap: 0,5rem;
   margin: 0rem;
   width: 90%;
-
+  max-width: 20rem;
   height: 30rem;
   padding: 1.5rem;
 
@@ -26,7 +26,7 @@ export const CardContainer = styled.div`
 export const ImageContainer = styled.div`
   width: fit-content;
   max-width: 18.7rem;
-  max-height: 200px;
+  max-height: 11rem;
   overflow: hidden;
   border-radius: 0.5rem;
 
@@ -45,7 +45,7 @@ export const Titulo = styled.h1`
   height: 5rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid black;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
   @media (max-width: 878px and min-width: 560px) {
     margin-bottom: 0.2rem;
@@ -59,11 +59,11 @@ export const Description = styled.p`
   align-items: center;
   justify-content: center;
   text-align: center;
-  line-height: 1.1rem;
+  line-height: 1rem;
   padding: 0.5rem;
   height: fit-content;
   font-family: "Noto Sans", sans-serif;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
 
   @media (max-width: 978px and min-width: 560px) {

@@ -5,7 +5,10 @@ import { styled } from "styled-components";
 export const Container = styled.div`
   background: ${colors.darkGray};
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 0 1rem;
+  flex-grow: 1;
+  position: relative;
 `;
 export const FavContainer = styled.div`
   display: flex;
@@ -20,24 +23,20 @@ export const FavContainer = styled.div`
 export const FavCardsContainer = styled.div`
   width: 100%;
   height: 70%;
-  flex-grow: 1;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: auto;
   background: ${colors.darkGray};
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   padding: 1.3rem;
 
-  gap: 2rem;
+  gap: 3rem;
   place-items: center;
-  position: relative;
-
 `;
 
 export const MessageContainer = styled.div`
   padding: 2rem;
   width: 100%;
-  height: auto;
+  height: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,13 +56,13 @@ export const MessageContainer = styled.div`
 
     @media (min-width: 787px) {
       font-size: 1.5rem;
-      height: fit-content;
+
       width: fit-content;
     }
 
     @media (min-width: 1124px) {
       font-size: 1.9rem;
-      height: fit-content;
+
       width: fit-content;
     }
   }

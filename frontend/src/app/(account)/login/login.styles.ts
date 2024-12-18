@@ -5,9 +5,10 @@ import { colors } from "@/app/global.styles";
 
 export const AccountContainer = styled.div`
   background: ${colors.darkGray};
+  padding-top: 4rem;
   display: flex;
-  padding-top: 14.5vh;
-  place-items: start;
+
+  align-items: start;
   justify-content: center;
   width: 100%;
   height: 100vh;
@@ -15,7 +16,7 @@ export const AccountContainer = styled.div`
 
 export const FormContainer = styled.div`
   width: 75%;
-  height: 63vh;
+  height: 70vh;
   background: rgb(0, 0, 0);
   background: linear-gradient(
     155deg,
@@ -56,7 +57,7 @@ export const Title = styled.h1`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  height: 60%;
+  height: 80%;
   width: 100%;
   gap: 0.3rem;
   padding: 0.5rem;
@@ -85,6 +86,10 @@ export const Input = styled.input`
     border-color: ${colors.lightGray};
     outline: none;
   }
+  &::placeholder {
+    background-color: ${colors.darkGray};
+    opacity: 1;
+  }
 `;
 
 export const Button = styled.button`
@@ -94,17 +99,16 @@ export const Button = styled.button`
   cursor: pointer;
 
   width: 30%;
-  border-radius: 0.8rem;
+  border-radius: 0.5rem;
   background: ${colors.darkGreen};
-  border: 2px solid ${colors.darkGray};
+
   color: ${colors.lightGray};
   font-weight: 500;
   font-family: "Inter", sans-serif;
   font-size: 1rem;
 
   &:hover {
-    scale: 1.03;
-    background: #122a0f;
+   border: 1px solid ${colors.lightGray};
   }
 `;
 export const TextContainer = styled.div`

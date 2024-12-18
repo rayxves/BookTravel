@@ -5,17 +5,17 @@ import { colors } from "@/app/global.styles";
 
 export const AccountContainer = styled.div`
   background: ${colors.darkGray};
+  padding-top: 2rem;
   display: flex;
-  padding-top: 6rem;
   align-items: start;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 export const FormContainer = styled.div`
   width: 75%;
-  height: 65vh;
+  height: fit-content;
   background: rgb(0, 0, 0);
   background: linear-gradient(
     155deg,
@@ -28,18 +28,15 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 2rem;
   border-radius: 0.5rem;
 
-  @media (min-width: 800px) {
+  @media (min-width: 700px) {
     width: 55%;
-    height: 65vh;
   }
 
-  @media (min-width: 1124px) {
-    width: 35%;
-    height: 70vh;
+  @media (min-width: 1024px) {
+    width: 30%;
   }
 `;
 
@@ -57,14 +54,14 @@ export const Title = styled.h1`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  height: 72%;
+  height: auto;
   width: 100%;
   gap: 0.2rem;
   padding: 0.5rem;
 `;
 
 export const Label = styled.label`
-  height: 5rem;
+  height: 2.2rem;
   color: ${colors.lightGray};
   display: flex;
   align-items: end;
@@ -89,30 +86,29 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  height: 4rem;
+  height: 2.5rem;
   margin: auto;
   margin-top: 2rem;
   cursor: pointer;
 
-  width: 30%;
-  border-radius: 0.8rem;
+  width: 35%;
+  border-radius: 0.5rem;
   background: ${colors.darkGreen};
-  border: 2px solid ${colors.darkGray};
+
   color: ${colors.lightGray};
   font-weight: 500;
   font-family: "Inter", sans-serif;
   font-size: 1rem;
 
   &:hover {
-    scale: 1.03;
-    background: #122a0f;
+    border: 1px solid ${colors.lightGray};
   }
 `;
 
 export const TextContainer = styled.div`
   display: flex;
 
-  height: 1.7rem;
+  height: 1.3rem;
   width: 100%;
   align-items: end;
   justify-content: center;

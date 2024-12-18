@@ -1,8 +1,6 @@
 import {
   AuthContainer,
-  AuthTitle,
   AviaoImageContainer,
-  Button,
   MundoImageContainer,
   PageContainer,
   SubTitle,
@@ -18,71 +16,25 @@ import mundo from "../../assets/mundo.png";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/(authContext)/authContext";
-
-
-interface TouristSpot {
-  id: number;
-  name: string;
-  rating: number;
-  description: string;
-  imageUrl: string[];
-}
-
-export async function fetchTouristSpots() {
-  const res = await fetch("/api/touristSpots");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch tourist spots");
-  }
-
-  const data = await res.json();
-  if (!data || !Array.isArray(data)) {
-    throw new Error("Invalid data format");
-  }
-
-  return data;
-}
-
+import { touristSpots } from "../../data/touristSpot";
 
 export default function TravelHighlights() {
-  const { isAuthenticated, logout, username } = useAuth();
-  const [touristSpot, setTouristSpot] = useState<TouristSpot[]>([]);
+  const { isAuthenticated, username } = useAuth();
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleSearch = async () => {
-    try {
-      const results = await fetchTouristSpots();
-      setTouristSpot(results || []);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    handleSearch();
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        return nextIndex >= touristSpots.length ? 0 : nextIndex;
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (touristSpot && touristSpot.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % touristSpot.length);
-      }, 3000);
-
-      return () => clearInterval(interval);
-    }
-  }, [touristSpot]);
-
-  const getImageUrl = () => {
-    const spot = touristSpot[currentIndex];
-    if (!spot || !spot.imageUrl?.length) {
-      return "/caminho/para/imagem-padrao.jpg";
-    }
-
-    const photoReference = spot.imageUrl;
-    const imageUrls = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`;
-
-    return imageUrls;
-  };
+  const currentSpot = touristSpots[currentIndex];
 
   return (
     <PageContainer>
@@ -91,10 +43,7 @@ export default function TravelHighlights() {
         {isAuthenticated ? (
           <AuthContainer>
             {" "}
-            <AuthTitle>Bem-vindo, {username} ♥︎.</AuthTitle>
-            <Button type="button" onClick={logout}>
-              Fazer logout.
-            </Button>
+            <Title>Bem-vindo, {username} ♥︎.</Title>
           </AuthContainer>
         ) : (
           <Title>Planeje sua próxima viagem.</Title>
@@ -102,36 +51,28 @@ export default function TravelHighlights() {
       </AviaoImageContainer>
 
       <TravelsContainer>
-        {touristSpot.length > 0 ? (
-          <TouristSpotContainer>
-            <TouristSpotImg>
-              <Image
-                src={getImageUrl()}
-                alt={touristSpot[currentIndex].name}
-                width={600}
-                height={400}
-                style={{
-                  borderRadius: "3%",
-                }}
-                priority
-              />
-            </TouristSpotImg>
-            <TouristSpotName>{touristSpot[currentIndex].name}</TouristSpotName>
-            <TouristSpotDescription>
-              {touristSpot[currentIndex].description}
-            </TouristSpotDescription>
-          </TouristSpotContainer>
-        ) : (
-          <></>
-        )}
+        <TouristSpotContainer>
+          <TouristSpotImg>
+            <Image
+              src={currentSpot.photoUrls[0]}
+              alt={currentSpot.name}
+              width={600}
+              height={400}
+              style={{
+                borderRadius: "3%",
+              }}
+              priority
+            />
+          </TouristSpotImg>
+          <TouristSpotName>{currentSpot.name}</TouristSpotName>
+          <TouristSpotDescription>
+            {currentSpot.description}
+          </TouristSpotDescription>
+        </TouristSpotContainer>
       </TravelsContainer>
 
       <MundoImageContainer>
-        {isAuthenticated ? (
-          <></>
-        ) : (
-          <SubTitle>Descubra novos destinos!</SubTitle>
-        )}
+        <SubTitle>Descubra novos destinos!</SubTitle>
 
         <Image src={mundo} alt="" priority />
       </MundoImageContainer>

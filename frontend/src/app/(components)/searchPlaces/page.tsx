@@ -18,9 +18,10 @@ import placesImg from "../../assets/placesimg.png";
 import bsPlacesImg from "../../assets/bsPlacesimg.png";
 import Cards from "./(cards)/page";
 
-
 export async function fetchPlaces(query: string) {
-  const res = await fetch(`/api/fetchPlaces?query=${encodeURIComponent(query)}`);
+  const res = await fetch(
+    `/api/fetchPlaces?query=${encodeURIComponent(query)}`
+  );
   if (!res.ok) {
     throw new Error("Failed to fetch places");
   }
@@ -29,19 +30,16 @@ export async function fetchPlaces(query: string) {
 }
 
 export default function SearchPlaces() {
-
   const [query, setQuery] = useState("");
   const [places, setPlaces] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-
-
   const handleSearch = async () => {
     if (query.trim() === "") return;
 
     setIsSearching(true);
-    setErrorMessage(null); 
+    setErrorMessage(null);
     try {
       const results = await fetchPlaces(query);
       setPlaces(results);
@@ -53,6 +51,13 @@ export default function SearchPlaces() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    }
+  };
+
   return (
     <SearchPageContainer>
       <Navbar />
@@ -61,6 +66,7 @@ export default function SearchPlaces() {
           <SearchBar
             placeholder="Search"
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             value={query}
           />
           <SearchIcon icon={faSearch} onClick={handleSearch} />
@@ -75,7 +81,6 @@ export default function SearchPlaces() {
         <Cards isSearching={isSearching} results={places} />
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}{" "}
       </ResponsiveImageContainer>
-
     </SearchPageContainer>
   );
 }
