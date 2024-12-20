@@ -50,6 +50,7 @@ export const UserIcon = styled(FontAwesomeIcon)`
 `;
 
 export const MenuIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
   color: ${colors.black};
   font-size: 1.5rem;
   padding: 1.75rem 1.4rem;
@@ -69,7 +70,7 @@ export const AccountLinks = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2rem;
-
+  padding: 0.2rem;
   margin-right: 3.2rem;
   width: 16rem;
   height: 5rem;
@@ -82,18 +83,18 @@ export const AccountLinks = styled.div`
     align-items: center;
     justify-content: center;
 
-    height: 2.65rem;
+    height: 2.5rem;
     width: 100%;
-    border: 2px solid ${colors.black};
-    border-radius: 10px;
+    border: 2px solid ${colors.green};
+    border-radius: 5px;
     background-color: transparent;
     color: ${colors.darkGray};
     text-decoration: none;
     transition: background-color 0.2s ease-in-out;
 
     &:hover {
-      color: ${colors.black};
-      background-color: ${colors.lightGreen};
+      box-shadow: 0 0 5px ${colors.lightGreen}, 0 0 7px ${colors.lightGreen},
+        0 0 7px ${colors.lightGreen};
     }
   }
 

@@ -42,7 +42,12 @@ export default function Card({ place }: Props) {
       );
 
       if (touristSpotResponse.status !== 201) {
-        setSuccess("Não foi possível adicionar o local.");
+        if (touristSpotResponse.status == 400) {
+          setSuccess("Não é possível adicionar o mesmo lugar aos favoritos.");
+        } else {
+          setSuccess("Não foi possível adicionar o local.");
+        }
+
         return null;
       }
 
@@ -70,12 +75,12 @@ export default function Card({ place }: Props) {
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          console.error(`Erro na resposta: ${error.response.status}`);
-          console.error("Erro detalhado:", error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.data);
         } else if (error.request) {
           console.error("Sem resposta do servidor.");
         } else {
-          console.error(`Erro na requisição: ${error.message}`);
+          console.error(error.message);
         }
       } else {
         console.error("Erro inesperado:", error);

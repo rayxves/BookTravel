@@ -6,7 +6,15 @@ import {
   Rating,
   Titulo,
   ImageContainer,
+  IconsContainer,
+  EditIcon,
+  MenuIcons,
+  ViewIcon,
 } from "./favCard.styles";
+
+import { faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import CreateComments from "../../comments/page";
 
 interface Place {
   id: string;
@@ -24,6 +32,16 @@ interface Props {
 }
 
 export default function FavCard({ place, onDelete }: Props) {
+  const [createComment, setCreateComment] = useState(false);
+
+  const handleCreateCommentClick = () => {
+    setCreateComment(!createComment);
+  };
+
+  const handleCancelComment = () => {
+    setCreateComment(false);
+  };
+
   const imageUrl = place.photoUrls
     ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photoUrls}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
     : null;
@@ -31,38 +49,53 @@ export default function FavCard({ place, onDelete }: Props) {
   const type = place.placeType ? "touristSpot" : "placeType";
 
   return (
-    <CardContainer>
-      <ImageContainer>
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={place.name}
-            width={300}
-            height={200}
-            style={{ objectFit: "contain" }}
-            priority
-          />
+    <>
+      {createComment && <CreateComments createComment={createComment} onCancel={handleCancelComment} name={place.name}/>}
+      <CardContainer createComment={createComment}>
+        <IconsContainer>
+          <EditIcon>
+            {" "}
+            <MenuIcons icon={faPenToSquare} />
+            <button onClick={handleCreateCommentClick}></button>
+          </EditIcon>
+          <ViewIcon>
+            {" "}
+            <MenuIcons icon={faEye} />
+            <button></button>
+          </ViewIcon>
+        </IconsContainer>
+
+        <ImageContainer>
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={place.name}
+              width={300}
+              height={200}
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          ) : (
+            <p>Imagem indisponível</p>
+          )}
+        </ImageContainer>
+
+        <Titulo>{place.name}</Titulo>
+        <Description>{place.description}</Description>
+        {place.rating ? (
+          <Rating>Avaliação: {place.rating}</Rating>
         ) : (
-          <p>Imagem indisponível</p>
+          <Rating></Rating>
         )}
-      </ImageContainer>
 
-      <Titulo>{place.name}</Titulo>
-      <Description>{place.description}</Description>
-      {place.rating ? (
-        <Rating>Avaliação: {place.rating}</Rating>
-      ) : (
-        <Rating></Rating>
-      )}
-
-      <Button
-        onClick={() => {
-          console.log("Clique detectado no botão!");
-          onDelete(place.name, type);
-        }}
-      >
-        Remover Favorito
-      </Button>
-    </CardContainer>
+        <Button
+          onClick={() => {
+            onDelete(place.name, type);
+          }}
+        >
+          Remover Favorito
+        </Button>
+      </CardContainer>
+    </>
   );
 }

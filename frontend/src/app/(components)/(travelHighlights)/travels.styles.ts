@@ -10,13 +10,17 @@ export const PageContainer = styled.div`
 
 export const TravelsContainer = styled.div`
   background-color: ${colors.gray};
-  width: 80vw;
-  height: 60vh;
-  border-radius: 16px;
-  box-shadow: 4px 4px 15px rgba(1, 1, 1, 1);
+  width: 70vw;
+  max-width: 43.7rem;
+  height: 58vh;
+  border-radius: 1rem;
+  padding-top: 1em;
 
+  box-shadow: 0 0 5px ${colors.lightGreen}, 0 0 10px ${colors.darkGreen},
+    0 0 15px ${colors.mediumGreen};
   @media (min-width: 868px) {
-    width: 65vw;
+    width: 57vw;
+    height: 55vh;
   }
 `;
 
@@ -75,16 +79,20 @@ export const Title = styled.p`
   color: ${colors.lightGray};
 
   @media (min-width: 560px) {
-    padding-bottom: 1.2rem;
+
     padding-right: 3rem;
     font-size: 1.4rem;
   }
 
   @media (min-width: 868px) {
     align-items: end;
-    padding-bottom: 1rem;
+
     padding-right: 8rem;
     font-size: 1.6rem;
+  }
+  @media (min-width: 1124px) {
+    padding-right: 14rem;
+        padding-bottom: 1.1rem;
   }
 `;
 
@@ -138,6 +146,10 @@ export const SubTitle = styled.p`
     padding-left: 8rem;
     font-size: 1.6rem;
   }
+
+    @media (min-width: 1024px) {
+    padding-left: 10rem;
+  }
 `;
 
 export const TouristSpotContainer = styled.div`
@@ -153,8 +165,8 @@ export const TouristSpotName = styled.div`
   display: flex;
   align-items: start;
   justify-content: center;
-  height: 3rem;
-  padding-bottom: 1.5rem;
+  height: 3.5rem;
+  padding: 1.2rem 0;
 
   font-size: 1.8rem;
   font-weight: 700;
@@ -166,8 +178,8 @@ export const TouristSpotImg = styled.h1`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
+  height: 80%;
+  width: 80%;
 
   font-size: 1.8rem;
   font-weight: 700;
@@ -175,8 +187,8 @@ export const TouristSpotImg = styled.h1`
   img {
     height: 90%;
     width: 90%;
-    border: 5px solid ${colors.green};
-    box-shadow: 4px 4px 4px 4px rgba(1, 1, 1, 0.3);
+
+    box-shadow: 4px 4px 15px rgba(1, 1, 1, 0.5);
   }
 
   @media (min-width: 570px) {
@@ -189,14 +201,14 @@ export const TouristSpotImg = styled.h1`
   @media (min-width: 870px) {
     img {
       height: 85%;
-      width: 60%;
+      width: 70%;
     }
   }
 
   @media (min-width: 1024px) {
     img {
-      height: 80%;
-      width: 45%;
+      height: 90%;
+      width: 50%;
     }
   }
 `;
@@ -210,62 +222,6 @@ export const TouristSpotDescription = styled.div`
   padding-left: 2rem;
   padding-top: 0.5rem;
   font-weight: 500;
-`;
-
-export const Button = styled.button`
-  cursor: pointer;
-  display: flex;
-  align-items: end;
-  justify-content: start;
-  padding-bottom: 1rem;
-  width: fit-content;
-  height: 4rem;
-  font-family: "Inter", sans-serif;
-  font-size: 1.2rem;
-  font-weight: 500;
-  background: transparent;
-  border: none;
-  color: ${colors.lightGreen};
-  padding-left: 1rem;
-  padding-right: 2rem;
-  z-index: 10;
-
-  @media (min-width: 560px) {
-    padding-bottom: 1.2rem;
-
-    padding-right: 4rem;
-    font-size: 1.4rem;
-  }
-
-  @media (min-width: 868px) {
-    padding-right: 12rem;
-    font-size: 1.6rem;
-  }
-`;
-
-export const AuthTitle = styled.p`
-  display: flex;
-  align-items: end;
-  justify-content: end;
-  padding-bottom: 1rem;
-  width: fit-content;
-  height: 4rem;
-  font-family: "Inter", sans-serif;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: ${colors.lightGray};
-
-  @media (min-width: 560px) {
-    padding-bottom: 1.2rem;
-
-    font-size: 1.4rem;
-  }
-
-  @media (min-width: 868px) {
-    align-items: end;
-
-    font-size: 1.6rem;
-  }
 `;
 
 export const AuthContainer = styled.p`

@@ -5,9 +5,9 @@ import { colors } from "@/app/global.styles";
 
 export const AccountContainer = styled.div`
   background: ${colors.darkGray};
-  padding-top: 2rem;
+
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: center;
   width: 100%;
   min-height: 100vh;

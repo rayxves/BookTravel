@@ -4,14 +4,15 @@ import styled from "styled-components";
 
 export const MenuContainer = styled.nav`
   position: fixed;
-  z-index: 4;
-  top: 4.5rem;
+  z-index: 12;
+  top: 4.4rem;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   background: ${colors.mediumGreen};
-  max-width: fit-content;
-  max-height: 40vh;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 0;
 
   transition: transform 0.3s ease, opacity 0.3s ease;
   transform: translateX(-100%);
@@ -40,7 +41,7 @@ export const MenuItem = styled.li`
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 0.8rem;
+    padding: 1rem 1rem 1rem 0;
     font-family: "Roboto", sans-serif;
     font-size: 1.2rem;
     font-weight: 500;
@@ -60,7 +61,6 @@ export const MenuItem = styled.li`
     gap: 0.5rem;
     a {
       font-size: 1.2rem;
-      padding: 0.8rem;
     }
   }
 `;

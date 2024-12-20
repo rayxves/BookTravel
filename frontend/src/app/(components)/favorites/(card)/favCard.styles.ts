@@ -1,17 +1,20 @@
 import { colors } from "@/app/global.styles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { styled } from "styled-components";
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<{ createComment: boolean }>`
+  opacity: ${(props) => (props.createComment ? 0.3 : 1)};
+  transition: opacity 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 0,5rem;
+  gap: 0, 5rem;
   margin: 0rem;
   width: 90%;
-  max-width: 20rem;
+  max-width: 24rem;
   height: 30rem;
-  padding: 1.5rem;
+  padding: 1.2rem;
 
   background: rgba(255, 255, 255, 0.25);
   border-radius: 1rem;
@@ -112,4 +115,52 @@ export const Link = styled.a`
   font-family: "Roboto", sans-serif;
   font-weight: 600;
   transition: 0.2s ease;
+`;
+
+export const IconsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 2rem;
+  align-items: start;
+  justify-content: space-between;
+  gap: 2rem;
+`;
+
+export const EditIcon = styled.div`
+  display: flex;
+  justify-content: start;
+  width: 50%;
+  position: relative;
+  height: 2rem;
+
+  button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    width: 50%;
+    height: 2rem;
+    cursor: pointer;
+  }
+`;
+export const ViewIcon = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 50%;
+  position: relative;
+  height: 2rem;
+
+  button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    width: 50%;
+    height: 2rem;
+    cursor: pointer;
+  }
+`;
+
+export const MenuIcons = styled(FontAwesomeIcon)`
+  color: ${colors.black};
+  width: fit-content;
+  margin-left: 0.5rem;
 `;

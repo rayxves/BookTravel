@@ -74,7 +74,14 @@ namespace api.Controllers
                 return BadRequest("Invalid tourist spot data.");
             }
 
+            var existingTouristSpot = _spotRepo.GetByNameAsync(touristSpotDto.Name);
+            if (existingTouristSpot != null)
+            {
+                return BadRequest("Cannot add the same Tourist Spot.");
+            }
+
             var touristSpotDetails = await _googleServices.GetPlaceDetailsByName(touristSpotDto.Name);
+           
             if (touristSpotDetails == null) return NotFound("Tourist Spot not found in Google Places API.");
 
             var touristSpot = new TouristSpot

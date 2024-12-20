@@ -5,10 +5,10 @@ import { colors } from "@/app/global.styles";
 
 export const AccountContainer = styled.div`
   background: ${colors.darkGray};
-  padding-top: 4rem;
+
   display: flex;
 
-  align-items: start;
+  align-items: center;
   justify-content: center;
   width: 100%;
   height: 100vh;
@@ -16,7 +16,7 @@ export const AccountContainer = styled.div`
 
 export const FormContainer = styled.div`
   width: 75%;
-  height: 70vh;
+  height: auto;
   background: rgb(0, 0, 0);
   background: linear-gradient(
     155deg,
@@ -108,7 +108,7 @@ export const Button = styled.button`
   font-size: 1rem;
 
   &:hover {
-   border: 1px solid ${colors.lightGray};
+    border: 1px solid ${colors.lightGray};
   }
 `;
 export const TextContainer = styled.div`
