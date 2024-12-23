@@ -50,7 +50,9 @@ export default function FavCard({ place, onDelete }: Props) {
 
   return (
     <>
-      {createComment && <CreateComments createComment={createComment} onCancel={handleCancelComment} name={place.name}/>}
+      {createComment && (
+        <CreateComments onCancel={handleCancelComment} name={place.name} />
+      )}
       <CardContainer createComment={createComment}>
         <IconsContainer>
           <EditIcon>

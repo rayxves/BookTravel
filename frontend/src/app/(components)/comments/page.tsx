@@ -12,34 +12,78 @@ import {
   Textarea,
   Titulo,
 } from "./comments.styles";
+import axios from "axios";
 
 interface Props {
-  createComment: boolean;
   onCancel: () => void;
+  name: string;
 }
 
-export default function CreateComments({ createComment, onCancel }: Props) {
-  const [isOpen, setIsOpen] = useState(true);
+export async function handleSave(TouristSpotName: string, content: string) {   
+   const token = localStorage.getItem("token");
+  try {
+    const response = await axios.post("/api/createComment", {
+      TouristSpotName,
+      content,
+    }, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Comentário criado com sucesso:", response.data);
+  } catch (error) {
+    console.error("Erro ao salvar comentário:", error);
+    throw new Error("Não foi possível salvar o comentário.");
+  }
+}
 
-  const handleCancel = () => {
-    onCancel();
+export default function CreateComments({ onCancel, name }: Props) {
+  const [success, setSuccess] = useState("");
+  const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSaveClick = async () => {
+    if (!query.trim()) {
+      alert("O conteúdo do comentário não pode estar vazio.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await handleSave(name, query);
+      setSuccess("Comentário salvo com sucesso!");
+      setQuery("");
+      setTimeout(() => {
+        onCancel();
+      }, 2000);
+    } catch (error) {
+      setSuccess("Erro ao salvar o comentário.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <Container>
       <Titulo>Nova nota:</Titulo>
       <Form>
-        <Label>Titulo: </Label>
-        <br />
-        <Input type="text" />
         <Label>Conteúdo: </Label>
         <br />
-        <Textarea></Textarea>
+        <Textarea
+          onChange={(e) => setQuery(e.target.value)}
+          value={query}
+        ></Textarea>
         <br />
         <ButtonContainer>
-          <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
-          <SaveButton>Salvar</SaveButton>
+          <CancelButton onClick={onCancel}>Cancelar</CancelButton>
+          <SaveButton onClick={handleSaveClick} disabled={isLoading}>
+            {isLoading ? "Salvando..." : "Salvar"}
+          </SaveButton>
         </ButtonContainer>
+      
       </Form>
+      {success}
     </Container>
   );
 }

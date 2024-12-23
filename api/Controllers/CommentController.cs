@@ -60,7 +60,6 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        [Route("{name:alpha}")]
         [Authorize]
         public async Task<IActionResult> Create(CreateCommentRequestDto commentDto)
         {
