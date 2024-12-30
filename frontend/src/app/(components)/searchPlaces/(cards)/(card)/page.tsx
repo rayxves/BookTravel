@@ -27,7 +27,8 @@ export default function Card({ place }: Props) {
   const [success, setSuccess] = useState("");
   const { token } = useAuth();
 
-  const addFavTouristSpots = async () => {
+
+  const addTouristSpot = async () => {
     if (!token) return null;
 
     try {
@@ -41,16 +42,27 @@ export default function Card({ place }: Props) {
         }
       );
 
-      if (touristSpotResponse.status !== 201) {
-        if (touristSpotResponse.status == 400) {
-          setSuccess("Não é possível adicionar o mesmo lugar aos favoritos.");
-        } else {
-          setSuccess("Não foi possível adicionar o local.");
-        }
-
+      if (touristSpotResponse.status === 400) {
+        setSuccess("O local já existe.");
         return null;
       }
 
+      if (touristSpotResponse.status !== 201) {
+        setSuccess("Não foi possível adicionar o local.");
+        return null;
+      }
+
+      return touristSpotResponse;
+    } catch (error: any) {
+      handleError(error);
+      return null;
+    }
+  };
+
+  const addToFavorites = async () => {
+    if (!token) return null;
+
+    try {
       const normalizedPlaceName = place.name.trim().toLowerCase();
 
       const favoriteResponse = await axios.post(
@@ -63,7 +75,6 @@ export default function Card({ place }: Props) {
           },
         }
       );
-      console.log(favoriteResponse);
 
       if (favoriteResponse.status === 204 || favoriteResponse.status === 201) {
         setSuccess("Adicionado aos favoritos com sucesso!");
@@ -73,21 +84,34 @@ export default function Card({ place }: Props) {
         return null;
       }
     } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error(error.response.status);
-          console.error(error.response.data);
-        } else if (error.request) {
-          console.error("Sem resposta do servidor.");
-        } else {
-          console.error(error.message);
-        }
-      } else {
-        console.error("Erro inesperado:", error);
-      }
-
+      handleError(error);
       return null;
     }
+  };
+
+  const handleError = (error: any) => {
+    if (error.status == 400) {
+      return
+    }
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.error(error.response.status);
+        console.error(error.response.data);
+      } else if (error.request) {
+        console.error("Sem resposta do servidor.");
+      } else {
+        console.error(error.message);
+      }
+    } else {
+      console.error("Erro inesperado:", error);
+    }
+  };
+
+  const addFavTouristSpots = async () => {
+    await addTouristSpot();
+
+    const favoriteResponse = await addToFavorites();
+    return favoriteResponse;
   };
 
   return (

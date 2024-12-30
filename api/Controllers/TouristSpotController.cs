@@ -74,7 +74,7 @@ namespace api.Controllers
                 return BadRequest("Invalid tourist spot data.");
             }
 
-            var existingTouristSpot = _spotRepo.GetByNameAsync(touristSpotDto.Name);
+            var existingTouristSpot = await _spotRepo.GetByNameAsync(touristSpotDto.Name);
             if (existingTouristSpot != null)
             {
                 return BadRequest("Cannot add the same Tourist Spot.");

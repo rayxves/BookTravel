@@ -14,7 +14,8 @@ import {
 
 import { faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import CreateComments from "../../comments/page";
+import CreateComments from "../../comments/(createComments)/page";
+import ViewComments from "../../comments/viewComments/page";
 
 interface Place {
   id: string;
@@ -32,14 +33,23 @@ interface Props {
 }
 
 export default function FavCard({ place, onDelete }: Props) {
-  const [createComment, setCreateComment] = useState(false);
+  const [createcomment, setcreatecomment] = useState(false);
+  const [viewcomments, setviewcomments] = useState(false);
 
   const handleCreateCommentClick = () => {
-    setCreateComment(!createComment);
+    setcreatecomment(!createcomment);
   };
 
   const handleCancelComment = () => {
-    setCreateComment(false);
+    setcreatecomment(false);
+  };
+
+  const handleViewCommentClick = () => {
+    setviewcomments(!viewcomments);
+  };
+
+  const handleViewCommentClose = () => {
+    setviewcomments(false);
   };
 
   const imageUrl = place.photoUrls
@@ -50,10 +60,13 @@ export default function FavCard({ place, onDelete }: Props) {
 
   return (
     <>
-      {createComment && (
+      {createcomment && (
         <CreateComments onCancel={handleCancelComment} name={place.name} />
       )}
-      <CardContainer createComment={createComment}>
+      {viewcomments && (
+        <ViewComments onClose={handleViewCommentClose} placeName={place.name} />
+      )}
+      <CardContainer>
         <IconsContainer>
           <EditIcon>
             {" "}
@@ -63,7 +76,7 @@ export default function FavCard({ place, onDelete }: Props) {
           <ViewIcon>
             {" "}
             <MenuIcons icon={faEye} />
-            <button></button>
+            <button onClick={handleViewCommentClick}> </button>
           </ViewIcon>
         </IconsContainer>
 

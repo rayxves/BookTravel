@@ -2,8 +2,7 @@ import { colors } from "@/app/global.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { styled } from "styled-components";
 
-export const CardContainer = styled.div<{ createComment: boolean }>`
-  opacity: ${(props) => (props.createComment ? 0.3 : 1)};
+export const CardContainer = styled.div`
   transition: opacity 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
@@ -24,6 +23,7 @@ export const CardContainer = styled.div<{ createComment: boolean }>`
     scale: 1.03;
     box-shadow: 0px 4px 8px rgba(36, 66, 47, 1);
   }
+
 `;
 
 export const ImageContainer = styled.div`

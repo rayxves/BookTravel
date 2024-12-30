@@ -2,7 +2,6 @@ import { colors } from "@/app/global.styles";
 import { styled } from "styled-components";
 
 export const Container = styled.div`
-
   flex-direction: column;
   width: fit-content;
   min-width: 22rem;
@@ -45,11 +44,11 @@ export const Form = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  gap: 0rem;
+  gap: 0.2rem;
 `;
 
 export const Label = styled.label`
-  height: 2.5rem;
+  height: 2.6rem;
   color: ${colors.darkGray};
   display: flex;
   align-items: end;
@@ -57,24 +56,6 @@ export const Label = styled.label`
   font-weight: 500;
   font-family: "Inter", sans-serif;
   font-size: 1.3rem;
-`;
-
-export const Input = styled.input`
-  height: 2.6rem;
-  padding: 1rem;
-  border: none;
-  box-shadow: 0 0 2px ${colors.lightGreen}, 0 0 3px ${colors.darkGreen},
-    0 0 5px ${colors.mediumGreen};
-  border-radius: 3px;
-  background: #dbdbcc;
-  color: ${colors.darkGray};
-  font-size: 1rem;
-  &:focus {
-    outline: none;
-  }
-  &::placeholder {
-    font-family: "Inter", sans-serif;
-  }
 `;
 
 export const Textarea = styled.textarea`
@@ -89,6 +70,9 @@ export const Textarea = styled.textarea`
   font-size: 1rem;
   &:focus {
     outline: none;
+    box-shadow: 0 0 4px ${colors.lightGreen}, 0 0 6px ${colors.darkGreen},
+      0 0 10px ${colors.mediumGreen};
+    transition: 0.2s ease-in-out;
   }
   &::placeholder {
     font-family: "Inter", sans-serif;
@@ -104,7 +88,6 @@ export const ButtonContainer = styled.div`
 `;
 
 export const CancelButton = styled.button`
-
   height: 2.5rem;
   background: #ff4c4c;
   cursor: pointer;
@@ -115,10 +98,10 @@ export const CancelButton = styled.button`
   font-size: 1rem;
   font-weight: 500;
   font-family: "Inter", sans-serif;
-  box-shadow: 2px 2px 2px 2px rgba(1, 1, 1, 0.2);
+  box-shadow: 1px 1px 1px 1px rgba(1, 1, 1, 0.2);
 
   &:hover {
-    border: 1px solid ${colors.darkGray};
+    border: 1px solid ${colors.black};
   }
 `;
 
@@ -127,7 +110,7 @@ export const SaveButton = styled.button`
   background: ${colors.lightGreen};
   cursor: pointer;
   border: none;
-  box-shadow: 2px 2px 2px 2px rgba(1, 1, 1, 0.2);
+  box-shadow: 1px 1px 1px 1px rgba(1, 1, 1, 0.2);
   width: 40%;
   border-radius: 0.5rem;
   color: ${colors.darkGray};
@@ -136,6 +119,6 @@ export const SaveButton = styled.button`
   font-size: 1rem;
 
   &:hover {
-    border: 1px solid ${colors.darkGray};
+    border: 1px solid ${colors.darkGreen};
   }
 `;

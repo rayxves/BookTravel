@@ -58,6 +58,8 @@ namespace api.Repository
             return await _context.Comments.Include(u => u.User).FirstOrDefaultAsync(i => i.Id == id);
         }
 
+
+
         public async Task<Comment> UpdateAsync(int id, UpdateCommentRequestDto commentDto)
         {
             var existingComment = await _context.Comments.Include(u => u.User).FirstOrDefaultAsync(i => i.Id == id);
@@ -71,6 +73,28 @@ namespace api.Repository
 
             await _context.SaveChangesAsync();
             return existingComment;
+        }
+
+
+
+        public async Task<List<Comment>> GetAllByUserAsync(string userId, string? placeName = null)
+        {
+            var comments = _context.Comments
+                                              .Include(u => u.User)
+                                              .Include(c => c.TouristSpot)
+                                              .Include(c => c.PlaceType)
+                                              .AsQueryable();
+
+            comments = comments.Where(c => c.UserId == userId);
+
+            if (!string.IsNullOrWhiteSpace(placeName))
+            {
+                comments = comments.Where(c =>
+                    (c.TouristSpot != null && c.TouristSpot.Name.ToLower() == placeName.ToLower()) ||
+                    (c.PlaceType != null && c.PlaceType.Name.ToLower() == placeName.ToLower()));
+            }
+
+            return await comments.ToListAsync();
         }
     }
 }

@@ -59,6 +59,30 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
+        [HttpGet("by-user")]
+        [Authorize]
+        public async Task<IActionResult> GetALLByUser([FromQuery] string? placeName = null)
+        {
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+
+            if (appUser == null)
+            {
+                return Unauthorized("User not found");
+            }
+
+            var comments = await _commentRepo.GetAllByUserAsync(appUser.Id, placeName);
+
+            if (comments == null || comments.Count == 0)
+            {
+                return NotFound("You don't have any comments");
+            }
+
+            var commentsDto = comments.Select(comment => comment.ToCommentDto()).ToList();
+            return Ok(commentsDto);
+
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(CreateCommentRequestDto commentDto)

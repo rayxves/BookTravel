@@ -122,18 +122,18 @@ namespace api.Controllers
 
             var userFavorite = await _faveRepo.GetUserFavorite(appUser);
 
-            var filterTouristSpot = userFavorite.Where(f => f.TouristSpot?.Name.ToLower() == name.ToLower()).ToList();
+            var filterTouristSpot = userFavorite.Any(f => f.TouristSpot?.Name.ToLower() == name.ToLower());
 
-            if (filterTouristSpot.Count() == 1)
+            if (filterTouristSpot)
             {
                 await _faveRepo.DeleteFavorite(appUser, name);
                 return Ok("Tourist spot removed from favorites.");
             }
             else
             {
-                var filterPlaceType = userFavorite.Where(f => f.PlaceType?.Name.ToLower() == name.ToLower()).ToList();
+                var filterPlaceType = userFavorite.Any(f => f.PlaceType?.Name.ToLower() == name.ToLower());
 
-                if (filterPlaceType.Count() == 1)
+                if (filterPlaceType)
                 {
                     await _faveRepo.DeleteFavorite(appUser, name);
                     return Ok("Place type removed from favorites.");

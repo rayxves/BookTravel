@@ -208,7 +208,7 @@ export const TouristSpotImg = styled.h1`
   @media (min-width: 1024px) {
     img {
       height: 90%;
-      width: 50%;
+      width: 55%;
     }
   }
 `;

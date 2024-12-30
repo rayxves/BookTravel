@@ -39,7 +39,7 @@ export const FormContainer = styled.div`
 
   @media (min-width: 1124px) {
     padding: 2rem;
-    width: 38%;
+    width: 35%;
   }
 `;
 

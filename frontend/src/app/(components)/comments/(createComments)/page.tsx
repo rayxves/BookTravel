@@ -6,12 +6,11 @@ import {
   CancelButton,
   Container,
   Form,
-  Input,
   Label,
   SaveButton,
   Textarea,
   Titulo,
-} from "./comments.styles";
+} from "./createComments.styles";
 import axios from "axios";
 
 interface Props {
@@ -19,19 +18,21 @@ interface Props {
   name: string;
 }
 
-export async function handleSave(TouristSpotName: string, content: string) {   
-   const token = localStorage.getItem("token");
+export async function handleSave(TouristSpotName: string, content: string) {
+  const token = localStorage.getItem("token");
   try {
-    const response = await axios.post("/api/createComment", {
-      TouristSpotName,
-      content,
-    }, 
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    await axios.post(
+      "/api/createComment",
+      {
+        TouristSpotName,
+        content,
       },
-    });
-    console.log("Comentário criado com sucesso:", response.data);
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   } catch (error) {
     console.error("Erro ao salvar comentário:", error);
     throw new Error("Não foi possível salvar o comentário.");
@@ -57,8 +58,8 @@ export default function CreateComments({ onCancel, name }: Props) {
       setTimeout(() => {
         onCancel();
       }, 2000);
-    } catch (error) {
-      setSuccess("Erro ao salvar o comentário.");
+    } catch (error: any) {
+      setSuccess("Erro ao salvar o comentário: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +82,6 @@ export default function CreateComments({ onCancel, name }: Props) {
             {isLoading ? "Salvando..." : "Salvar"}
           </SaveButton>
         </ButtonContainer>
-      
       </Form>
       {success}
     </Container>
