@@ -68,11 +68,11 @@ export const Button = styled.button`
   position: absolute;
   font-weight: 600;
   font-size: 1.5rem;
-  margin: 0 1rem;
+
   width: 2rem;
   height: 2rem;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   font-family: "Roboto", sans-serif;
 
@@ -83,7 +83,7 @@ export const Button = styled.button`
   cursor: pointer;
   font-size: 1.2rem;
   text-align: center;
-  padding: 0;
+  padding: 0;center
 
   transition: background 0.3s ease, border-color 0.3s ease;
 
@@ -97,7 +97,7 @@ export const Button = styled.button`
   }
 
   @media (max-width: 420px) {
-    margin: 1rem 0;
+
     font-size: 1rem;
     width: 1.6rem;
     height: 1.6rem;

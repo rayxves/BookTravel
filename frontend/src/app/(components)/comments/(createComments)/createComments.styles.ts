@@ -59,7 +59,7 @@ export const Label = styled.label`
 `;
 
 export const Textarea = styled.textarea`
-  height: 5.5rem;
+  height: 6rem;
   padding: 1rem;
   border: none;
   box-shadow: 0 0 2px ${colors.lightGreen}, 0 0 3px ${colors.darkGreen},

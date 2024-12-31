@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   ButtonContainer,
@@ -50,6 +48,11 @@ export default function CreateComments({ onCancel, name }: Props) {
       return;
     }
 
+    if (query.length > 250) {
+      alert("O comentário não pode ter mais de 250 caracteres.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       await handleSave(name, query);
@@ -59,7 +62,7 @@ export default function CreateComments({ onCancel, name }: Props) {
         onCancel();
       }, 2000);
     } catch (error: any) {
-      setSuccess("Erro ao salvar o comentário: ", error);
+      setSuccess("Erro ao salvar o comentário.");
     } finally {
       setIsLoading(false);
     }
@@ -74,16 +77,20 @@ export default function CreateComments({ onCancel, name }: Props) {
         <Textarea
           onChange={(e) => setQuery(e.target.value)}
           value={query}
+          maxLength={250}
         ></Textarea>
-        <br />
+              <p style={{ display: "flex", justifyContent: "end", alignItems: "end", height: "1.5rem", fontSize: "0.8rem", color: "gray", padding: "0.2rem" }}>Tamanho máximo: 250 caracteres.</p>
+    
         <ButtonContainer>
           <CancelButton onClick={onCancel}>Cancelar</CancelButton>
           <SaveButton onClick={handleSaveClick} disabled={isLoading}>
             {isLoading ? "Salvando..." : "Salvar"}
           </SaveButton>
         </ButtonContainer>
+        
       </Form>
-      {success}
+      {success && <p>{success}</p>}
+
     </Container>
   );
 }

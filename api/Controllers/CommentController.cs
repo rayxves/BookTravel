@@ -149,7 +149,7 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var comment = _commentRepo.DeleteAsync(id);
+            var comment = await _commentRepo.DeleteAsync(id);
 
             if (comment == null)
             {

@@ -117,7 +117,7 @@ export default function Favorites() {
   };
 
   const handleDelete = async (name: string, type: string) => {
-    console.log(name, type);
+ 
     if (!isAuthenticated) {
       setError("You need to be logged in to access your favorites.");
       return;

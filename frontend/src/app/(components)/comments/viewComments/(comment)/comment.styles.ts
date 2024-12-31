@@ -14,6 +14,7 @@ export const CommentItem = styled.div`
   border-radius: 5px;
   box-shadow: 4px 4px 6px 2px rgba(0, 0, 0, 0.2);
   min-height: min-content;
+  max-height: fit-content;
   flex: 1;
 `;
 
@@ -54,44 +55,41 @@ export const Content = styled.p`
 `;
 
 export const IconsContainer = styled.div`
- height: 2rem;
+  height: 1.5rem;
   width: 20%;
-  height: 2rem;
   display: flex;
-  align-items: start;
-  justify-content: end;
+  justify-content: center;
+  align-items: center;
 
- 
   button {
     width: 30%;
     height: 100%;
     border: none;
-   
     background: none;
-  };
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   svg {
-    width: 30%;
-
+    width: 100%;
     font-size: 1.1rem;
     color: ${colors.black};
     cursor: pointer;
- position: relative;
+    position: relative;
 
- transition: background 0.3s ease, border-color 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease;
 
-  &:hover {
-    color: ${colors.gray};
-    border-color: #888;
+    &:hover {
+      color: ${colors.gray};
+      border-color: #888;
+    }
   }
 
-
-    }
-    @media(max-width: 520px){
-    width: 25%;
-    button, svg {
-    width: 35%;
-    }
+  @media (max-width: 520px) {
+    width: 30%;
+    gap: 0.5rem;
+  
 `;
 
 export const DateContainer = styled.div`
