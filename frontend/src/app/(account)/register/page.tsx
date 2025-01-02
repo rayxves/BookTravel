@@ -1,13 +1,13 @@
 "use client";
-
-import { FormEvent, useState } from "react";
+import { Formik, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import Navbar from "@/app/(components)/(navbar)/page";
 import {
   AccountContainer,
   FormContainer,
   Title,
-  Form,
   Label,
+  Form,
   Input,
   Button,
   Text,
@@ -16,53 +16,48 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+const validationSchema = Yup.object({
+  username: Yup.string()
+    .required("Nome de usuário é obrigatório!")
+    .min(3, "O nome de usuário deve ter pelo menos 3 caracteres!"),
+  email: Yup.string().email("Email inválido!").required("Email é obrigatório!"),
+  password: Yup.string()
+    .required("Senha é obrigatória!")
+    .min(6, "A senha deve ter pelo menos 6 caracteres!")
+    .matches(/\d/, "A senha deve conter pelo menos um número!")
+    .matches(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "A senha deve conter pelo menos um caractere especial!"
+    )
+    .matches(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula!"),
+});
+
 export default function Register() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const newErrors = { username: "", email: "", password: "" };
-
-    if (!username) {
-      newErrors.username = "Nome de usuário é obrigatório!";
-    }
-    if (!email) {
-      newErrors.email = "Email é obrigatório!";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Email inválido!";
-    }
-    if (!password) {
-      newErrors.password = "Senha é obrigatória!";
-    } else if (password.length < 6) {
-      newErrors.password = "A senha deve ter pelo menos 6 caracteres!";
-    }
-
-    setErrors(newErrors);
-
+  const handleSubmit = async (values: {
+    username: string;
+    email: string;
+    password: string;
+  }) => {
+    console.log("Valores do formulário:", values);
     try {
       const response = await fetch("/api/registerUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify(values),
       });
 
       const data = await response.json();
+
       if (response.ok) {
         router.push("/");
       } else {
-        console.error("Erro ao registrar:", data.error);
+        alert(data.error || "Erro ao registrar. Tente novamente.");
       }
     } catch (error) {
       console.error("Erro ao fazer a requisição:", error);
+      alert("Erro ao fazer a requisição.");
     }
   };
 
@@ -72,38 +67,53 @@ export default function Register() {
       <AccountContainer>
         <FormContainer>
           <Title>Cadastrar</Title>
-          <Form onSubmit={handleSubmit}>
-            <Label>Nome de usuário:</Label>
-            <Input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-            {errors.username && <Text>{errors.username}</Text>}
 
-            <Label>Email:</Label>
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            {errors.email && <Text>{errors.email}</Text>}
+          <Formik
+            initialValues={{ username: "", email: "", password: "" }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ handleSubmit, handleChange, values, isSubmitting }) => (
+              <Form onSubmit={handleSubmit}>
+                <Label>Nome de usuário:</Label>
+                <Field
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  as={Input}
+                  value={values.username}
+                  onChange={handleChange}
+                />
+                <ErrorMessage name="username" component={Text} />
 
-            <Label>Senha:</Label>
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {errors.password && <Text>{errors.password}</Text>}
-            <Button type="submit">Enviar</Button>
-          </Form>
+                <Label>Email:</Label>
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  as={Input}
+                  value={values.email}
+                  onChange={handleChange}
+                />
+                <ErrorMessage name="email" component={Text} />
+
+                <Label>Senha:</Label>
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  as={Input}
+                  value={values.password}
+                  onChange={handleChange}
+                />
+                <ErrorMessage name="password" component={Text} />
+
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Enviando..." : "Enviar"}
+                </Button>
+              </Form>
+            )}
+          </Formik>
 
           <TextContainer>
             <Text>Já tem uma conta? </Text>

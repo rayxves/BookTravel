@@ -14,6 +14,7 @@ namespace api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<User> _signInManager;
+
         public AccountController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager)
         {
             _userManager = userManager;
@@ -55,7 +56,6 @@ namespace api.Controllers
         {
             try
             {
-
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
@@ -74,28 +74,30 @@ namespace api.Controllers
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if (roleResult.Succeeded)
                     {
-                        return Ok(
-                            new NewUserDto
-                            {
-                                UserName = appUser.UserName,
-                                Email = appUser.Email,
-                                Token = _tokenService.CreateToken(appUser)
-                            }
-                        );
+                        return Ok(new NewUserDto
+                        {
+                            UserName = appUser.UserName,
+                            Email = appUser.Email,
+                            Token = _tokenService.CreateToken(appUser)
+                        });
                     }
                     else
                     {
-                        return StatusCode(500, roleResult.Errors);
-                    };
+                        var errorMessages = roleResult.Errors.Select(e => e.Description).ToList();
+                        Console.WriteLine(errorMessages);
+                        return StatusCode(500, new { Errors = errorMessages });
+                    }
                 }
                 else
                 {
-                    return StatusCode(500, createdUser.Errors);
+                    var errorMessages = createdUser.Errors.Select(e => e.Description).ToList();
+                    Console.WriteLine(errorMessages);
+                    return StatusCode(500, new { Errors = errorMessages });
                 }
             }
             catch (Exception error)
             {
-
+                Console.WriteLine(error);
                 return StatusCode(500, error);
             }
         }
