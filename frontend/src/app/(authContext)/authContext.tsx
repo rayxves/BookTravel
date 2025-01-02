@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -19,22 +20,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = (username: string, token: string) => {
     const expiration = new Date().getTime() + 30 * 60 * 1000;
-    if (typeof window !== "undefined") {
-      localStorage.setItem("token", token);
-      localStorage.setItem("username", username);
-      localStorage.setItem("token_expiration", expiration.toString());
-    }
+    Cookies.set("jwt", token, {
+      expires: 7,
+      path: "",
+      sameSite: "Strict",
+    });
+    Cookies.set("username", username, {
+      expires: 7,
+      path: "",
+      sameSite: "Strict",
+    });
+    Cookies.set("token_expiration", expiration.toString(), {
+      expires: 7,
+      path: "",
+      sameSite: "Strict",
+    });
+
     setIsAuthenticated(true);
     setUsername(username);
     setToken(token);
   };
 
   const logout = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("token_expiration");
-    }
+    Cookies.remove("jwt");
+    Cookies.remove("username");
+    Cookies.remove("token_expiration");
+
     setIsAuthenticated(false);
     setUsername(null);
     setToken(null);
@@ -42,10 +53,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem("token");
-      const storedUsername = localStorage.getItem("username");
-      const expiration = localStorage.getItem("token_expiration");
-
+      const storedToken = Cookies.get("jwt");
+      const storedUsername = Cookies.get("username");
+      const expiration = Cookies.get("token_expiration");
       if (
         storedToken &&
         storedUsername &&

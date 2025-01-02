@@ -4,21 +4,34 @@ using System.Text;
 using api.Interfaces;
 using api.Models;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 
 namespace api.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _config; //acessa as configurações do app (appsettings.json)
+        private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config)
+        private readonly IHttpContextAccessor _httpContextAccessor; //acessa o conteto http atual
+
+        public TokenService(IHttpContextAccessor httpContextAccessor, IConfiguration config)
         {
+            _httpContextAccessor = httpContextAccessor;
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_config["JWT:SigningKey"]));
         }
+
         public string CreateToken(User user)
         {
-            var claims = new List<Claim>{
+            var httpContext = _httpContextAccessor.HttpContext; //o http context tem todas as informações sobre a req http atual
+
+            if (httpContext == null)
+            {
+                throw new InvalidOperationException("HttpContext não está disponível.");
+            }
+
+            var claims = new List<Claim>
+            {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
             };
@@ -28,17 +41,26 @@ namespace api.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
                 Audience = _config["JWT:Audience"]
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var jwtToken = tokenHandler.WriteToken(token);
 
-            return tokenHandler.WriteToken(token);
+            var cookieOptions = new CookieOptions 
+            {
+                HttpOnly = true, //não pode ser acessado via js
+                SameSite = SameSiteMode.Strict, //enviado apenas para req feitas para o mesmo site
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+
+            httpContext.Response.Cookies.Append("jwt", jwtToken, cookieOptions);
+
+            return jwtToken;
         }
     }
 }

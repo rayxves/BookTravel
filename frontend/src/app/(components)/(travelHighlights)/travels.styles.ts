@@ -91,8 +91,8 @@ export const Title = styled.p`
     font-size: 1.6rem;
   }
   @media (min-width: 1124px) {
-    padding-right: 14rem;
-        padding-bottom: 1.1rem;
+    padding-right: 16rem;
+     padding-bottom: 1.1rem;
   }
 `;
 
@@ -148,7 +148,7 @@ export const SubTitle = styled.p`
   }
 
     @media (min-width: 1024px) {
-    padding-left: 10rem;
+    padding-left: 15rem;
   }
 `;
 

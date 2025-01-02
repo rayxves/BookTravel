@@ -99,8 +99,9 @@ export const CancelButton = styled.button`
   font-family: "Inter", sans-serif;
   box-shadow: 1px 1px 1px 1px rgba(1, 1, 1, 0.2);
 
-  &:hover {
-    border: 1px solid ${colors.black};
+  &:hover,
+  &:focus {
+    opacity: 0.9;
   }
 `;
 
@@ -116,8 +117,9 @@ export const SaveButton = styled.button`
   font-weight: 500;
   font-family: "Inter", sans-serif;
   font-size: 1rem;
-
-  &:hover {
-    border: 1px solid ${colors.darkGreen};
+  
+  &:hover,
+  &:focus {
+    opacity: 0.9;
   }
 `;
