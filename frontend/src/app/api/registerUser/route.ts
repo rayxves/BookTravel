@@ -12,10 +12,10 @@ export async function POST(request: Request) {
       Password: password,
     });
     return NextResponse.json(response.data);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro ao registrar usuário:", error);
     return NextResponse.json(
-      { error: "Erro ao registrar usuário." },
+      { error: `Erro ao registrar usuário: ${error.status}` },
       { status: 500 }
     );
   }

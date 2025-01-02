@@ -62,7 +62,7 @@ export default function CreateComments({ onCancel, name }: Props) {
         onCancel();
       }, 2000);
     } catch (error: any) {
-      setSuccess("Erro ao salvar o comentário.");
+      setSuccess("Erro ao salvar o comentário: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -79,18 +79,43 @@ export default function CreateComments({ onCancel, name }: Props) {
           value={query}
           maxLength={250}
         ></Textarea>
-              <p style={{ display: "flex", justifyContent: "end", alignItems: "end", height: "1.5rem", fontSize: "0.8rem", color: "gray", padding: "0.2rem" }}>Tamanho máximo: 250 caracteres.</p>
-    
+        <p
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "end",
+            height: "1.5rem",
+            fontSize: "0.8rem",
+            color: "gray",
+            padding: "0.2rem",
+          }}
+        >
+          Tamanho máximo: 250 caracteres.
+        </p>
+
         <ButtonContainer>
           <CancelButton onClick={onCancel}>Cancelar</CancelButton>
           <SaveButton onClick={handleSaveClick} disabled={isLoading}>
             {isLoading ? "Salvando..." : "Salvar"}
           </SaveButton>
         </ButtonContainer>
-        
       </Form>
-      {success && <p>{success}</p>}
-
+      {success && (
+        <p
+          style={{
+            display: "flex",
+            justifyContent: "start",
+            fontFamily: "Inter",
+            alignItems: "end",
+            height: "1.5rem",
+            fontSize: "0.8rem",
+            color: "black",
+            padding: "0.2rem",
+          }}
+        >
+          {success}
+        </p>
+      )}
     </Container>
   );
 }

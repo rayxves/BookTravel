@@ -77,7 +77,16 @@ export default function ViewComments({ onClose, placeName }: props) {
             })}
           </>
         ) : (
-          <p>Não há comentários para exibir.</p>
+          <p
+            style={{
+              color: "black",
+              height: "1.5rem",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "1.1rem",
+            }}
+          >
+            Não há comentários para exibir.
+          </p>
         )}
       </ListContainer>
     </Container>

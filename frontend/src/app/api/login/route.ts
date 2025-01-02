@@ -11,13 +11,18 @@ export async function POST(request: Request) {
       Password: password,
     });
 
-
     return NextResponse.json(response.data);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro ao logar usuário:", error);
+    if (error.status === 401 || error.status === 404) {
+      return NextResponse.json(
+        { error: "Usuário não encontrado." },
+        { status: error.status }
+      );
+    }
     return NextResponse.json(
       { error: "Erro ao logar usuário." },
-      { status: 500 }
+      { status: error.status }
     );
   }
 }
