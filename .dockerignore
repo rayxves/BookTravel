@@ -1,0 +1,8 @@
+
+**/node_modules
+**/bin
+**/obj
+**/.next/cache
+**/logs
+**/*.log
+.env

@@ -29,4 +29,13 @@
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
 
+  <PropertyGroup>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+</PropertyGroup>
+
+<ItemGroup>
+  <Compile Remove="Properties\AssemblyInfo.cs" />
+</ItemGroup>
+
+
 </Project>

@@ -27,9 +27,11 @@ export default function Card({ place }: Props) {
   const [success, setSuccess] = useState("");
   const { token } = useAuth();
 
-
   const addTouristSpot = async () => {
-    if (!token) return null;
+    if (!token) {
+      setSuccess("Você precisa estar logado para adicionar um local.");
+      return null;
+    }
 
     try {
       const touristSpotResponse = await axios.post(
@@ -91,7 +93,7 @@ export default function Card({ place }: Props) {
 
   const handleError = (error: any) => {
     if (error.status == 400) {
-      return
+      return;
     }
     if (axios.isAxiosError(error)) {
       if (error.response) {

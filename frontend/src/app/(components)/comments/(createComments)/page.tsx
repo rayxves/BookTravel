@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   ButtonContainer,
@@ -11,12 +13,12 @@ import {
 } from "./createComments.styles";
 import axios from "axios";
 
-interface Props {
+interface props {
   onCancel: () => void;
   name: string;
 }
 
-export async function handleSave(TouristSpotName: string, content: string) {
+async function handleSave(TouristSpotName: string, content: string) {
   const token = localStorage.getItem("token");
   try {
     await axios.post(
@@ -37,7 +39,7 @@ export async function handleSave(TouristSpotName: string, content: string) {
   }
 }
 
-export default function CreateComments({ onCancel, name }: Props) {
+export default function CreateComments({ onCancel, name }: props) {
   const [success, setSuccess] = useState("");
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +64,7 @@ export default function CreateComments({ onCancel, name }: Props) {
         onCancel();
       }, 2000);
     } catch (error: any) {
-      setSuccess("Erro ao salvar o comentário: ", error);
+      setSuccess(`Erro ao salvar o comentário: ${error}`);
     } finally {
       setIsLoading(false);
     }
