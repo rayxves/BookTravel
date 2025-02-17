@@ -14,15 +14,25 @@ export async function POST(request: Request) {
     return NextResponse.json(response.data);
   } catch (error: any) {
     console.error("Erro ao logar usuário:", error);
-    if (error.status === 401 || error.status === 404) {
+    if (error.code === "ECONNREFUSED") {
       return NextResponse.json(
-        { error: "Usuário não encontrado." },
-        { status: error.status }
+        { error: "A conexão com o servidor foi recusada. Verifique se o servidor está em execução." },
+        { status: 500 }
       );
     }
+
+    if (error.response && (error.response.status === 401 || error.response.status === 404)) {
+      return NextResponse.json(
+        { error: "Usuário não encontrado." },
+        { status: error.response.status }
+      );
+    }
+
+  
     return NextResponse.json(
       { error: "Erro ao logar usuário." },
-      { status: error.status }
+      { status: 500 }
     );
   }
-}
+  }
+

@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
-    domains: [ "maps.googleapis.com"],
+    domains: ['maps.googleapis.com'],
   },
   webpack(config, { isServer }) {
     if (!isServer) {
@@ -11,6 +12,9 @@ const nextConfig = {
       };
     }
     return config;
+  },
+  compiler: {
+    styledComponents: true,
   },
 };
 

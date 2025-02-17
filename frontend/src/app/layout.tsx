@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import "./layout.css";
-import { AuthProvider } from "./(authContext)/authContext";
+import { AuthProvider } from "./authContext/authContext";
 
 export const metadata: Metadata = {
   title: "Book Travel",

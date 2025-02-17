@@ -1,8 +1,15 @@
 "use client";
 
-import Navbar from "./(components)/(navbar)/page";
-import TravelHighlights from "./(components)/(travelHighlights)/page";
+import Navbar from "./components/(navbar)";
 import { InicialPageContainer } from "./global.styles";
+import dynamic from "next/dynamic";
+
+const TravelHighlights = dynamic(
+  () => import("./components/(travelHighlights)"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Home() {
   return (
