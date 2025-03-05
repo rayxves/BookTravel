@@ -20,13 +20,11 @@ const poppins = Poppins({
 
 const inter = Inter({
   subsets: ['latin'],
-  display: 'swap',
   variable: '--font-inter',
 })
  
 const roboto = Roboto({
   subsets: ['latin'],
-  display: 'swap',
   variable: '--font-roboto',
 })
 
@@ -43,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable}${roboto.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable} ${roboto.variable} antialiased`}
       >
         <Navbar />
         {children}
