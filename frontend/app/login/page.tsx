@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { LoginRequest } from "../../api/auth";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/authContext";
 
 interface FormData {
   name: string;
@@ -25,7 +28,10 @@ const schema = yup.object().shape({
 });
 
 export default function Login() {
+  const { authLogin } = useAuth();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginResponse, setLoginResponse] = useState("");
 
   const {
     register,
@@ -35,8 +41,20 @@ export default function Login() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Dados enviados:", data);
+  const onSubmit = async (data: FormData) => {
+    try {
+      await LoginRequest(data);
+      authLogin(data.name, data.password);
+      setLoginResponse("Login successful");
+
+      await new Promise<void>(() => {
+        setTimeout(() => {
+          router.push("/");
+        }, 24000);
+      });
+    } catch (err: any) {
+      setLoginResponse(err.message);
+    }
   };
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -136,6 +154,17 @@ export default function Login() {
               >
                 Register
               </Link>
+            </p>
+            <p
+              className={
+                loginResponse !== ""
+                  ? loginResponse === "Login successful"
+                    ? "font-inter text-sm text-[var(--hunter-green)] font-semibold"
+                    : "font-inter text-sm text-red-600 font-semibold"
+                  : "hidden"
+              }
+            >
+              {loginResponse}
             </p>
           </div>
         </div>

@@ -11,7 +11,7 @@ interface RegisterData {
   password: string;
 }
 
-export const login = async (credentials: LoginData) => {
+export const LoginRequest = async (credentials: LoginData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/login`,
@@ -35,7 +35,7 @@ export const login = async (credentials: LoginData) => {
   }
 };
 
-export const register = async (credentials: RegisterData) => {
+export const RegisterRequest = async (credentials: RegisterData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/register`,
@@ -54,6 +54,8 @@ export const register = async (credentials: RegisterData) => {
         throw new Error("Invalid registration data");
       } else if (status === 500) {
         throw new Error("Server error during registration");
+      } else if (status == 401) {
+        throw new Error("Username already in use.");
       } else {
         throw new Error(error.response?.data?.message || "Failed to register");
       }

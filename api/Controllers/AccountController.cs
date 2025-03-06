@@ -61,6 +61,12 @@ namespace api.Controllers
                     return BadRequest(ModelState);
                 }
 
+                var existingUser = await _userManager.FindByNameAsync(registerDto.UserName.ToLower());
+                if (existingUser != null)
+                {
+                    return Unauthorized("Username already in use.");
+                }
+
                 var appUser = new User
                 {
                     UserName = registerDto.UserName,
@@ -69,6 +75,7 @@ namespace api.Controllers
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
 
+                
                 if (createdUser.Succeeded)
                 {
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");

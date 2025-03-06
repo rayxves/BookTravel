@@ -1,15 +1,18 @@
 "use client";
+import { useAuth } from "@/authContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import router from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { RegisterRequest } from "../../api/auth";
 
 interface FormData {
-    name: string;
-    email: string;
-    password: string;
-  }
+  name: string;
+  email: string;
+  password: string;
+}
 
 const schema = yup.object().shape({
   name: yup
@@ -27,7 +30,9 @@ const schema = yup.object().shape({
 });
 
 export default function Register() {
+  const { authLogin } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [registerResponse, setRegisterResponse] = useState<string | null>("");
   const {
     register,
     handleSubmit,
@@ -36,8 +41,20 @@ export default function Register() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Dados enviados:", data);
+  const onSubmit = async (data: FormData) => {
+    try {
+      await RegisterRequest(data);
+      authLogin(data.name, data.password);
+      setRegisterResponse("Register successful");
+
+      await new Promise<void>(() => {
+        setTimeout(() => {
+          router.push("/");
+        }, 24000);
+      });
+    } catch (err: any) {
+      setRegisterResponse(err.message);
+    }
   };
 
   const toggleShowPassword = () => {
@@ -150,6 +167,17 @@ export default function Register() {
               >
                 Login
               </Link>
+            </p>
+            <p
+              className={
+                registerResponse !== ""
+                  ? registerResponse === "Register successful"
+                    ? "font-inter text-sm text-[var(--hunter-green)] font-semibold"
+                    : "font-inter text-sm text-red-600 font-semibold"
+                  : "hidden"
+              }
+            >
+              {registerResponse}
             </p>
           </div>
         </div>
