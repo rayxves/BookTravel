@@ -2,13 +2,13 @@ import { LoginRequest, RegisterRequest } from "../api/auth";
 import axios from "axios";
 
 interface CredentialsLogin {
-  name: string;
+  UserName: string;
   token: string;
 }
 
 interface CredentialsRegister {
-  name: string;
-  email: string;
+  UserName: string;
+  Email: string;
   token: string;
 }
 
@@ -19,7 +19,7 @@ describe("auth API", () => {
   describe("login", () => {
     it("should call the API with the correct credentials", async () => {
       const credentials: CredentialsLogin = {
-        name: "ray",
+        UserName: "ray",
         token: "test123",
       };
       mockedAxios.post.mockResolvedValueOnce({ data: credentials });
@@ -32,8 +32,8 @@ describe("auth API", () => {
       expect(axios.post).toHaveBeenCalledWith(
         `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/login`,
         {
-          name: "ray",
-          password: "test",
+          UserName: "ray",
+          Password: "test",
         }
       );
       expect(response).toEqual(credentials);
@@ -54,8 +54,8 @@ describe("auth API", () => {
   describe("register", () => {
     it("should call the API and return correct credentials", async () => {
       const credentials: CredentialsRegister = {
-        name: "ray",
-        email: "ray@example.com",
+        UserName: "ray",
+        Email: "ray@example.com",
         token: "test123",
       };
       mockedAxios.post.mockResolvedValueOnce({ data: credentials });
@@ -69,9 +69,9 @@ describe("auth API", () => {
       expect(axios.post).toHaveBeenCalledWith(
         `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/register`,
         {
-          name: "ray",
-          email: "ray@example.com",
-          password: "test",
+          UserName: "ray",
+          Email: "ray@example.com",
+          Password: "test",
         }
       );
       expect(response).toEqual(credentials);
