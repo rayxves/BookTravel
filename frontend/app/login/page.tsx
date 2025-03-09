@@ -43,14 +43,15 @@ export default function Login() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await LoginRequest(data);
-      authLogin(data.name, data.password);
+      const response = await LoginRequest(data);
+      
+      authLogin(response.UserName, response.token);
       setLoginResponse("Login successful");
 
       await new Promise<void>(() => {
         setTimeout(() => {
           router.push("/");
-        }, 24000);
+        }, 4000);
       });
     } catch (err: any) {
       setLoginResponse(err.message);
