@@ -26,13 +26,16 @@ export default function FavContent({
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-3 pt-2 ">
       <h1 className="font-poppins px-3 pt-5 pb-2 text-lg sm:text-xl lg:text-2xl text-center flex flex-col gap-1 border-b-2 border-b-gray-900">
-        {tittle} <p className=" text-md sm:text-lg lg:text-xl">{paragraph}</p>
-        <Link
-          href={href}
-          className="text-[var(--hunter-green)] cursor-pointer hover:text-green-700"
-        >
-          {linkText}
-        </Link>
+        {tittle}{" "}
+        <p className=" text-md sm:text-lg lg:text-xl">
+          {paragraph}{" "}
+          <Link
+            href={href}
+            className="text-[var(--hunter-green)] cursor-pointer hover:text-green-700"
+          >
+            {linkText}
+          </Link>
+        </p>
       </h1>
       <Lottie options={options} style={{ width: "auto", height: "auto" }} />
     </div>
