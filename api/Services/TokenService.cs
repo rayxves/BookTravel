@@ -51,10 +51,11 @@ namespace api.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = tokenHandler.WriteToken(token);
 
-            var cookieOptions = new CookieOptions 
+            var cookieOptions = new CookieOptions
             {
-                HttpOnly = true, //não pode ser acessado via js
-                SameSite = SameSiteMode.Strict, //enviado apenas para req feitas para o mesmo site
+                HttpOnly = true, 
+                Secure = false, 
+                SameSite = SameSiteMode.Strict, 
                 Expires = DateTime.UtcNow.AddDays(7)
             };
 

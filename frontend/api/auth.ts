@@ -11,12 +11,20 @@ interface RegisterData {
   password: string;
 }
 
+
+
 export const LoginRequest = async (credentials: LoginData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/login`,
-      { UserName: credentials.name, Password: credentials.password }
+      {
+        UserName: credentials.name,
+        Password: credentials.password,
+      },
+
     );
+
+   
     return response.data;
   } catch (error: any) {
     if (error.response) {

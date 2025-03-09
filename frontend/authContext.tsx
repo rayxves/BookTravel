@@ -8,7 +8,6 @@ interface AuthContextType {
   authLogin: (username: string, token: string) => void;
   logout: () => void;
   username: string | null;
-  token: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -16,19 +15,17 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const storedToken = Cookies.get("jwt");
     const storedUsername = Cookies.get("username");
     const tokenExpiration = Cookies.get("token_expiration");
-
+ 
     if (storedToken && storedUsername && tokenExpiration) {
       const expirationTime = parseInt(tokenExpiration, 10);
       if (new Date().getTime() < expirationTime) {
         setIsAuthenticated(true);
         setUsername(storedUsername);
-        setToken(storedToken);
       } else {
         logout();
       }
@@ -37,13 +34,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const authLogin = (username: string, token: string) => {
     const expiration = new Date().getTime() + 30 * 60 * 1000;
-    Cookies.set("jwt", token, { expires: 7, path: "", secure: true, sameSite: "strict" });
-    Cookies.set("username", username, { expires: 7, path: "", secure: true, sameSite: "strict" });
-    Cookies.set("token_expiration", expiration.toString(), { expires: 7, path: "", secure: true, sameSite: "strict" });
 
+    Cookies.set("jwt", token, {
+      expires: 7,
+      path: "/",
+      sameSite: "strict",
+    });
+    Cookies.set("username", username, {
+      expires: 7,
+      path: "/",
+      sameSite: "strict",
+    });
+    Cookies.set("token_expiration", expiration.toString(), {
+      expires: 7,
+      path: "/",
+      sameSite: "strict",
+    });
+   
     setIsAuthenticated(true);
     setUsername(username);
-    setToken(token);
   };
 
   const logout = () => {
@@ -53,11 +62,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     setIsAuthenticated(false);
     setUsername(null);
-    setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, authLogin, logout, username, token }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, authLogin, logout, username }}
+    >
       {children}
     </AuthContext.Provider>
   );

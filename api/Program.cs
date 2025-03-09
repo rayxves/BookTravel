@@ -19,15 +19,18 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHttpClient<GooglePlacesServices>();
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowSpecificOrigin",
+         builder =>
+         {
+             builder.WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+         });
 });
 
 builder.Services.AddSwaggerGen(option =>
@@ -101,6 +104,18 @@ builder.Services.AddAuthentication(options =>
             System.Text.Encoding.UTF32.GetBytes(builder.Configuration["JWT:SigningKey"] ?? throw new ArgumentNullException("'JWT:SigningKey' not configured."))
         )
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["jwt"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Configuration.AddEnvironmentVariables();
@@ -118,7 +133,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
