@@ -76,7 +76,7 @@ describe("auth API", () => {
       );
       expect(response).toEqual(credentials);
     });
-    it("should return an error if login failed", async () => {
+    it("should return an error if register failed", async () => {
       mockedAxios.post.mockRejectedValueOnce({
         response: {
           data: {
