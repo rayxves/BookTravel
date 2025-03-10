@@ -44,7 +44,7 @@ export default function FavCards({
   if (!isVisible) return null;
   return (
     <>
-      {showComment && <CreateComment onCancel={handleCreateCommentCancel} />}
+      {showComment && <CreateComment onCancel={handleCreateCommentCancel} touristSpotName={name} />}
       <div className={showComment ? " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:shadow-lg relative opacity-55" : " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:scale-105 hover:shadow-lg relative"}>
         <div className="w-full flex justify-between items-center px-2">
           <svg

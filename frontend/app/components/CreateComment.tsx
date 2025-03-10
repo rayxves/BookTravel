@@ -1,8 +1,26 @@
+import { createComment } from "@/api/comments";
+import { useState } from "react";
+
 interface Props {
   onCancel: () => void;
+  touristSpotName: string;
 }
 
-export default function CreateComment({ onCancel }: Props) {
+export default function CreateComment({ onCancel, touristSpotName }: Props) {
+  const [response, setResponse] = useState("");
+  const [query, setQuery] = useState("");
+  async function handleCreateComment(content: string) {
+    try {
+      await createComment(content, touristSpotName);
+      setResponse("Created successfully");
+      setTimeout(() => {
+        onCancel();
+      }, 2000);
+    } catch (error: any) {
+      setResponse(error.message);
+    }
+  }
+
   return (
     <div className="p-5 font-inter flex flex-col items-center justify-center w-[20rem] sm:w-[23rem] md:w-[25rem] h-auto bg-gray-300 gap-2 shadow-2xl rounded-md z-20 absolute top-[42%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 ">
       {" "}
@@ -39,6 +57,7 @@ export default function CreateComment({ onCancel }: Props) {
         placeholder="Type your notes here..."
         rows={4}
         maxLength={250}
+        onChange={(e) => setQuery(e.target.value)}
       />
       <p className="flex justify-end items-end text-xs text-gray-600 py-1">
         Max width: 250 characters.
@@ -50,10 +69,16 @@ export default function CreateComment({ onCancel }: Props) {
         >
           Cancel
         </button>
-        <button className="text-gray-50 w-fit h-fit px-7 py-2 bg-[var(--hunter-green)] rounded cursor-pointer hover:bg-green-800 font-semibold">
+        <button
+          onClick={() => {
+            handleCreateComment(query);
+          }}
+          className="text-gray-50 w-fit h-fit px-7 py-2 bg-[var(--hunter-green)] rounded cursor-pointer hover:bg-green-800 font-semibold"
+        >
           Save
         </button>
       </div>
+      {response !== "" && <p className={response === "Created successfully" ? "text-sm text-green-800" : "text-sm text-red-800"}>{response}</p>}
     </div>
   );
 }
