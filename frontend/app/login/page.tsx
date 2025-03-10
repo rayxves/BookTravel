@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { LoginRequest } from "../../api/auth";
+import { loginRequest } from "../../api/auth";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/authContext";
 
@@ -43,8 +43,8 @@ export default function Login() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await LoginRequest(data);
-      
+      const response = await loginRequest(data);
+
       authLogin(response.UserName, response.token);
       setLoginResponse("Login successful");
 

@@ -11,20 +11,16 @@ interface RegisterData {
   password: string;
 }
 
-
-
-export const LoginRequest = async (credentials: LoginData) => {
+export const loginRequest = async (credentials: LoginData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/login`,
       {
         UserName: credentials.name,
         Password: credentials.password,
-      },
-
+      }
     );
 
-   
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -43,7 +39,7 @@ export const LoginRequest = async (credentials: LoginData) => {
   }
 };
 
-export const RegisterRequest = async (credentials: RegisterData) => {
+export const registerRequest = async (credentials: RegisterData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/register`,

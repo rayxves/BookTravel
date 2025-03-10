@@ -1,4 +1,4 @@
-import { LoginRequest, RegisterRequest } from "../api/auth";
+import { loginRequest, registerRequest } from "../api/auth";
 import axios from "axios";
 
 interface CredentialsLogin {
@@ -24,7 +24,7 @@ describe("auth API", () => {
       };
       mockedAxios.post.mockResolvedValueOnce({ data: credentials });
 
-      const response = await LoginRequest({
+      const response = await loginRequest({
         name: "ray",
         password: "test",
       });
@@ -47,7 +47,7 @@ describe("auth API", () => {
         },
       });
       await expect(
-        LoginRequest({ name: "ray", password: "test" })
+        loginRequest({ name: "ray", password: "test" })
       ).rejects.toThrow("Failed to login");
     });
   });
@@ -60,7 +60,7 @@ describe("auth API", () => {
       };
       mockedAxios.post.mockResolvedValueOnce({ data: credentials });
 
-      const response = await RegisterRequest({
+      const response = await registerRequest({
         name: "ray",
         email: "ray@example.com",
         password: "test",
@@ -85,7 +85,7 @@ describe("auth API", () => {
         },
       });
       await expect(
-        RegisterRequest({
+        registerRequest({
           name: "ray",
           email: "ray@example.com",
           password: "test",

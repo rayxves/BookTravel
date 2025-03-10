@@ -2,7 +2,7 @@
 import { useAuth } from "@/authContext";
 import animationDataNoAuth from "@/public/NoAuth.json";
 import animationDataNoContent from "@/public/NoContent.json";
-import { GetFavorites } from "@/api/touristSpotFavorites";
+import { getFavorites } from "@/api/touristSpotFavorites";
 import { useEffect, useState } from "react";
 import FavContent from "../components/FavContent";
 import FavError from "../components/FavError";
@@ -24,11 +24,9 @@ export default function FavoritePage() {
   useEffect(() => {
     const fetchFavTouristSpots = async () => {
       try {
-        const data = await GetFavorites();
-        console.log("Data fetched:", data);
+        const data = await getFavorites();
         const formattedData = data.map((ts) => {
           const tsData = ts.touristSpot;
-          console.log(tsData.photoUrls);
           return {
             id: tsData.id,
             name: tsData.name,
@@ -54,12 +52,12 @@ export default function FavoritePage() {
         error !== "" ? (
           <FavError error={error} />
         ) : favTouristSpots.length > 0 ? (
-          <>
+          <div className="w-full h-full bg-gray-100 flex flex-col items-center">
             <h1 className="flex font-poppins items-center justify-center bg-darkGray text-lightGray font-semibold text-2xl w-full py-4 pt-8 border-b-4 border-[var(--hunter-green)]">
               Favorites
             </h1>
-            <div className="w-full h-auto bg-darkGray px-4 flex-grow relative">
-              <div className="w-full h-full overflow-y-auto grid grid-cols-auto-fit gap-12 p-5 bg-darkGray place-items-center">
+            <div className="w-full h-auto p-2 bg-darkGray px-4 flex-grow relative">
+              <div className="w-full h-full overflow-y-auto grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-12 p-5 bg-darkGray place-items-center">
                 {favTouristSpots.map((ts) => {
                   return (
                     <FavCards
@@ -73,7 +71,7 @@ export default function FavoritePage() {
                 })}
               </div>
             </div>
-          </>
+          </div>
         ) : (
           <FavContent
             tittle=" Nothing here..."

@@ -6,7 +6,7 @@ import router from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { RegisterRequest } from "../../api/auth";
+import { registerRequest } from "../../api/auth";
 
 interface FormData {
   name: string;
@@ -43,7 +43,7 @@ export default function Register() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await RegisterRequest(data);
+      await registerRequest(data);
       authLogin(data.name, data.password);
       setRegisterResponse("Register successful");
 
