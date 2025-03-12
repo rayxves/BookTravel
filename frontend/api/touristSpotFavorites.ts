@@ -16,21 +16,28 @@ export const getFavorites = async () => {
     });
   } catch (error: any) {
     console.log(error);
-    return error.response?.message?.data || "Error trying to add favorite.";
+    throw new Error(
+      error.message || "Error trying to get favorites."
+    );
   }
 };
 
 export const removeFavorite = async (touristSpotName: string) => {
   try {
-    await axios.delete(`${url}/delete?name=${encodeURIComponent(touristSpotName)}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
-    return "Removed favorite successfully";
+    await axios.delete(
+      `${url}/delete?name=${encodeURIComponent(touristSpotName)}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    return { message: "Removed favorite successfully" };
   } catch (error: any) {
     console.log(error);
-    return "Error trying to remove favorite.";
+    throw new Error(
+      error.message || "Error trying to remove favorite."
+    );
   }
 };

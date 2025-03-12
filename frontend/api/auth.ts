@@ -31,7 +31,7 @@ export const loginRequest = async (credentials: LoginData) => {
       } else if (status === 401) {
         throw new Error("Invalid credentials");
       } else {
-        throw new Error(error.response?.data?.message || "Failed to login");
+        throw new Error(error.message || "Failed to login");
       }
     } else {
       throw new Error("An unexpected error occurred");
@@ -61,7 +61,7 @@ export const registerRequest = async (credentials: RegisterData) => {
       } else if (status == 401) {
         throw new Error("Username already in use.");
       } else {
-        throw new Error(error.response?.data?.message || "Failed to register");
+        throw new Error(error.message || "Failed to register");
       }
     } else {
       throw new Error("An unexpected error occurred");

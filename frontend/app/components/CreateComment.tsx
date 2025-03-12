@@ -10,8 +10,13 @@ export default function CreateComment({ onCancel, touristSpotName }: Props) {
   const [response, setResponse] = useState("");
   const [query, setQuery] = useState("");
   async function handleCreateComment(content: string) {
+    if (content.length < 5) {
+      setResponse("Your note must have at least 5 characters.");
+      return
+    }
     try {
       await createComment(content, touristSpotName);
+   
       setResponse("Created successfully");
       setTimeout(() => {
         onCancel();
@@ -57,6 +62,7 @@ export default function CreateComment({ onCancel, touristSpotName }: Props) {
         placeholder="Type your notes here..."
         rows={4}
         maxLength={250}
+        minLength={5}
         onChange={(e) => setQuery(e.target.value)}
       />
       <p className="flex justify-end items-end text-xs text-gray-600 py-1">
