@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { removeFavorite } from "@/api/touristSpotFavorites";
 import CreateComment from "./CreateComment";
+import ViewComments from "./ViewComments";
 
 interface TouristSpot {
   name: string;
@@ -17,7 +18,9 @@ export default function FavCards({
 }: TouristSpot) {
   const [deleteResponse, setDeleteResponse] = useState<string>("");
   const [isVisible, setIsVisible] = useState(true);
-  const [showComment, setShowComment] = useState(false);
+  const [showCreateComment, setShowCreateComment] = useState(false);
+  const [showViewComments, setShowViewComments] = useState(false);
+
   const imageUrl =
     photoUrls.length > 0
       ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoUrls[0]}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
@@ -35,17 +38,41 @@ export default function FavCards({
   }
 
   function handleCreateComment() {
-    setShowComment(true);
+    setShowCreateComment(true);
+  }
+  function handleViewComment() {
+    setShowViewComments(true);
+  }
+  function handleViewCommentCancel() {
+    setShowViewComments(false);
   }
   const handleCreateCommentCancel = () => {
-    setShowComment(false);
+    setShowCreateComment(false);
   };
 
   if (!isVisible) return null;
   return (
     <>
-      {showComment && <CreateComment onCancel={handleCreateCommentCancel} touristSpotName={name} />}
-      <div className={showComment ? " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:shadow-lg relative opacity-55" : " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:scale-105 hover:shadow-lg relative"}>
+      {showCreateComment && (
+        <CreateComment
+          onCancel={handleCreateCommentCancel}
+          touristSpotName={name}
+        />
+      )}
+      {showViewComments && (
+        <ViewComments
+          onCancel={handleViewCommentCancel}
+          touristSpotName={name}
+        />
+      )}
+
+      <div
+        className={
+          showCreateComment || showViewComments || showViewComments
+            ? " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:shadow-lg relative opacity-55"
+            : " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:scale-105 hover:shadow-lg relative"
+        }
+      >
         <div className="w-full flex justify-between items-center px-2">
           <svg
             onClick={handleCreateComment}
@@ -64,6 +91,7 @@ export default function FavCards({
             />
           </svg>
           <svg
+            onClick={handleViewComment}
             className="w-6 h-6 text-gray-800 cursor-pointer hover:text-gray-500"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
@@ -111,13 +139,17 @@ export default function FavCards({
           onClick={() => {
             handleFavoriteDelete(name);
           }}
-          disabled={showComment}
-          className={showComment ? "z-10 cursor-not-allowed pointer-events-auto border-none bg-[var(--hunter-green)] p-3 rounded-md w-fit h-fit font-semibold text-white transition duration-200 ease-in-out" : "z-10 cursor-pointer pointer-events-auto border-none bg-[var(--hunter-green)] p-3 rounded-md w-fit h-fit font-semibold text-white transition duration-200 ease-in-out hover:bg-green-700"}
+          disabled={showCreateComment || showViewComments}
+          className={
+            showCreateComment || showViewComments
+              ? "z-10 cursor-not-allowed pointer-events-auto border-none bg-[var(--hunter-green)] p-3 rounded-md w-fit h-fit font-semibold text-white transition duration-200 ease-in-out"
+              : "z-10 cursor-pointer pointer-events-auto border-none bg-[var(--hunter-green)] p-3 rounded-md w-fit h-fit font-semibold text-white transition duration-200 ease-in-out hover:bg-green-700"
+          }
         >
           Remove Favorite
         </button>
         {deleteResponse && (
-          <p className=" text-red-700 font-semibold text-sm">
+          <p className=" text-red-700 font-semibold text-sm h-fit">
             {deleteResponse}
           </p>
         )}
