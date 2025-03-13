@@ -1,5 +1,7 @@
 using System.Text.Json;
 using api.Models;
+using Context;
+using Strategies;
 
 namespace api.Services
 {
@@ -76,19 +78,22 @@ namespace api.Services
             return null!;
         }
 
-        public bool IsPlaceType(GooglePlacesData data)
+        public async Task<string> GetFilteredPlacesAsync(IFilterStrategy strategy, double latitude, double longitude)
         {
-            string[] placeTypes = {
-        "restaurant", "museum", "park", "bar", "cafe", "airport", "amusement_park", "aquarium", "art_gallery",
-        "bakery", "bank", "beauty_salon", "bicycle_store", "book_store", "bowling_alley", "bus_station",
-        "casino", "clothing_store", "doctor", "electrician", "embassy", "fire_station", "gym", "hair_care",
-        "hospital", "library", "movie_theater", "night_club", "parking", "pharmacy", "police", "post_office",
-        "school", "shopping_mall", "stadium", "subway_station", "taxi_stand", "tourist_attraction",
-        "train_station", "transit_station", "university", "zoo"
-    };
+            string requestUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={_apiKey}&location={latitude},{longitude}";
 
-            //Intersect é usado para comparar duas listas, arrays etc e retornar apenas os elementos que são comuns a ambas
-            return data.Types.Intersect(placeTypes).Any();
+
+            FilterContext filterContext = new FilterContext();
+            filterContext.SetStrategy(strategy);
+            string finalUrl = filterContext.ApplyFilter(requestUrl);
+
+            HttpResponseMessage response = await _httpClient.GetAsync(finalUrl);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException("Erro ao buscar dados na API do Google Places.");
+            }
+
+            return await response.Content.ReadAsStringAsync();
         }
 
 
