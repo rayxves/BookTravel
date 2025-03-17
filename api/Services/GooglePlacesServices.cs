@@ -1,4 +1,5 @@
 using System.Text.Json;
+using api.Dtos;
 using api.Models;
 using Context;
 using Strategies;
@@ -78,22 +79,37 @@ namespace api.Services
             return null!;
         }
 
-        public async Task<string> GetFilteredPlacesAsync(IFilterStrategy strategy, double latitude, double longitude)
+        public async Task<GooglePlacesResponse> GetFilteredPlacesAsync(IFilterStrategy strategy, double latitude, double longitude)
         {
-            string requestUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={_apiKey}&location={latitude},{longitude}";
+            string requestUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={_apiKey}&location={latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)},{longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&radius=5000";
 
 
             FilterContext filterContext = new FilterContext();
             filterContext.SetStrategy(strategy);
             string finalUrl = filterContext.ApplyFilter(requestUrl);
-
             HttpResponseMessage response = await _httpClient.GetAsync(finalUrl);
             if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException("Erro ao buscar dados na API do Google Places.");
             }
 
-            return await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            var touristSpotResponse = JsonSerializer.Deserialize<GooglePlacesResponse>(content, options);
+
+            var filteredPlaces = filterContext.ApplyRatingFilter(touristSpotResponse.Results);
+            Console.WriteLine(filteredPlaces);
+            GooglePlacesResponse googlePlacesResponse = new GooglePlacesResponse
+            {
+                Results = filteredPlaces
+            };
+
+            return googlePlacesResponse;
         }
 
 
