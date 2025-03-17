@@ -1,4 +1,6 @@
 namespace Context;
+
+using api.Dtos;
 using Strategies;
 
 public class FilterContext
@@ -16,5 +18,15 @@ public class FilterContext
             throw new InvalidOperationException("No filter strategy set.");
 
         return _strategy.ApplyFilter(baseUrl);
+    }
+
+    public List<GoogleTouristSpot> ApplyRatingFilter(List<GoogleTouristSpot> places)
+    {
+        if (_strategy is RatingFilter ratingFilter)
+        {
+            return ratingFilter.FilterByRating(places);
+        }
+
+        return places;
     }
 }

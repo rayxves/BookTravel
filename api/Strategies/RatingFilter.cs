@@ -1,3 +1,5 @@
+using api.Dtos;
+
 namespace Strategies;
 
 public class RatingFilter : IFilterStrategy
@@ -11,6 +13,11 @@ public class RatingFilter : IFilterStrategy
 
     public string ApplyFilter(string baseUrl)
     {
-        return $"{baseUrl}&minrating={_rating}";
+        return baseUrl;
+    }
+
+    public List<GoogleTouristSpot> FilterByRating(List<GoogleTouristSpot> places)
+    {
+        return places.Where(place => place.Rating >= _rating).ToList();
     }
 }
