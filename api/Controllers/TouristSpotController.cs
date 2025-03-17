@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using api.Data;
 using api.Dtos;
 using api.Helpers;
@@ -6,6 +8,7 @@ using api.Mappers;
 using api.Models;
 using api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Strategies;
 
 namespace api.Controllers
 {
@@ -94,6 +97,85 @@ namespace api.Controllers
 
 
             return CreatedAtAction(nameof(GetById), new { id = createdTouristSpot.Id }, createdTouristSpot);
+        }
+
+        [HttpGet("by-rating")]
+        public async Task<IActionResult> GetByRating([FromQuery] double rating, [FromQuery] double lat, [FromQuery] double lng)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new RatingFilter(rating), lat, lng);
+            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
+        }
+
+        [HttpGet("by-type")]
+        public async Task<IActionResult> GetByType([FromQuery] string type, [FromQuery] double lat, [FromQuery] double lng)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new TypeFilter(type), lat, lng);
+            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
+        }
+
+        [HttpGet("by-distance")]
+        public async Task<IActionResult> GetByDistance([FromQuery] int radius, [FromQuery] double lat, [FromQuery] double lng)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new DistanceFilter(radius), lat, lng);
+            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
+        }
+
+        [HttpGet("by-price")]
+        public async Task<IActionResult> GetByPrice([FromQuery] int minPrice, [FromQuery] int maxPrice, [FromQuery] double lat, [FromQuery] double lng)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            if (minPrice <= 0 || maxPrice <= 0)
+            {
+                return BadRequest("The minimum and maximum price must be greater than zero.");
+            }
+            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new PriceFilter(minPrice, maxPrice), lat, lng);
+            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
         }
 
         [HttpPut]

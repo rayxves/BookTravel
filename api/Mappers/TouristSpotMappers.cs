@@ -24,5 +24,22 @@ namespace api.Mappers
             };
         }
 
+        public static TouristSpotByFilterDto ToTouristSpotByFilterDto(this GoogleTouristSpot googleTouristSpot)
+        {
+            if (googleTouristSpot == null)
+            {
+                throw new ArgumentNullException(nameof(googleTouristSpot));
+            }
+
+            return new TouristSpotByFilterDto
+            {
+                Name = googleTouristSpot.Name,
+                Rating = googleTouristSpot.Rating,
+                PhotoUrls = googleTouristSpot.Photos?.Select(p => p.PhotoReference).ToList() ?? new List<string>(),
+                Address = googleTouristSpot.Vicinity,
+            };
+        }
+
+
     }
 }
