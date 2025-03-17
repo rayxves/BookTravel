@@ -124,7 +124,8 @@ builder.Services.AddScoped<ITouristSpotRepository, TouristSpotRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
-
+builder.Services.AddScoped<ITouristSpotRequestValidator, TouristSpotValidator>();
+builder.Services.AddScoped<FilterService>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

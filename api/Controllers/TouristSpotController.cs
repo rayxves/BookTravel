@@ -7,8 +7,8 @@ using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Services;
+using Filters;
 using Microsoft.AspNetCore.Mvc;
-using Strategies;
 
 namespace api.Controllers
 {
@@ -20,12 +20,18 @@ namespace api.Controllers
         private readonly ITouristSpotRepository _spotRepo;
         private readonly ICommentRepository _commentRepo;
         private readonly GooglePlacesServices _googleServices;
+        private readonly ITouristSpotRequestValidator _validator;
+        private readonly FilterService _filterService;
 
-        public TouristSpotController(ApplicationDBContext context, ITouristSpotRepository spotRepo, ICommentRepository commentRepo, GooglePlacesServices googleServices)
+
+        public TouristSpotController(ApplicationDBContext context, ITouristSpotRepository spotRepo, ICommentRepository commentRepo, GooglePlacesServices googleServices, ITouristSpotRequestValidator validator, FilterService filterService)
         {
             _spotRepo = spotRepo;
             _commentRepo = commentRepo;
             _googleServices = googleServices;
+            _validator = validator;
+            _filterService = filterService;
+
         }
 
         [HttpGet]
@@ -99,83 +105,51 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdTouristSpot.Id }, createdTouristSpot);
         }
 
-        [HttpGet("by-rating")]
-        public async Task<IActionResult> GetByRating([FromQuery] double rating, [FromQuery] double lat, [FromQuery] double lng)
+        [HttpGet("by-location")]
+        public async Task<IActionResult> GetPlacesByLocation(
+           [FromQuery] double latitude,
+           [FromQuery] double longitude,
+           [FromQuery] int? minPrice,
+           [FromQuery] int? maxPrice,
+           [FromQuery] double? minRating,
+           [FromQuery] string type)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new RatingFilter(rating), lat, lng);
-            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
-            };
+            var validationError = _validator.ValidateLocationRequest(latitude, longitude, minPrice, maxPrice, minRating);
+            if (validationError != null) return validationError;
 
-            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
+            var filterContext = _filterService.CreateFilterContext(minPrice, maxPrice, minRating, type);
+
+            var response = await _googleServices.GetPlacesByLocationAsync(filterContext, latitude, longitude);
+
+            if (response == null || response.Results == null || response.Results.Count == 0)
+            {
+                return NotFound("No places found with the criteria specified.");
+            }
+
+            return Ok(response);
         }
 
-        [HttpGet("by-type")]
-        public async Task<IActionResult> GetByType([FromQuery] string type, [FromQuery] double lat, [FromQuery] double lng)
+        [HttpGet("by-name")]
+        public async Task<IActionResult> GetPlacesByName(
+            [FromQuery] string name,
+            [FromQuery] int? minPrice,
+            [FromQuery] int? maxPrice,
+            [FromQuery] double? minRating,
+            [FromQuery] string type)
         {
-            if (!ModelState.IsValid)
+            var validationError = _validator.ValidateNameRequest(name, minPrice, maxPrice, minRating);
+            if (validationError != null) return validationError;
+
+            var filterContext = _filterService.CreateFilterContext(minPrice, maxPrice, minRating, type);
+
+            var response = await _googleServices.GetPlacesByNameAsync(filterContext, name);
+
+            if (response == null || response.Results == null || response.Results.Count == 0)
             {
-                return BadRequest(ModelState);
+                return NotFound("No places found with the criteria specified.");
             }
 
-            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new TypeFilter(type), lat, lng);
-            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
-            };
-
-            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
-        }
-
-        [HttpGet("by-distance")]
-        public async Task<IActionResult> GetByDistance([FromQuery] int radius, [FromQuery] double lat, [FromQuery] double lng)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new DistanceFilter(radius), lat, lng);
-            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
-            };
-
-            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
-        }
-
-        [HttpGet("by-price")]
-        public async Task<IActionResult> GetByPrice([FromQuery] int minPrice, [FromQuery] int maxPrice, [FromQuery] double lat, [FromQuery] double lng)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            
-            if (minPrice <= 0 || maxPrice <= 0)
-            {
-                return BadRequest("The minimum and maximum price must be greater than zero.");
-            }
-            var googleResponse = await _googleServices.GetFilteredPlacesAsync(new PriceFilter(minPrice, maxPrice), lat, lng);
-            if (googleResponse == null) return NotFound("No Tourist Spots found within the specified radius.");
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
-            };
-
-            return Ok(googleResponse.Results.Select(p => p.ToTouristSpotByFilterDto()).ToList());
+            return Ok(response);
         }
 
         [HttpPut]

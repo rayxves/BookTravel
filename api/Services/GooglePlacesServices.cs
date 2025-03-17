@@ -1,8 +1,8 @@
 using System.Text.Json;
 using api.Dtos;
 using api.Models;
-using Context;
-using Strategies;
+using Filters;
+
 
 namespace api.Services
 {
@@ -79,39 +79,48 @@ namespace api.Services
             return null!;
         }
 
-        public async Task<GooglePlacesResponse> GetFilteredPlacesAsync(IFilterStrategy strategy, double latitude, double longitude)
+
+        public async Task<GooglePlacesResponse> GetFilteredPlacesAsync(FilterContext filterContext, string baseUrl)
         {
-            string requestUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={_apiKey}&location={latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)},{longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&radius=5000";
+            string finalUrl = filterContext.ApplyFilters(baseUrl);
 
+            var touristSpotResponse = await GetApiResponseAsync(finalUrl);
 
-            FilterContext filterContext = new FilterContext();
-            filterContext.SetStrategy(strategy);
-            string finalUrl = filterContext.ApplyFilter(requestUrl);
-            HttpResponseMessage response = await _httpClient.GetAsync(finalUrl);
+            return new GooglePlacesResponse
+            {
+                Results = touristSpotResponse.Results
+            };
+        }
+
+        private async Task<GooglePlacesResponse> GetApiResponseAsync(string url)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException("Erro ao buscar dados na API do Google Places.");
             }
 
             var content = await response.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
+            if (string.IsNullOrWhiteSpace(content))
             {
-                PropertyNameCaseInsensitive = true,
-            };
+                throw new HttpRequestException("Response content is null or empty.");
+            }
 
-            var touristSpotResponse = JsonSerializer.Deserialize<GooglePlacesResponse>(content, options);
-
-            var filteredPlaces = filterContext.ApplyRatingFilter(touristSpotResponse.Results);
-            Console.WriteLine(filteredPlaces);
-            GooglePlacesResponse googlePlacesResponse = new GooglePlacesResponse
-            {
-                Results = filteredPlaces
-            };
-
-            return googlePlacesResponse;
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<GooglePlacesResponse>(content, options);
         }
 
+        public async Task<GooglePlacesResponse> GetPlacesByLocationAsync(FilterContext filter, double latitude, double longitude)
+        {
+            string baseUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={_apiKey}&location={latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)},{longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&radius=5000";
+            return await GetFilteredPlacesAsync(filter, baseUrl);
+        }
+
+        public async Task<GooglePlacesResponse> GetPlacesByNameAsync(FilterContext filter, string name)
+        {
+            string baseUrl = $"https://maps.googleapis.com/maps/api/place/textsearch/json?key={_apiKey}&query={Uri.EscapeDataString(name)}";
+            return await GetFilteredPlacesAsync(filter, baseUrl);
+        }
 
     }
 }
