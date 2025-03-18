@@ -1,4 +1,4 @@
-import PlaceCarousel from "../components/TouristSpotsSlider";
+import TouristSpotsSlider from "../components/TouristSpotsSlider";
 import Searchbar from "../components/Searchbar";
 import { popularTouristSpots } from "../data/popularTouristSpots";
 import {travelHighlights} from '../data/travelHighlights'
@@ -12,13 +12,13 @@ export default function Destinations() {
           <h1 className=" w-5/6 xl:w-4/6 pb-4 text-gray-950 text-xl font-inter font-semibold">
             Find popular destinations
           </h1>{" "}
-          <PlaceCarousel touristSpots={travelHighlights}/>
+          <TouristSpotsSlider touristSpots={travelHighlights}/>
         </div>
         <div className="w-full gap-4 h-full flex flex-col items-center justify-center">
           <h1 className=" w-5/6 xl:w-4/6 pb-4 text-gray-950 text-xl font-inter font-semibold">
             Seek the best experiences
           </h1>
-          <PlaceCarousel touristSpots={popularTouristSpots}/>
+          <TouristSpotsSlider touristSpots={popularTouristSpots}/>
         </div>
       </div>
       <div className="w-full h-full flex items-center justify-center pt-6">
