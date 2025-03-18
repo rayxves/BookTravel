@@ -22,7 +22,6 @@ export default function TouristSpotsSlider({ touristSpots }: Props) {
 
   useEffect(() => {
     function updateImagesPerView() {
-      console.log("Largura:", window.innerWidth, "Altura:", window.innerHeight);
 
       if (window.innerWidth < 680) {
         setImagesPerView(1);
