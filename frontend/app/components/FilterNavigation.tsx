@@ -3,7 +3,7 @@ import TypeFilter from "./TypeFilter";
 import RatingFilter from "./RatingFilter";
 import PriceFilter from "./PriceFilter";
 
-export default function FilterNavigation({ filterButton }) {
+export default function FilterNavigation() {
   const [showTypes, setShowTypes] = useState(false);
   const [showRating, setShowRating] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
@@ -23,11 +23,12 @@ export default function FilterNavigation({ filterButton }) {
     <div className="font-inter z-10 text-gray-800 text-sm absolute top-[101%] left-0 w-5/6 sm:w-4/6 lg:w-1/2 h-fit flex items-start rounded-b-md flex-col p-2 py-3 bg-gray-300 shadow-lg gap-2">
       <div className="w-full flex items-center justify-center ">
         {" "}
-        <h1 className="font-poppins text-md font-semibold">{filterButton}</h1>
+        <h1 className="font-poppins text-md font-semibold">Filters</h1>
       </div>{" "}
       <div className="flex flex-col items-center rounded hover:bg-gray-400 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
         {" "}
         <button
+          type="button"
           onClick={handleShowTypes}
           className="flex cursor-pointer w-full items-center justify-between"
         >
@@ -56,6 +57,7 @@ export default function FilterNavigation({ filterButton }) {
       <div className="flex flex-col items-center rounded hover:bg-gray-400 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
         {" "}
         <button
+          type="button"
           onClick={handleShowRating}
           className="flex cursor-pointer w-full items-center justify-between"
         >
@@ -84,6 +86,7 @@ export default function FilterNavigation({ filterButton }) {
       <div className="flex flex-col items-center rounded hover:bg-gray-400 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
         {" "}
         <button
+          type="button"
           onClick={handleShowPrice}
           className="flex cursor-pointer w-full items-center justify-between"
         >

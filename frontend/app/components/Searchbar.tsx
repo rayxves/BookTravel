@@ -4,18 +4,23 @@ import "../styles/components-styles.css";
 import NearbyFilterComponent from "./NearbyFilterComponent";
 import FilterNavigation from "./FilterNavigation";
 export default function Searchbar() {
+  const [searchText, setSearchText] = useState<string>("");
   const [filter, setFilter] = useState<boolean>(false);
-  const [filterButton, setFilterButton] = useState("");
 
-  function handleToggleFilter(filterButton: string) {
-    setFilterButton(filterButton);
-    setFilter(!filter);
+  function handleToggleFilter() {
+    setFilter((prevFilter) => !prevFilter);
   }
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setSearchText(event.target.value);
+  }
+
   return (
     <div className="w-full h-4/12 pb-3 flex flex-col items-center justify-center bg-white search-container">
       <form className="flex items-center justify-center w-full h-3/6 p-7 pb-2">
         <div className="relative w-full md:w-3/5 h-fit flex bg-gray-200 hover:outline-2 hover:outline-purple-50 rounded-lg rounded-bl-0">
-          <button onClick={() => handleToggleFilter("Filters")}>
+          <button type="button" onClick={handleToggleFilter}>
             <div className=" text-gray-700 bg-gray-300 relative flex items-center justify-center gap-1  px-2  rounded-tl-md cursor-pointer hover:opacity-85 h-full">
               {" "}
               <p className="font-inter text-sm md:text-md"> Filter</p>
@@ -35,13 +40,16 @@ export default function Searchbar() {
           <input
             type="text"
             id="simple-search"
+            value={searchText}
+            onChange={handleInputChange}
             className="hover:outline-0 focus:outline-0 text-sm  block w-full ps-5 p-3"
             placeholder="Search places..."
             required
           />
           <button
-            type="submit"
+            type="button"
             className=" p-3 text-sm font-medium cursor-pointer"
+            onClick={(e) => e.preventDefault()}
           >
             <svg
               className="w-4 h-4"
@@ -60,8 +68,7 @@ export default function Searchbar() {
             </svg>
             <span className="sr-only">Search</span>
           </button>
-          {filter ? <FilterNavigation filterButton={filterButton} /> : null}
-
+          {filter ? <FilterNavigation /> : null}
         </div>
       </form>
       <div className="w-full md:w-3/5 flex items-center justify-end pr-8 md:pr-5 pb-4 gap-1">

@@ -20,7 +20,7 @@ export default function PriceFilter() {
     }
   };
 
-  function handleClearResponse(){
+  function handleClearResponse() {
     setResponse("");
   }
 
@@ -28,14 +28,14 @@ export default function PriceFilter() {
     <div className="flex flex-col gap-2 p-2 rounded-lg w-full bg-gray-200 ">
       <div className="flex gap-2">
         {" "}
-        <div className="flex flex-col w-1/2">
+        <div className="flex flex-col w-1/2 ">
           <label className="font-semibold">Minimum Price:</label>
           <input
             type="number"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
             onClick={handleClearResponse}
-            className=" border-2 border-gray-400 p-2 rounded-md  w-[90%] hover:outline-0 focus:outline-0"
+            className=" border-2 border-gray-400  mt-1 p-1.5 rounded-md  w-[90%] hover:outline-0 focus:outline-0"
           />
         </div>
         <div className="flex flex-col w-1/2">
@@ -45,13 +45,14 @@ export default function PriceFilter() {
             value={to}
             onChange={(e) => setTo(e.target.value)}
             onClick={handleClearResponse}
-            className=" border-2 border-gray-400 p-2 rounded-md w-[90%] hover:outline-0 focus:outline-0"
+            className=" border-2 border-gray-400 mt-1 p-1.5 rounded-md w-[90%] hover:outline-0 focus:outline-0"
           />
         </div>
       </div>
       {response && <p className="text-center text-sm">{response}</p>}
 
       <button
+        type="button"
         onClick={handleFilter}
         className="bg-blue-500 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition"
       >
