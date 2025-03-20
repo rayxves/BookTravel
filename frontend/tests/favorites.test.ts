@@ -24,7 +24,7 @@ describe("get favorites", () => {
         mockedAxios.get.mockResolvedValueOnce({ data: favorites });
 
         await expect(getFavorites()).resolves.toEqual(favorites);
-        expect(axios.get).toHaveBeenCalledWith(
+        expect(mockedAxios.get).toHaveBeenCalledWith(
             `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/favorite`,
             {
                 headers: {
@@ -41,8 +41,8 @@ describe("remove favorite", () => {
     it("should return an error if remove favorite failed", async () => {
         const touristSpotName = "Test Spot";
 
-        await expect(removeFavorite(touristSpotName)).resolves.toBe("Removed favorite successfully");
-        expect(axios.delete).toHaveBeenCalledWith(
+        await expect(removeFavorite(touristSpotName)).resolves.toEqual({ message: "Removed favorite successfully" });
+        expect(mockedAxios.delete).toHaveBeenCalledWith(
             `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/favorite/delete?name=${encodeURIComponent(touristSpotName)}`,
             {
                 headers: {

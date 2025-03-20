@@ -41,8 +41,6 @@ export async function getComments(touristSpotName: string) {
       ? response.data.map((data) => data)
       : [];
   } catch (error: any) {
-    console.log(error);
-
     return error.response?.status === 404
       ? [{ message: "You don't have any comments yet" }]
       : [{ message: "Error trying to get comments." }];

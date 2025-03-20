@@ -9,9 +9,9 @@ describe("createComment", () => {
     const content = "Test comment";
     const touristSpotName = "Test Spot";
 
-    const request = { content, touristSpotName };
+    const request = { touristSpotName, content };
     mockedAxios.post.mockResolvedValueOnce({
-      data: { content, touristSpotName },
+      data: { touristSpotName, content },
     });
 
     await expect(createComment(content, touristSpotName)).resolves.toEqual(
@@ -20,32 +20,24 @@ describe("createComment", () => {
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
       `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/comment`,
-      {
-        data: {
-          touristSpotName: touristSpotName,
-          content: content,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
+      { content: "Test comment", touristSpotName: "Test Spot" },
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
     );
   });
-  it("should return an error message if the API call fails", async () => {
-    mockedAxios.post.mockRejectedValueOnce({
-      response: { message: { data: "API error" } },
-    });
+  it("should return the error message if the API call fails", async () => {
+    const errorMessage = "API error";
+    mockedAxios.post.mockRejectedValueOnce(new Error(errorMessage));
 
-    await expect(createComment("Test comment", "Test Spot")).resolves.toEqual(
-      "API error"
+    await expect(createComment("Test comment", "Test Spot")).rejects.toThrow(
+      errorMessage
     );
   });
 
+  
   it("should return a generic error message if no response is provided", async () => {
-    mockedAxios.post.mockRejectedValueOnce(new Error("Network Error"));
+    mockedAxios.post.mockRejectedValueOnce(new Error());
 
-    await expect(createComment("Test comment", "Test Spot")).resolves.toEqual(
+    await expect(createComment("Test comment", "Test Spot")).rejects.toThrow(
       "Error trying to create comment."
     );
   });

@@ -29,7 +29,7 @@ describe("auth API", () => {
         password: "test",
       });
 
-      expect(axios.post).toHaveBeenCalledWith(
+      expect(mockedAxios.post).toHaveBeenCalledWith(
         `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/login`,
         {
           UserName: "ray",
@@ -66,7 +66,7 @@ describe("auth API", () => {
         password: "test",
       });
 
-      expect(axios.post).toHaveBeenCalledWith(
+      expect(mockedAxios.post).toHaveBeenCalledWith(
         `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/account/register`,
         {
           UserName: "ray",
