@@ -68,7 +68,7 @@ export default function Searchbar() {
             </svg>
             <span className="sr-only">Search</span>
           </button>
-          {filter ? <FilterNavigation /> : null}
+          {filter ? <FilterNavigation name={searchText} /> : null}
         </div>
       </form>
       <div className="w-full md:w-3/5 flex items-center justify-end pr-8 md:pr-5 pb-4 gap-1">

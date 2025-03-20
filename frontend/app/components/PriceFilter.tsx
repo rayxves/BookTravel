@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-export default function PriceFilter() {
+interface Props {
+  handlePriceFilter: (minPrice: number, maxPrice: number) => void;
+}
+
+export default function PriceFilter({handlePriceFilter}: Props) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [response, setResponse] = useState("");
@@ -17,6 +21,7 @@ export default function PriceFilter() {
       setResponse("Minimum price cannot be greater than the maximum.");
     } else {
       setResponse(`Filter prices from $${fromValue} to $${toValue}`);
+      handlePriceFilter(fromValue, toValue);
     }
   };
 
