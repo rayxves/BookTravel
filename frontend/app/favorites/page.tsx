@@ -4,9 +4,9 @@ import animationDataNoAuth from "@/public/NoAuth.json";
 import animationDataNoContent from "@/public/NoContent.json";
 import { getFavorites } from "@/api/touristSpotFavorites";
 import { useEffect, useState } from "react";
-import FavContent from "../components/FavContent";
-import FavError from "../components/FavError";
-import FavCards from "../components/FavCards";
+import FavContent from "../components/Favorites/FavContent";
+import FavError from "../components/Favorites/FavError";
+import FavCards from "../components/Favorites/FavCards";
 
 interface TouristSpot {
   id: number;

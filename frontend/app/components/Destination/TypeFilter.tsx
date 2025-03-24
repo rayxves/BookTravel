@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { types } from "../data/types";
+import { types } from "../../data/types";
 
 interface Props {
   handleTypeFilter: (type: string) => void;
 }
 
-export default function TypeFilter({handleTypeFilter}: Props) {
+export default function TypeFilter({ handleTypeFilter }: Props) {
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const handleSelect = (type: string) => {
-    setSelectedType((prev) => (prev === type ? null : type)); 
-    handleTypeFilter(type); 
+    setSelectedType((prev) => (prev === type ? null : type));
+    handleTypeFilter(type);
   };
 
   return (

@@ -3,7 +3,12 @@ import TypeFilter from "./TypeFilter";
 import RatingFilter from "./RatingFilter";
 import PriceFilter from "./PriceFilter";
 
-export default function FilterNavigation({name}) {
+interface Props {
+  name: string;
+  fetchTouristSpots: (name, type?, rating?, minPrice?, maxPrice?) => void;
+}
+
+export default function FilterNavigation({ name, fetchTouristSpots }: Props) {
   const [showTypes, setShowTypes] = useState(false);
   const [showRating, setShowRating] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
@@ -35,10 +40,6 @@ export default function FilterNavigation({name}) {
   function handlePriceFilter(minPrice: number, maxPrice: number) {
     setPriceFilterFrom(minPrice);
     setPriceFilterTo(maxPrice);
-  }
-
-  async function handleSetFilters() {
-    
   }
 
   return (
@@ -134,15 +135,23 @@ export default function FilterNavigation({name}) {
         </button>
         {showPrice && <PriceFilter handlePriceFilter={handlePriceFilter} />}
       </div>{" "}
-  <div className="w-full flex items-center justify-center">
-  <button
-        type="button"
-        onClick={handleSetFilters}
-        className="bg-[var(--hunter-green)] cursor-pointer text-white p-2 rounded-md hover:bg-green-700 transition"
-      >
-        Set Filters
-      </button>{" "}
-  </div>
+      <div className="w-full flex items-center justify-center">
+        <button
+          type="button"
+          onClick={() =>
+            fetchTouristSpots(
+              name,
+              typeFilter,
+              ratingFilter,
+              priceFilterFrom,
+              priceFilterTo
+            )
+          }
+          className="bg-[var(--hunter-green)] cursor-pointer text-white p-2 rounded-md hover:bg-green-700 transition"
+        >
+          Set Filters
+        </button>{" "}
+      </div>
     </div>
   );
 }
