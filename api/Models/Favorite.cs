@@ -10,7 +10,6 @@ namespace api.Models
         public User User { get; set; } = null!;
         public int? TouristSpotId { get; set; }
         public TouristSpot? TouristSpot { get; set; }
-        public int? PlaceTypeId { get; set; }
 
     }
 }
