@@ -12,10 +12,17 @@ public class FilterContext
 
     public string ApplyFilters(string baseUrl)
     {
+        bool hasParams = baseUrl.Contains("?");
         foreach (var filter in _filters)
         {
-            baseUrl = filter.ApplyFilter(baseUrl);
+            string param = filter.ApplyFilter("");
+            if (!string.IsNullOrEmpty(param))
+            {
+                baseUrl += hasParams ? "&" + param.Substring(1) : param;
+                hasParams = true;
+            }
         }
+        Console.WriteLine(baseUrl);
         return baseUrl;
     }
 
