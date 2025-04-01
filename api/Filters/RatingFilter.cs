@@ -4,9 +4,9 @@ namespace Filters;
 
 public class RatingFilter : IFilter
 {
-    private readonly double _rating;
+    private readonly decimal _rating;
 
-    public RatingFilter(double rating)
+    public RatingFilter(decimal rating)
     {
         _rating = rating;
     }

@@ -3,7 +3,7 @@ using Filters;
 namespace api.Services;
 public class FilterService
 {
-    public FilterContext CreateFilterContext(int? minPrice, int? maxPrice, double? minRating, string type)
+    public FilterContext CreateFilterContext(int? minPrice, int? maxPrice, decimal? minRating, string type)
     {
         var filters = new List<IFilter>();
 

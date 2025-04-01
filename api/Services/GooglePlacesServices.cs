@@ -17,67 +17,26 @@ namespace api.Services
             _apiKey = config["GooglePlacesApi:ApiKey"];
         }
 
-        public async Task<string> GetPlaceIdByName(string placeName)
+
+
+        public async Task<GoogleTouristSpot?> GetPlaceDetailsByName(string placeName)
         {
             string requestUrl = $"https://maps.googleapis.com/maps/api/place/textsearch/json?query={Uri.EscapeDataString(placeName)}&key={_apiKey}";
-
-            var response = await _httpClient.GetStringAsync(requestUrl);
-            var jsonResponse = JsonDocument.Parse(response);
-
-            if (jsonResponse.RootElement.TryGetProperty("results", out var results) && results.GetArrayLength() > 0)
-            {
-                var placeId = results[0].GetProperty("place_id").GetString();
-                return placeId ?? string.Empty;
-            }
-
-            return string.Empty;
-        }
-
-        public async Task<string> GetPlaceDetails(string placeId)
-        {
-            var requestUrl = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={_apiKey}";
             var response = await _httpClient.GetAsync(requestUrl);
+            var responseBody = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var placeData = JsonSerializer.Deserialize<GooglePlacesResponse>(responseBody, options);
+
+            if (placeData?.Results.Count > 0)
             {
-                return await response.Content.ReadAsStringAsync();
+                return placeData.Results[0];
             }
-            else
-            {
-                throw new HttpRequestException("Failed to retrieve place details from Google Places API.");
-            }
+            return null;
+
+
         }
 
-        public async Task<GooglePlacesData> GetPlaceDetailsByName(string placeName)
-        {
-            var placeId = await GetPlaceIdByName(placeName);
-
-            if (!string.IsNullOrEmpty(placeId))
-            {
-                var placeDetailsJson = await GetPlaceDetails(placeId);
-                var jsonResponse = JsonDocument.Parse(placeDetailsJson);
-
-                if (jsonResponse.RootElement.TryGetProperty("result", out var result))
-                {
-                    var googlePlaceData = new GooglePlacesData
-                    {
-                        Name = result.GetProperty("name").GetString() ?? string.Empty,
-                        Description = result.TryGetProperty("formatted_address", out var address) ? address.GetString() ?? string.Empty : string.Empty,
-                        Rating = result.TryGetProperty("rating", out var rating) ? rating.GetDecimal() : 0,
-                        Photos = result.TryGetProperty("photos", out var photos)
-                        ? photos.EnumerateArray().Take(5).Select(photo => photo.GetProperty("photo_reference").GetString() ?? string.Empty).ToList() // Limitando a 5 fotos.
-                        : new List<string>(),
-                        Types = result.TryGetProperty("types", out var types)
-                        ? types.EnumerateArray().Select(type => type.GetString() ?? string.Empty).ToArray()
-                        : Array.Empty<string>()
-                    };
-
-                    return googlePlaceData;
-                }
-            }
-
-            return null!;
-        }
 
 
         public async Task<GooglePlacesResponse> GetFilteredPlacesAsync(FilterContext filterContext, string baseUrl)
@@ -122,5 +81,24 @@ namespace api.Services
             return await GetFilteredPlacesAsync(filter, baseUrl);
         }
 
+
+        public async Task<GooglePlacesResponse?> GetPlacesByName(string placeName)
+        {
+            string requestUrl = $"https://maps.googleapis.com/maps/api/place/textsearch/json?query={Uri.EscapeDataString(placeName)}&key={_apiKey}";
+            var response = await _httpClient.GetAsync(requestUrl);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var placeData = JsonSerializer.Deserialize<GooglePlacesResponse>(responseBody, options);
+
+            if (placeData?.Results.Count > 0)
+            {
+                return placeData;
+            }
+            return null;
+        }
+
     }
+
+
 }

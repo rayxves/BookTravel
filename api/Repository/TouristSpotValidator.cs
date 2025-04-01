@@ -5,7 +5,7 @@ namespace api.Repository
 {
     public class TouristSpotValidator : ITouristSpotRequestValidator
     {
-        public IActionResult ValidateLocationRequest(double latitude, double longitude, int? minPrice, int? maxPrice, double? minRating)
+        public IActionResult ValidateLocationRequest(double latitude, double longitude, int? minPrice, int? maxPrice, decimal? minRating)
         {
             if (latitude < -90 || latitude > 90)
                 return new BadRequestObjectResult("Latitude must be between -90 and 90.");
@@ -13,7 +13,7 @@ namespace api.Repository
                 return new BadRequestObjectResult("Longitude must be between -180 and 180.");
             if (minPrice.HasValue && minPrice.Value < 0)
                 return new BadRequestObjectResult("Min price must be greater than or equal to zero.");
-            if (maxPrice.HasValue && maxPrice.Value < 0)
+            if (maxPrice.HasValue && maxPrice.Value <= 0)
                 return new BadRequestObjectResult("Max price must be greater than or equal to zero.");
             if (minPrice.HasValue && maxPrice.HasValue && minPrice > maxPrice)
                 return new BadRequestObjectResult("The minimum price cannot be higher than the maximum price.");
@@ -23,7 +23,7 @@ namespace api.Repository
             return null; 
         }
 
-        public IActionResult ValidateNameRequest(string name, int? minPrice, int? maxPrice, double? minRating)
+        public IActionResult ValidateNameRequest(string name, int? minPrice, int? maxPrice, decimal? minRating)
         {
             if (string.IsNullOrEmpty(name))
                 return new BadRequestObjectResult("Parameter name is required.");

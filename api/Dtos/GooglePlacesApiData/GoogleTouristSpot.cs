@@ -13,9 +13,9 @@ public class GooglePlacesResponse
 public class GoogleTouristSpot
 {
     public string Name { get; set; }
-    public double Rating { get; set; }
+    public decimal Rating { get; set; }
     public List<GooglePhoto> Photos { get; set; } = new List<GooglePhoto>();
-    public string Vicinity { get; set; }
+    public string? Formatted_address { get; set; }
 }
 
 public class GooglePhoto

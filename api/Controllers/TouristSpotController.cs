@@ -94,9 +94,9 @@ namespace api.Controllers
             var touristSpot = new TouristSpot
             {
                 Name = touristSpotDetails.Name,
-                Description = touristSpotDetails.Description,
+                Description = touristSpotDetails.Formatted_address,
                 Rating = touristSpotDetails.Rating,
-                PhotoUrls = touristSpotDetails.Photos
+                PhotoUrls = touristSpotDetails.Photos.Select(p => p.PhotoReference).ToList()
             };
 
             var createdTouristSpot = await _spotRepo.CreateAsync(touristSpot);
@@ -106,12 +106,12 @@ namespace api.Controllers
         }
 
         [HttpGet("by-location")]
-        public async Task<IActionResult> GetPlacesByLocation(
+        public async Task<IActionResult> GetPlacesByLocationAndFilter(
            [FromQuery] double latitude,
            [FromQuery] double longitude,
            [FromQuery] int? minPrice,
            [FromQuery] int? maxPrice,
-           [FromQuery] double? minRating,
+           [FromQuery] decimal? minRating,
            [FromQuery] string type)
         {
             var validationError = _validator.ValidateLocationRequest(latitude, longitude, minPrice, maxPrice, minRating);
@@ -129,12 +129,12 @@ namespace api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("by-name")]
-        public async Task<IActionResult> GetPlacesByName(
+        [HttpGet("by-name-filter")]
+        public async Task<IActionResult> GetPlacesByNameAndFilter(
             [FromQuery] string name,
             [FromQuery] int? minPrice,
             [FromQuery] int? maxPrice,
-            [FromQuery] double? minRating,
+            [FromQuery] decimal? minRating,
             [FromQuery] string type)
         {
             var validationError = _validator.ValidateNameRequest(name, minPrice, maxPrice, minRating);
@@ -150,6 +150,17 @@ namespace api.Controllers
             }
 
             return Ok(response);
+        }
+
+        [HttpGet("by-name")]
+        public async Task<IActionResult> GetPlacesByName(string name)
+        {
+            var touristSpots = await _googleServices.GetPlacesByName(name);
+            if (touristSpots == null)
+            {
+                return NotFound("No places found with the criteria specified.");
+            }
+            return Ok(touristSpots);
         }
 
         [HttpPut]
