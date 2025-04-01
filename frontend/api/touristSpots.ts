@@ -11,9 +11,13 @@ export async function getTouristSpotsByName(name: string) {
         },
       }
     );
-    console.log(response);
+
+
     return response.data.results;
   } catch (error: any) {
+    if (error.status === 404) {
+      return [];
+    }
     return error.message || "Error trying to get tourist spots.";
   }
 }
