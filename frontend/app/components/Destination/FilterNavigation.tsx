@@ -16,6 +16,7 @@ export default function FilterNavigation({ name, fetchTouristSpots }: Props) {
   const [ratingFilter, setRatingFilter] = useState(0);
   const [priceFilterFrom, setPriceFilterFrom] = useState(0);
   const [priceFilterTo, setPriceFilterTo] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleShowPrice() {
     setShowPrice(!showPrice);
@@ -42,8 +43,26 @@ export default function FilterNavigation({ name, fetchTouristSpots }: Props) {
     setPriceFilterTo(maxPrice);
   }
 
+  function handleFetchPlaces() {
+    if (name === undefined || name === null || name === "") {
+      setErrorMessage("Please enter a place name on searchbar.");
+      return;
+    }
+    if (typeFilter === undefined || typeFilter === null || typeFilter === "") {
+      setErrorMessage("Please select a place type to filter.");
+      return;
+    }
+    fetchTouristSpots(
+      name,
+      typeFilter,
+      ratingFilter,
+      priceFilterFrom,
+      priceFilterTo
+    );
+  }
+
   return (
-    <div className="font-inter z-10 text-gray-800 text-sm absolute top-[101%] left-0 w-5/6 sm:w-4/6 lg:w-1/2 h-fit flex items-start rounded-b-md flex-col p-2 py-3 bg-gray-300 shadow-lg gap-2">
+    <div className="font-inter z-10 text-gray-800 text-sm absolute top-[100%] w-full lg:w-4/6 h-fit flex items-start rounded-b-md flex-col px-2.5 py-3 bg-gray-100 shadow-lg gap-2">
       <div className="w-full flex items-center justify-center ">
         {" "}
         <h1 className="font-poppins text-md font-semibold">Filters</h1>
@@ -138,20 +157,17 @@ export default function FilterNavigation({ name, fetchTouristSpots }: Props) {
       <div className="w-full flex items-center justify-center">
         <button
           type="button"
-          onClick={() =>
-            fetchTouristSpots(
-              name,
-              typeFilter,
-              ratingFilter,
-              priceFilterFrom,
-              priceFilterTo
-            )
-          }
+          onClick={handleFetchPlaces}
           className="bg-[var(--hunter-green)] cursor-pointer text-white p-2 rounded-md hover:bg-green-700 transition"
         >
           Set Filters
         </button>{" "}
       </div>
+      {errorMessage && (
+        <p className="text-xs flex items-center justify-center w-full text-center font-semibold font-inter text-red-800">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }
