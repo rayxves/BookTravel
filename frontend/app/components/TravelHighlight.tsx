@@ -62,7 +62,11 @@ export default function TravelHighlight() {
           <Image
             className="object-cover rounded-lg shadow-2xl border-b-2 border-gray-900"
             alt={currentTh.name}
-            src={currentTh.photoUrls[0]}
+            src={
+              currentTh.photos[0].photoReference
+                ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${currentTh.photos[0].photoReference}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
+                : ""
+            }
             fill
             sizes="(max-width: 768px) 100vw, 350px"
             priority

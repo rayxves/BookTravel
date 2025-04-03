@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function filterByName(
   name: string,
-  type?: string,
+  type: string,
   rating?: number,
   minPrice?: number,
   maxPrice?: number
@@ -39,10 +39,10 @@ export async function filterByName(
   }
 }
 
-export async function getByLocation(
+export async function filterByLocation(
   latitude: number,
   longitude: number,
-  type?: string,
+  type: string,
   rating?: number,
   minPrice?: number,
   maxPrice?: number
@@ -71,6 +71,7 @@ export async function getByLocation(
     const response = await axios.get(url, {
       headers: { "Content-Type": "application/json" },
     });
+    console.log(response.data);
     return response.data.results;
   } catch (error: any) {
     if (error.status === 404) {

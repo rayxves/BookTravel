@@ -6,23 +6,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-interface TouristSpot {
-  name: string;
-  photoUrls: string[];
-}
 
-interface Props {
-  touristSpots: TouristSpot[];
-}
 
-export default function TouristSpotsSlider({ touristSpots }: Props) {
+export default function TouristSpotsSlider({ touristSpots }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imagesPerView, setImagesPerView] = useState(3);
   const totalSpots = touristSpots.length;
-
   useEffect(() => {
     function updateImagesPerView() {
-
       if (window.innerWidth < 680) {
         setImagesPerView(1);
       } else if (window.innerWidth < 840 && window.innerHeight > 680) {
@@ -82,7 +73,11 @@ export default function TouristSpotsSlider({ touristSpots }: Props) {
               >
                 <Image
                   className="rounded shadow-md object-cover w-full h-full max-h-[300px] md:max-h-[200px] hover:opacity-85 cursor-pointer"
-                  src={touristSpots[index].photoUrls[0]}
+                  src={
+                    touristSpots[index].photos[0].photoReference
+                      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${touristSpots[index].photos[0].photoReference}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
+                      : ""
+                  }
                   alt={touristSpots[index].name}
                   width={400}
                   height={400}

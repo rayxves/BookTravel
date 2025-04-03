@@ -2,13 +2,15 @@ import { useState } from "react";
 import TypeFilter from "./TypeFilter";
 import RatingFilter from "./RatingFilter";
 import PriceFilter from "./PriceFilter";
+import { useFilterSpots } from "@/app/hooks/destination/useFilterSpots";
 
 interface Props {
   name: string;
-  fetchTouristSpots: (name, type?, rating?, minPrice?, maxPrice?) => void;
 }
 
-export default function FilterNavigation({ name, fetchTouristSpots }: Props) {
+export default function FilterNavigation({ name }: Props) {
+  const { fetchTouristSpotsByFilterAndName } = useFilterSpots();
+
   const [showTypes, setShowTypes] = useState(false);
   const [showRating, setShowRating] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
@@ -52,7 +54,7 @@ export default function FilterNavigation({ name, fetchTouristSpots }: Props) {
       setErrorMessage("Please select a place type to filter.");
       return;
     }
-    fetchTouristSpots(
+    fetchTouristSpotsByFilterAndName(
       name,
       typeFilter,
       ratingFilter,

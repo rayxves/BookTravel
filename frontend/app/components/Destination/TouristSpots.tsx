@@ -4,8 +4,7 @@ import TouristSpotsCards from "./TouristSpotsCards";
 
 export default function TouristSpots({
   touristSpots,
-  searchText,
-  fetchTouristSpots,
+  searchText
 }) {
   const [showFilter, setShowFilter] = useState(false);
 
@@ -37,7 +36,6 @@ export default function TouristSpots({
           {showFilter && (
             <FilterNavigation
               name={searchText}
-              fetchTouristSpots={fetchTouristSpots}
             />
           )}
         </div>

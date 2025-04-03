@@ -1,22 +1,20 @@
 "use client";
+import { useNearbySpots } from "@/app/hooks/destination/useNearbySpots";
 import { useState } from "react";
 
 export default function NearbyFilterComponent() {
-  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
-    null
-  );
   const [error, setError] = useState<string | null>(null);
+  const { fetchTouristSpotsByLocation } = useNearbySpots();
 
   function handleSetUserLocation() {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          });
+          fetchTouristSpotsByLocation(
+            position.coords.latitude,
+            position.coords.longitude
+          );
         },
-
         (err) => {
           switch (err.code) {
             case err.PERMISSION_DENIED:
@@ -72,7 +70,7 @@ export default function NearbyFilterComponent() {
           </svg>
         </div>
       </button>
- 
+
       <p className="text-xs text-red-700 font-inter">{error}</p>
     </div>
   );

@@ -2,16 +2,14 @@
 import { useState } from "react";
 import "../styles/components-styles.css";
 import NearbyFilterComponent from "./Destination/NearbyFilterComponent";
+import { useFilterSpots } from "../hooks/destination/useFilterSpots";
 
 interface Props {
-  fetchTouristSpotsByName: (name) => void;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export default function Searchbar({
-  fetchTouristSpotsByName,
-  handleInputChange,
-}: Props) {
+export default function Searchbar({ handleInputChange }: Props) {
   const [searchText, setSearchText] = useState<string>("");
+  const { fetchTouristSpotsByName } = useFilterSpots();
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
     handleInputChange(event);
