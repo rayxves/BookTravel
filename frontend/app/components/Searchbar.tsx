@@ -2,24 +2,35 @@
 import { useState } from "react";
 import "../styles/components-styles.css";
 import NearbyFilterComponent from "./Destination/NearbyFilterComponent";
-import { useFilterSpots } from "../hooks/destination/useFilterSpots";
+import { useNameSpotsContext } from "@/context/NameSpotsContext";
+import { useSearchMode } from "@/context/SearchModeContext";
 
 interface Props {
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export default function Searchbar({ handleInputChange }: Props) {
+  const { fetchTouristSpotsByName } = useNameSpotsContext();
+  const { setMode } = useSearchMode();
+
   const [searchText, setSearchText] = useState<string>("");
-  const { fetchTouristSpotsByName } = useFilterSpots();
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
+    setMode("name");
     handleInputChange(event);
-    event.preventDefault();
     setSearchText(event.target.value);
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    fetchTouristSpotsByName(searchText);
   }
 
   return (
     <div className="w-full h-4/12 pb-3 flex flex-col items-center justify-center bg-white search-container">
-      <form className="flex items-center justify-center w-full h-3/6 p-7 pb-2">
+      <form
+        className="flex items-center justify-center w-full h-3/6 p-7 pb-2"
+        onSubmit={handleSubmit}
+      >
         <div className="relative w-full md:w-3/5 h-fit flex bg-gray-200 hover:outline-2 hover:outline-purple-50 rounded-lg rounded-bl-0">
           <input
             type="text"
@@ -31,9 +42,8 @@ export default function Searchbar({ handleInputChange }: Props) {
             required
           />
           <button
-            type="button"
+            type="submit"
             className=" p-3 text-sm font-medium cursor-pointer"
-            onClick={() => fetchTouristSpotsByName(searchText)}
           >
             <svg
               className="w-4 h-4"

@@ -6,9 +6,23 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+interface FilterLocationResult {
+  name: string;
+  formatted_address?: string;
+  rating?: number;
+  photos: {
+    width: number;
+    height: number;
+    photoReference: string;
+  }[];
+}
 
 
-export default function TouristSpotsSlider({ touristSpots }) {
+export default function TouristSpotsSlider({
+  touristSpots,
+}: Readonly<{
+  touristSpots: FilterLocationResult[];
+}>) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imagesPerView, setImagesPerView] = useState(3);
   const totalSpots = touristSpots.length;
@@ -71,18 +85,42 @@ export default function TouristSpotsSlider({ touristSpots }) {
                 key={index}
                 className="w-[90vw] md:w-[300px] h-[350px] md:h-[250px] overflow-hidden flex flex-col items-start justify-start gap-3"
               >
-                <Image
-                  className="rounded shadow-md object-cover w-full h-full max-h-[300px] md:max-h-[200px] hover:opacity-85 cursor-pointer"
-                  src={
-                    touristSpots[index].photos[0].photoReference
-                      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${touristSpots[index].photos[0].photoReference}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`
-                      : ""
-                  }
-                  alt={touristSpots[index].name}
-                  width={400}
-                  height={400}
-                  quality={100}
-                />
+                {touristSpots[index].photos.length &&
+                touristSpots[index].photos[0].photoReference ? (
+                  <Image
+                    className="rounded shadow-md object-cover w-full h-full max-h-[300px] md:max-h-[200px] hover:opacity-85 cursor-pointer"
+                    src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${touristSpots[index].photos[0].photoReference}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}`}
+                    alt={touristSpots[index].name}
+                    width={400}
+                    height={400}
+                    quality={100}
+                  />
+                ) : (
+                  <div className="rounded shadow-md object-cover w-full h-full max-h-[300px] md:max-h-[200px] hover:opacity-85 flex flex-col justify-center items-center">
+                    <svg
+                      className="w-100 h-100 text-gray-100"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="100"
+                      height="100"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"
+                      />
+                      <path
+                        stroke="currentColor"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+                  </div>
+                )}
                 <p className="font-inter text-center text-lg md:text-md">
                   {touristSpots[index].name}
                 </p>

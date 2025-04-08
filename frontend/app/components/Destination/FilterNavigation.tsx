@@ -2,15 +2,18 @@ import { useState } from "react";
 import TypeFilter from "./TypeFilter";
 import RatingFilter from "./RatingFilter";
 import PriceFilter from "./PriceFilter";
-import { useFilterSpots } from "@/app/hooks/destination/useFilterSpots";
+import { useNameSpotsContext } from "@/context/NameSpotsContext";
+import { useNearbySpotsContext } from "@/context/NearbySpotsContext";
 
 interface Props {
   name: string;
+  isLocationSearch: boolean;
 }
 
-export default function FilterNavigation({ name }: Props) {
-  const { fetchTouristSpotsByFilterAndName } = useFilterSpots();
-
+export default function FilterNavigation({ name, isLocationSearch }: Props) {
+  const { fetchTouristSpotsByFilterAndName } = useNameSpotsContext();
+  const { fetchTouristSpotsByFilterAndLocation, location } =
+    useNearbySpotsContext();
   const [showTypes, setShowTypes] = useState(false);
   const [showRating, setShowRating] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
@@ -46,21 +49,33 @@ export default function FilterNavigation({ name }: Props) {
   }
 
   function handleFetchPlaces() {
-    if (name === undefined || name === null || name === "") {
-      setErrorMessage("Please enter a place name on searchbar.");
-      return;
-    }
     if (typeFilter === undefined || typeFilter === null || typeFilter === "") {
       setErrorMessage("Please select a place type to filter.");
       return;
     }
-    fetchTouristSpotsByFilterAndName(
-      name,
-      typeFilter,
-      ratingFilter,
-      priceFilterFrom,
-      priceFilterTo
-    );
+    if (!isLocationSearch) {
+      if (name === undefined || name === null || name === "") {
+        setErrorMessage("Please enter a place name on searchbar.");
+        return;
+      }
+
+      fetchTouristSpotsByFilterAndName(
+        name,
+        typeFilter,
+        ratingFilter,
+        priceFilterFrom,
+        priceFilterTo
+      );
+    } else {
+      fetchTouristSpotsByFilterAndLocation(
+        location.lat,
+        location.lon,
+        typeFilter,
+        ratingFilter,
+        priceFilterFrom,
+        priceFilterTo
+      );
+    }
   }
 
   return (

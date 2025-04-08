@@ -71,7 +71,6 @@ export async function filterByLocation(
     const response = await axios.get(url, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log(response.data);
     return response.data.results;
   } catch (error: any) {
     if (error.status === 404) {

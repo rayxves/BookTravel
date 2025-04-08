@@ -1,48 +1,33 @@
 "use client";
-import { useNearbySpots } from "@/app/hooks/destination/useNearbySpots";
-import { useState } from "react";
+import { useNearbySpotsContext } from "@/context/NearbySpotsContext";
+import { useSearchMode } from "@/context/SearchModeContext";
+import { useEffect } from "react";
 
 export default function NearbyFilterComponent() {
-  const [error, setError] = useState<string | null>(null);
-  const { fetchTouristSpotsByLocation } = useNearbySpots();
+  const {
+    fetchTouristSpotsByLocation,
+    nearbyErrorMessage,
+    location,
+    locationError,
+    handleSetUserLocation,
+  } = useNearbySpotsContext();
+  const { setMode } = useSearchMode();
 
-  function handleSetUserLocation() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          fetchTouristSpotsByLocation(
-            position.coords.latitude,
-            position.coords.longitude
-          );
-        },
-        (err) => {
-          switch (err.code) {
-            case err.PERMISSION_DENIED:
-              setError("You have denied location access.");
-              break;
-            case err.POSITION_UNAVAILABLE:
-              setError("Location is not available.");
-              break;
-            case err.TIMEOUT:
-              setError("Request timed out.");
-              break;
-            default:
-              setError("Unknown error.");
-          }
-        }
-      );
-    } else {
-      setError("Your browser does not support geolocation.");
-    }
+  function handleFetchPlacesByLocation() {
+    setMode("location");
+    handleSetUserLocation();
   }
+
+  useEffect(() => {
+    if (location.lat !== 0 && location.lon !== 0) {
+      fetchTouristSpotsByLocation(location.lat, location.lon);
+    }
+  }, [location]);
 
   return (
     <div className="w-full relative flex flex-col items-end gap-1">
-      <button>
-        <div
-          onClick={handleSetUserLocation}
-          className="flex items-center justify-center gap-1 bg-gray-600 text-gray-100 shadow-sm shadow-gray-300 px-2 py-1.5 rounded-md cursor-pointer hover:opacity-85"
-        >
+      <button onClick={handleFetchPlacesByLocation}>
+        <div className="flex items-center justify-center gap-1 bg-gray-600 text-gray-100 shadow-sm shadow-gray-300 px-2 py-1.5 rounded-md cursor-pointer hover:opacity-85">
           <p className="font-inter text-sm md:text-md">Next to me</p>
           <svg
             className="w-4 h-4 text-gray-400 "
@@ -71,7 +56,9 @@ export default function NearbyFilterComponent() {
         </div>
       </button>
 
-      <p className="text-xs text-red-700 font-inter">{error}</p>
+      <p className="text-xs text-red-700 font-inter">
+        {nearbyErrorMessage ?? locationError ?? ""}
+      </p>
     </div>
   );
 }
