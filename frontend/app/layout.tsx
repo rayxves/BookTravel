@@ -3,6 +3,9 @@ import { Geist, Geist_Mono, Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "@/authContext";
+import { NameSpotsProvider } from "@/context/NameSpotsContext";
+import { NearbySpotsProvider } from "@/context/NearbySpotsContext";
+import { SearchModeProvider } from "@/context/SearchModeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,8 +48,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable} ${roboto.variable} antialiased bg-gray-100`}
       >
         <AuthProvider>
-          <Navbar />
-          {children}
+          <NameSpotsProvider>
+            <NearbySpotsProvider>
+              <SearchModeProvider>
+                <Navbar />
+
+                {children}
+              </SearchModeProvider>
+            </NearbySpotsProvider>
+          </NameSpotsProvider>
         </AuthProvider>
       </body>
     </html>
