@@ -50,7 +50,7 @@ export default function Register() {
       await new Promise<void>(() => {
         setTimeout(() => {
           router.push("/");
-        }, 4000);
+        }, 3000);
       });
     } catch (err: any) {
       setRegisterResponse(err.message);
