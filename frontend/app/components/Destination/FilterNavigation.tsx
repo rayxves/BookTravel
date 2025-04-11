@@ -8,9 +8,10 @@ import { useNearbySpotsContext } from "@/context/NearbySpotsContext";
 interface Props {
   name: string;
   isLocationSearch: boolean;
+  handleShowFilter: () => void;
 }
 
-export default function FilterNavigation({ name, isLocationSearch }: Props) {
+export default function FilterNavigation({ name, isLocationSearch, handleShowFilter }: Props) {
   const { fetchTouristSpotsByFilterAndName } = useNameSpotsContext();
   const { fetchTouristSpotsByFilterAndLocation, location } =
     useNearbySpotsContext();
@@ -66,6 +67,8 @@ export default function FilterNavigation({ name, isLocationSearch }: Props) {
         priceFilterFrom,
         priceFilterTo
       );
+      handleShowFilter()
+      
     } else {
       fetchTouristSpotsByFilterAndLocation(
         location.lat,
@@ -75,6 +78,8 @@ export default function FilterNavigation({ name, isLocationSearch }: Props) {
         priceFilterFrom,
         priceFilterTo
       );
+      handleShowFilter()
+
     }
   }
 

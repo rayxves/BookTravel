@@ -1,10 +1,15 @@
 import FilterNavigation from "./FilterNavigation";
 import TouristSpots from "./TouristSpots";
 
-export default function NameSearchResults({ spots, searchText, showFilter, toggleFilter  }) {
+export default function NameSearchResults({
+  spots,
+  searchText,
+  showFilter,
+  toggleFilter,
+}) {
   return (
     <div className="w-full pt-5 bg-blue-100">
-         <div className="w-full flex items-start justify-start pl-5 h-fit">
+      <div className="w-full flex items-start justify-start pl-5 h-fit">
         <div className="w-5/6 sm:w-1/2 relative flex items-start justify-start">
           <button
             className="w-fit h-fit flex px-3 py-1.5 gap-2 items-center justify-center rounded-t-md bg-gray-100 shadow-md font-inter font-semibold cursor-pointer"
@@ -24,11 +29,15 @@ export default function NameSearchResults({ spots, searchText, showFilter, toggl
             Add filter
           </button>
           {showFilter && (
-            <FilterNavigation name={searchText} isLocationSearch={false} />
+            <FilterNavigation
+              name={searchText}
+              isLocationSearch={false}
+              handleShowFilter={toggleFilter}
+            />
           )}
         </div>
       </div>
-      <TouristSpots touristSpots={spots}/>
+      <TouristSpots touristSpots={spots} />
     </div>
   );
 }

@@ -26,7 +26,7 @@ export default function LocationSearchResults({
           </svg>
           Nearby filter
         </button>
-        {showFilter && <FilterNavigation name="" isLocationSearch />}
+        {showFilter && <FilterNavigation name="" isLocationSearch handleShowFilter={toggleFilter} />}
       </div>
       <TouristSpots touristSpots={spots} />
     </div>

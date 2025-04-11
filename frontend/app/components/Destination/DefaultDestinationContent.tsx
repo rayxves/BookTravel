@@ -37,7 +37,7 @@ export default function DefaultDestinationContent() {
                 Nearby filter
               </button>
               {showFilter && (
-                <FilterNavigation name="" isLocationSearch={true} />
+                <FilterNavigation name="" isLocationSearch={true} handleShowFilter={handleShowFilter}/>
               )}
             </div>
             {Object.entries(categoryNearbySpots).map(([category, spots]) => (
