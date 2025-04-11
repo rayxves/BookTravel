@@ -4,6 +4,8 @@ import "../styles/components-styles.css";
 import NearbyFilterComponent from "./Destination/NearbyFilterComponent";
 import { useNameSpotsContext } from "@/context/NameSpotsContext";
 import { useSearchMode } from "@/context/SearchModeContext";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Props {
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,6 +13,8 @@ interface Props {
 export default function Searchbar({ handleInputChange }: Props) {
   const { fetchTouristSpotsByName } = useNameSpotsContext();
   const { setMode } = useSearchMode();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [searchText, setSearchText] = useState<string>("");
 
@@ -23,6 +27,9 @@ export default function Searchbar({ handleInputChange }: Props) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     fetchTouristSpotsByName(searchText);
+    if (pathname === "/") {
+      router.replace("/destinations");
+    }
   }
 
   return (

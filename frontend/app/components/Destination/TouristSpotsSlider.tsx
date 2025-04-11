@@ -11,8 +11,8 @@ interface FilterLocationResult {
   formatted_address?: string;
   rating?: number;
   photos: {
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     photoReference: string;
   }[];
 }

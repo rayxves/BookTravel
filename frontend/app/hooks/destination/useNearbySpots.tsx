@@ -1,6 +1,7 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { filterByLocation } from "@/api/filters";
 import { useSearchMode } from "@/context/SearchModeContext";
+import { usePathname } from "next/navigation";
 
 interface FilterLocationResult {
   name: string;
@@ -13,19 +14,26 @@ interface FilterLocationResult {
   }[];
 }
 
-
 export function useNearbySpots() {
   const { setMode } = useSearchMode();
-
   const [categoryNearbySpots, setCategoryNearbySpots] = useState<
     Record<string, FilterLocationResult[]>
   >({});
   const [filterNearbySpots, setFilterNearbySpots] = useState([]);
   const [nearbyErrorMessage, setNearbyErrorMessage] = useState("");
-  const [location, setLocation] = useState<{ lat: number; lon: number } | {lat: 0, lon: 0}>(
-    {lat: 0, lon: 0}
-  );
+  const [location, setLocation] = useState<
+    { lat: number; lon: number } | { lat: 0; lon: 0 }
+  >({ lat: 0, lon: 0 });
   const [locationError, setLocationError] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!pathname.includes("/destinations")) {
+      setCategoryNearbySpots({});
+      setFilterNearbySpots([]);
+      setNearbyErrorMessage("");
+    }
+  }, [pathname]);
 
   const handleSetUserLocation = useCallback(() => {
     if ("geolocation" in navigator) {

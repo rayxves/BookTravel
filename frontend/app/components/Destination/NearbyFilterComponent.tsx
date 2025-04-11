@@ -1,6 +1,8 @@
 "use client";
 import { useNearbySpotsContext } from "@/context/NearbySpotsContext";
 import { useSearchMode } from "@/context/SearchModeContext";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function NearbyFilterComponent() {
@@ -12,10 +14,15 @@ export default function NearbyFilterComponent() {
     handleSetUserLocation,
   } = useNearbySpotsContext();
   const { setMode } = useSearchMode();
+  const pathname = usePathname();
+  const router = useRouter();
 
   function handleFetchPlacesByLocation() {
     setMode("location");
     handleSetUserLocation();
+    if (pathname === "/") {
+      router.replace("/destinations");
+    }
   }
 
   useEffect(() => {

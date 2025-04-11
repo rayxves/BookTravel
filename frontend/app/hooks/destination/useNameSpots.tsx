@@ -1,14 +1,24 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { filterByName } from "@/api/filters";
 import { getTouristSpotsByName } from "@/api/touristSpots";
 import { useSearchMode } from "@/context/SearchModeContext";
+import { usePathname } from "next/navigation";
 
 export function useNameSpots() {
   const [touristSpots, setTouristSpots] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [searchText, setSearchText] = useState<string>("");
   const { setMode } = useSearchMode();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!pathname.includes("/destinations")) {
+      setTouristSpots([]);
+      setSearchText("");
+      setErrorMessage("");
+    }
+  }, [pathname]);
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +38,7 @@ export function useNameSpots() {
       }
 
       setMode("name");
-      console.log(response)
+      console.log(response);
       setTouristSpots(response);
       setErrorMessage("");
     } catch (error: any) {

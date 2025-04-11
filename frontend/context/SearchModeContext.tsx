@@ -1,5 +1,6 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { usePathname } from "next/navigation";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type SearchMode = "name" | "location" | null;
 
@@ -13,6 +14,11 @@ const SearchModeContext = createContext<{
 
 export const SearchModeProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<SearchMode>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setMode(null);
+  }, [pathname]);
 
   return (
     <SearchModeContext.Provider value={{ mode, setMode }}>
