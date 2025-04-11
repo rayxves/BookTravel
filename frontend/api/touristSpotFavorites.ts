@@ -16,9 +16,7 @@ export const getFavorites = async () => {
     });
   } catch (error: any) {
     console.log(error);
-    throw new Error(
-      error.message || "Error trying to get favorites."
-    );
+    throw new Error(error.message || "Error trying to get favorites.");
   }
 };
 
@@ -36,8 +34,22 @@ export const removeFavorite = async (touristSpotName: string) => {
     return { message: "Removed favorite successfully" };
   } catch (error: any) {
     console.log(error);
-    throw new Error(
-      error.message || "Error trying to remove favorite."
-    );
+    throw new Error(error.message || "Error trying to remove favorite.");
+  }
+};
+
+export const addFavorite = async (touristSpotName: string) => {
+  try {
+    await axios.post(`${url}/add?name=${encodeURIComponent(touristSpotName)}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+    console.log('deu certo')
+
+    return { message: "Add favorite successfully" };
+  } catch (error: any) {
+    throw new Error(error.message || "Error trying to add favorite.");
   }
 };

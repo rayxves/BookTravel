@@ -2,7 +2,7 @@
 import Searchbar from "../components/Searchbar";
 import { useNameSpotsContext } from "@/context/NameSpotsContext";
 import { useNearbySpotsContext } from "@/context/NearbySpotsContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchMode } from "@/context/SearchModeContext";
 import DefaultDestinationContent from "../components/Destination/DefaultDestinationContent";
 import NameSearchResults from "../components/Destination/NameSearchResults";
@@ -10,11 +10,17 @@ import LocationSearchResults from "../components/Destination/LocationSearchResul
 import FavError from "../components/Favorites/FavError";
 
 export default function Destinations() {
-  const { mode } = useSearchMode();
+  const { mode, setMode } = useSearchMode();
   const { touristSpots, errorMessage, searchText, handleInputChange } =
     useNameSpotsContext();
   const { filterNearbySpots, nearbyErrorMessage } = useNearbySpotsContext();
   const [showFilter, setShowFilter] = useState(false);
+
+  useEffect(() => {
+    if (touristSpots.length > 0 && !mode) {
+      setMode("name");
+    }
+  }, [touristSpots, mode, setMode]);
 
   const handleShowFilter = () => setShowFilter((prev) => !prev);
 
