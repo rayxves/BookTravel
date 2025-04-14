@@ -7,7 +7,7 @@ export default function LocationSearchResults({
   toggleFilter,
 }) {
   return (
-    <div className="w-full pt-5 bg-blue-100">
+    <div className="w-full min-h-screen pt-5 bg-blue-100">
       <div className="w-5/6 sm:w-1/2 relative flex items-start justify-start pl-3">
         <button
           className="w-fit h-fit flex px-3 py-1.5 gap-2 items-center justify-center rounded-t-md bg-gray-100 shadow-md font-inter font-semibold cursor-pointer"

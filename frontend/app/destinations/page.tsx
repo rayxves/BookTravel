@@ -16,6 +16,7 @@ export default function Destinations() {
   const { filterNearbySpots, nearbyErrorMessage } = useNearbySpotsContext();
   const [showFilter, setShowFilter] = useState(false);
 
+
   useEffect(() => {
     if (touristSpots.length > 0 && !mode) {
       setMode("name");
@@ -30,7 +31,11 @@ export default function Destinations() {
         <Searchbar handleInputChange={handleInputChange} />
       </div>
 
-      {mode === "name" && touristSpots.length > 0 ? (
+      {errorMessage || nearbyErrorMessage ? (
+        <div className="w-full h-full flex pt-10 items-start justify-center bg-gray-100">
+          <FavError error={errorMessage || nearbyErrorMessage} />
+        </div>
+      ) : mode === "name" && touristSpots.length > 0 ? (
         <NameSearchResults
           spots={touristSpots}
           searchText={searchText}
@@ -43,8 +48,6 @@ export default function Destinations() {
           showFilter={showFilter}
           toggleFilter={handleShowFilter}
         />
-      ) : errorMessage || nearbyErrorMessage ? (
-        <FavError error={errorMessage || nearbyErrorMessage} />
       ) : (
         <DefaultDestinationContent />
       )}

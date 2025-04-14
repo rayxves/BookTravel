@@ -61,9 +61,9 @@ export default function Register() {
     setShowPassword(!showPassword);
   };
   return (
-    <div className=" flex flex-col items-center justify-center h-full w-full bg-[linear-gradient(217deg,_rgba(246,246,246,1)_2%,_rgba(178,178,178,1)_13%,_rgba(209,207,207,1)_22%,_rgba(154,150,150,1)_56%,_rgba(213,214,222,1)_74%,_rgba(244,244,244,1)_100%)]">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center h-full w-full">
       {" "}
-      <h1 className="bg-[var(--hunter-green)] w-9/12  sm:w-6/12  md:w-3/6 lg:w-2/6 xl:w-3/12 text-center py-3 border-b-4 border-b-[var(--olivine)] font-poppins text-xl text-white font-semibold leading-relaxed flex items-center justify-center gap-2 ">
+      <h1 className="bg-[var(--hunter-green)] rounded-t-md w-9/12  sm:w-6/12  md:w-3/6 lg:w-2/6 xl:w-[30%] text-center py-3 border-b-4 border-b-[var(--olivine)] font-poppins text-xl text-white font-semibold leading-relaxed flex items-center justify-center gap-2 ">
         Register
         <svg
           className="w-6 h-6"
@@ -84,7 +84,7 @@ export default function Register() {
         </svg>
       </h1>
       <form
-        className="flex items-center justify-center h-fit w-9/12 sm:w-6/12  md:w-3/6 lg:w-2/6 xl:w-3/12 bg-gray-300 p-12 sm:10 shadow-[0px_10px_10px_0px_rgba(0,0,0,0.05)] shadow-[rgba(0,0,0,0.25)]"
+        className="flex items-center justify-center h-fit w-9/12 sm:w-6/12  md:w-3/6 lg:w-2/6 xl:w-[30%] bg-gray-200 p-12 sm:10 shadow-[0px_10px_10px_0px_rgba(0,0,0,0.05)] shadow-[rgba(0,0,0,0.25)]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="w-full h-fit flex flex-col gap-2 items-start justify-center">
@@ -93,7 +93,12 @@ export default function Register() {
             Name:
           </label>
           <input
-            className="bg-[var(--lavender-blush)] text-sm p-2 px-2 font-inter rounded placeholder:text-gray-500 placeholder:outline-0 placeholder:text-xs w-full focus:outline-0"
+            className={` bg-gray-100 w-full px-3 py-2.5 pr-10  text-sm leading-tight border rounded-lg focus:outline-none font-inter placeholder:text-gray-500 placeholder:text-xs focus:ring-2 ${
+              errors.name
+                ? "border-red-800 focus:ring-red-200"
+                : "border-gray-300 focus:ring-blue-200"
+            }`}
+            type="text"
             placeholder="Enter your name"
             {...register("name")}
           />
@@ -104,7 +109,11 @@ export default function Register() {
             Email:
           </label>
           <input
-            className="bg-[var(--lavender-blush)] text-sm p-2 px-2 rounded font-inter placeholder:text-gray-500 placeholder:outline-0  placeholder:text-xs w-full focus:outline-0"
+            className={` bg-gray-100 w-full px-3 py-2.5 pr-10  text-sm leading-tight border rounded-lg focus:outline-none font-inter placeholder:text-gray-500 placeholder:text-xs focus:ring-2 ${
+              errors.email
+                ? "border-red-800 focus:ring-red-200"
+                : "border-gray-300 focus:ring-blue-200"
+            }`}
             type="email"
             placeholder="Enter your email"
             {...register("email")}
@@ -117,7 +126,11 @@ export default function Register() {
           </label>
           <div className="relative w-full">
             <input
-              className="bg-[var(--lavender-blush)] text-sm p-2 pr-10 rounded font-inter placeholder:text-gray-500 placeholder:text-xs w-full focus:outline-0"
+              className={` bg-gray-100 w-full px-3 py-2.5 pr-10  text-sm leading-tight border rounded-lg focus:outline-none font-inter placeholder:text-gray-500 placeholder:text-xs focus:ring-2 ${
+                errors.password
+                  ? "border-red-800 focus:ring-red-200"
+                  : "border-gray-300 focus:ring-blue-200"
+              }`}
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               {...register("password")}
@@ -157,7 +170,7 @@ export default function Register() {
               className="bg-[var(--sapphire)] w-2/6 h-fit py-1.5 text-white rounded ring-2 ring-blue-500/40 cursor-pointer hover:bg-blue-800 transition-all"
               type="submit"
             >
-              Enviar
+              Submit
             </button>
             <p className="font-inter text-xs px-1 text-center">
               Already have an account?{" "}

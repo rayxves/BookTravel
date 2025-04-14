@@ -8,7 +8,7 @@ export default function NameSearchResults({
   toggleFilter,
 }) {
   return (
-    <div className="w-full pt-5 bg-blue-100">
+    <div className="w-full min-h-screen pt-5 bg-blue-100">
       <div className="w-full flex items-start justify-start pl-5 h-fit">
         <div className="w-5/6 sm:w-1/2 relative flex items-start justify-start">
           <button

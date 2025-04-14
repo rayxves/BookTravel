@@ -17,7 +17,6 @@ interface FilterLocationResult {
   }[];
 }
 
-
 export default function TouristSpotsSlider({
   touristSpots,
 }: Readonly<{
@@ -83,7 +82,7 @@ export default function TouristSpotsSlider({
             return (
               <div
                 key={index}
-                className="w-[90vw] md:w-[300px] h-[350px] md:h-[250px] overflow-hidden flex flex-col items-start justify-start gap-3"
+                className="w-[90vw] md:w-[300px] h-[350px] md:h-[300px] overflow-hidden flex flex-col items-start justify-start gap-3"
               >
                 {touristSpots[index].photos.length &&
                 touristSpots[index].photos[0].photoReference ? (
