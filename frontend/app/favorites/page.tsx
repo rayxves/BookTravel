@@ -47,17 +47,22 @@ export default function FavoritePage() {
   }, [isAuthenticated]);
 
   return (
-    <div className="w-full h-full bg-gray-100 flex flex-col items-center justify-center">
+    <div className="w-full  min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center justify-center ">
       {isAuthenticated ? (
         error !== "" ? (
           <FavError error={error} />
         ) : favTouristSpots.length > 0 ? (
-          <div className="w-full h-full bg-gray-100 flex flex-col items-center">
-            <h1 className="flex font-poppins items-center justify-center bg-darkGray text-lightGray font-semibold text-2xl w-full py-4 pt-8 border-b-4 border-[var(--hunter-green)]">
-              Favorites
+          <div className="w-full h-full flex flex-col items-center">
+            <h1 className="flex font-poppins items-center justify-center bg-darkGray text-lightGray font-semibold text-2xl w-full py-4 pt-10 border-b-3 border-[var(--sapphire)] flex flex-col">
+              Your Favorite Places ✈️
+              <p className="text-gray-500 text-center text-sm lg:text-md mt-2">
+              Here&apos;s a list of places you’ve marked to revisit or explore.
+            </p>
             </h1>
-            <div className="w-full h-auto p-2 bg-darkGray px-4 flex-grow relative">
-              <div className="w-full h-full overflow-y-auto grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-12 p-5 bg-darkGray place-items-center">
+        
+
+            <div className="w-full h-auto p-2 bg-darkGray px-4 pt-6 flex-grow relative">
+              <div className="w-full h-full overflow-y-auto grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-12 p-5 bg-darkGray place-items-center ">
                 {favTouristSpots.map((ts) => {
                   return (
                     <FavCards

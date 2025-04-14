@@ -27,7 +27,9 @@ export default function CreateComment({ onCancel, touristSpotName }: Props) {
   }
 
   return (
-    <div className="p-5 font-inter flex flex-col items-center justify-center w-[20rem] sm:w-[23rem] md:w-[25rem] h-auto bg-gray-300 gap-2 shadow-2xl rounded-md z-20 absolute top-[42%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 ">
+    <div className="fixed top-[20%] left-0 w-screen h-screen bg-opacity-50 z-40 flex items-center justify-center">
+
+    <div className="p-5 font-inter flex flex-col items-center justify-center w-[20rem] sm:w-[23rem] md:w-[25rem] h-auto bg-gray-200 gap-2 shadow-2xl rounded-md z-20 absolute top-[42%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 ">
       {" "}
       <div className="flex items-start justify-start w-full">
         <svg
@@ -58,7 +60,7 @@ export default function CreateComment({ onCancel, touristSpotName }: Props) {
         </p>
       </div>
       <textarea
-        className="p-4 text-md placeholder:text-sm w-full border-none resize-none rounded bg-blue-100 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-300/55 focus:ring-opacity-50 placeholder-font-inter"
+        className="p-4 text-md placeholder:text-sm w-full border-none resize-none rounded bg-gray-100 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-300/55 focus:ring-opacity-50 placeholder-font-inter"
         placeholder="Type your notes here..."
         rows={4}
         maxLength={250}
@@ -85,6 +87,7 @@ export default function CreateComment({ onCancel, touristSpotName }: Props) {
         </button>
       </div>
       {response !== "" && <p className={response === "Created successfully" ? "text-sm text-green-800" : "text-sm text-red-800"}>{response}</p>}
+    </div>
     </div>
   );
 }

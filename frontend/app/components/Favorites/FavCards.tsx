@@ -122,7 +122,7 @@ export default function FavCards({
               alt={name}
               width={300}
               height={200}
-              className="w-full h-full object-contain rounded-lg"
+              className="w-full h-full object-contain rounded-lg "
             />
           ) : (
             <p className="font-inter text-md">Image unavailable</p>

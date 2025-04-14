@@ -45,7 +45,9 @@ export default function ViewComments({ onCancel, touristSpotName }: Props) {
   }, []);
 
   return (
-    <div className="p-5 font-inter flex flex-col items-center justify-center w-[20rem] sm:w-[23rem] md:w-[25rem] max-h-[26rem] bg-gray-200 gap-2 shadow-2xl rounded-md z-20 absolute top-[42%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 ">
+    <div className="fixed top-[20%] left-0 w-screen h-screen bg-opacity-50 z-40 flex items-center justify-center">
+
+    <div className="p-5 font-inter flex flex-col items-center justify-center  w-[20rem] sm:w-[23rem] md:w-[25rem] max-h-[26rem] bg-gray-100 gap-2 shadow-2xl rounded-md z-20 absolute top-[42%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 ">
       <div className="flex items-end justify-end w-full">
         <svg
           onClick={onCancel}
@@ -66,7 +68,7 @@ export default function ViewComments({ onCancel, touristSpotName }: Props) {
           />
         </svg>
       </div>
-      <h1 className="font-semibold text-gray-900 flex items-start justify-start w-full h-fit border-b border-green-950 pb-2 font-roboto text-2xl lg:text-3xl">
+      <h1 className="font-semibold text-gray-900 flex items-start justify-start w-full h-fit border-b border-green-950 pb-2 font-roboto text-xl md:text-2xl ">
         Your comments
       </h1>
 
@@ -87,5 +89,7 @@ export default function ViewComments({ onCancel, touristSpotName }: Props) {
         )}
       </ul>
     </div>
+    </div>
+
   );
 }

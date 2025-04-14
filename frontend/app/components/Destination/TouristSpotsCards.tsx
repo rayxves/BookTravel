@@ -28,12 +28,13 @@ export default function TouristSpotsCards({
     if (!isAuthenticated) {
       setError("Please, login to add a favorite");
       setTimeout(() => {
-        router.replace('/login')
-      }, 2000)
-      return
+        router.replace("/login");
+      }, 2000);
+      return;
     }
     try {
       const apiResponse = await addFavorite(touristSpotName);
+      setError("");
       setResponse(apiResponse.message);
     } catch (error: any) {
       setError(error.message);
@@ -75,7 +76,7 @@ export default function TouristSpotsCards({
         Add Favorite
       </button>
       {response !== "" && (
-        <p className="font-inter text-xs font-semibold text-center text-[var(--olivine)]">
+        <p className="font-inter text-xs font-semibold text-center text-[var(--hunter-green)]">
           {response}
         </p>
       )}

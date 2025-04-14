@@ -50,11 +50,9 @@ export default function CommentList({ comment }: { comment: Comment }) {
   }
 
   return (
-    <li className="w-full h-full flex flex-col  bg-[var(--olivine)] p-2 rounded">
+    <li className="w-full h-full flex flex-col  bg-blue-100 p-2 rounded">
       <div className="flex flex-col gap-1 w-full">
-        {" "}
-        <p className="w-fit font-semibold"> Content: </p>
-        <div className="bg-[rgba(255,255,255,0.2)] p-2 rounded flex justify-between w-full h-full">
+        <div className="bg-[rgba(255,255,255,0.5)] p-2 flex justify-between w-full h-full">
           {isUpdating ? (
             <input
               type="text"
@@ -62,10 +60,12 @@ export default function CommentList({ comment }: { comment: Comment }) {
                 setQuery(e.target.value);
               }}
               placeholder="Input your new comment here..."
-              className="w-[90%] pl-2 outline-0 focus:outline-0 placeholder:text-sm"
+              className="w-[90%] pl-2 outline-0 focus:outline-0 placeholder:text-xs md:placeholder:text-sm"
             />
           ) : (
-            <span className="flex w-[90%]">{comment.content} </span>
+            <span className="flex w-[90%] text-sm sm:text-md">
+              {comment.content}{" "}
+            </span>
           )}
           <div className="flex flex-col items-end justify-between gap-3">
             <svg
@@ -94,7 +94,11 @@ export default function CommentList({ comment }: { comment: Comment }) {
                       handleDeleteComment(comment.id);
                     }
               }
-              className={isUpdating ? "w-5 h-5 text-gray-900 cursor-not-allowed" : "w-5 h-5 text-gray-900 hover:text-gray-600 cursor-pointer"}
+              className={
+                isUpdating
+                  ? "w-5 h-5 text-gray-900 cursor-not-allowed"
+                  : "w-5 h-5 text-gray-900 hover:text-gray-600 cursor-pointer"
+              }
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -113,11 +117,13 @@ export default function CommentList({ comment }: { comment: Comment }) {
           </div>
         </div>{" "}
         <div className="flex justify-between items-center p-1">
-          <p className="text-sm">{comment.createdOn.toUTCString()}</p>
+          <p className="text-xs md:text-sm">
+            {comment.createdOn.toUTCString()}
+          </p>
           {isUpdating && (
             <button
               onClick={() => handleUpdateComments(query, comment.id)}
-              className=" cursor-pointer hover:bg-blue-600 text-sm bg-blue-500 w-fit h-fit px-2.5 py-1 text-white font-semibold rounded"
+              className=" cursor-pointer hover:bg-blue-600 text-xs md:text-sm bg-blue-500 flex items-center justify-center w-fit h-fit px-2.5 py-1 text-white font-semibold rounded"
             >
               Save
             </button>
