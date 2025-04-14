@@ -40,16 +40,20 @@ export const removeFavorite = async (touristSpotName: string) => {
 
 export const addFavorite = async (touristSpotName: string) => {
   try {
-    await axios.post(`${url}/add?name=${encodeURIComponent(touristSpotName)}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
-    console.log('deu certo')
+    await axios.post(
+      `${url}/add?touristSpotName=${encodeURIComponent(touristSpotName)}`,
+      null,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
 
     return { message: "Add favorite successfully" };
   } catch (error: any) {
+
     throw new Error(error.message || "Error trying to add favorite.");
   }
 };
