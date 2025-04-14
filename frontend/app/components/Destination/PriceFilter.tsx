@@ -1,68 +1,43 @@
 import { useState } from "react";
 
 interface Props {
-  handlePriceFilter: (minPrice: number, maxPrice: number) => void;
+  handlePriceFilter: (price: number) => void;
 }
 
-export default function PriceFilter({handlePriceFilter}: Props) {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [response, setResponse] = useState("");
+const priceLevels = [
+  { value: 0, label: "Economical" },
+  { value: 1, label: "Cheap" },
+  { value: 2, label: "Moderate" },
+  { value: 3, label: "Expensive" },
+  { value: 4, label: "Very Expensive" },
+];
 
-  const handleFilter = () => {
-    const fromValue = parseFloat(from);
-    const toValue = parseFloat(to);
+export default function PriceFilter({ handlePriceFilter }: Props) {
+  const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
 
-    if (isNaN(fromValue) || isNaN(toValue)) {
-      setResponse("Values must be numbers.");
-    } else if (fromValue < 0) {
-      setResponse("Minimum price cannot be less than zero.");
-    } else if (fromValue > toValue) {
-      setResponse("Minimum price cannot be greater than the maximum.");
-    } else {
-      setResponse(`Filter prices from $${fromValue} to $${toValue}`);
-      handlePriceFilter(fromValue, toValue);
-    }
+  const handlePriceSelect = (price: number) => {
+    setSelectedPrice(price);
+    handlePriceFilter(price); // Enviando como string, como no seu código anterior
   };
 
-  function handleClearResponse() {
-    setResponse("");
-  }
-
   return (
-    <div className="flex flex-col gap-2 p-2 rounded-lg w-full bg-gray-200 ">
-      <div className="flex gap-2">
-        {" "}
-        <div className="flex flex-col w-1/2 ">
-          <label className="font-semibold">Minimum Price:</label>
-          <input
-            type="number"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-            onClick={handleClearResponse}
-            className=" border-2 border-gray-400  mt-1 p-1.5 rounded-md  w-[90%] hover:outline-0 focus:outline-0"
-          />
-        </div>
-        <div className="flex flex-col w-1/2">
-          <label className="font-semibold">Maximum Price:</label>
-          <input
-            type="number"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-            onClick={handleClearResponse}
-            className=" border-2 border-gray-400 mt-1 p-1.5 rounded-md w-[90%] hover:outline-0 focus:outline-0"
-          />
-        </div>
+    <div className="flex w-[95%] rounded flex-col gap-3 bg-gray-100 p-3 ">
+      <h2 className="font-semibold text-center mb-2">Select Price Range</h2>
+      <div className="grid grid-cols-2 gap-3">
+        {priceLevels.map((level) => (
+          <button
+            key={level.value}
+            onClick={() => handlePriceSelect(level.value)}
+            className={`${
+              selectedPrice === level.value
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            } p-2 rounded-lg hover:bg-blue-400 transition cursor-pointer`}
+          >
+            {level.label}
+          </button>
+        ))}
       </div>
-      {response && <p className="text-center text-sm">{response}</p>}
-
-      <button
-        type="button"
-        onClick={handleFilter}
-        className="bg-blue-500 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition"
-      >
-        Set Price
-      </button>
     </div>
   );
 }

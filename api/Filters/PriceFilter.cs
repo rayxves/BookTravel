@@ -4,18 +4,17 @@ namespace Filters
 {
     public class PriceFilter : IFilter
     {
-        private readonly int _minPrice;
-        private readonly int _maxPrice;
+        private readonly int _priceLevel;
 
-        public PriceFilter(int minPrice, int maxPrice)
+
+        public PriceFilter(int priceLevel)
         {
-            _minPrice = minPrice;
-            _maxPrice = maxPrice;
+            _priceLevel = priceLevel;
         }
 
         public string ApplyFilter(string baseUrl)
         {
-            return $"{baseUrl}&minprice={_minPrice}&maxprice={_maxPrice}";
+            return $"{baseUrl}&minprice={_priceLevel}";
         }
 
         public List<GoogleTouristSpot> ApplyFilter(List<GoogleTouristSpot> places)

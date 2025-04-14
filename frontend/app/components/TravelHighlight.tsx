@@ -58,7 +58,7 @@ export default function TravelHighlight() {
       </svg>
 
       <div className="flex flex-col items-center justify-center gap-2 bg-[rgba(0,0,0,0.6)] p-5 rounded-lg">
-        <div className="relative w-[200px] md:w-[300px] h-[250px] md:h-[300px] overflow-hidden">
+        <div className="relative w-[250px] md:w-[350px] h-[250px] md:h-[300px] overflow-hidden">
           <Image
             className="object-cover rounded-lg shadow-2xl border-b-2 border-gray-900"
             alt={currentTh.name}

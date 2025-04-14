@@ -109,15 +109,15 @@ namespace api.Controllers
         public async Task<IActionResult> GetPlacesByLocationAndFilter(
            [FromQuery] double latitude,
            [FromQuery] double longitude,
-           [FromQuery] int? minPrice,
-           [FromQuery] int? maxPrice,
+           [FromQuery] int? priceLevel,
+           
            [FromQuery] decimal? minRating,
            [FromQuery] string type)
         {
-            var validationError = _validator.ValidateLocationRequest(latitude, longitude, minPrice, maxPrice, minRating);
+            var validationError = _validator.ValidateLocationRequest(latitude, longitude, priceLevel, minRating);
             if (validationError != null) return validationError;
 
-            var filterContext = _filterService.CreateFilterContext(minPrice, maxPrice, minRating, type);
+            var filterContext = _filterService.CreateFilterContext(priceLevel, minRating, type);
 
             var response = await _googleServices.GetPlacesByLocationAsync(filterContext, latitude, longitude);
 
@@ -132,15 +132,14 @@ namespace api.Controllers
         [HttpGet("by-name-filter")]
         public async Task<IActionResult> GetPlacesByNameAndFilter(
             [FromQuery] string name,
-            [FromQuery] int? minPrice,
-            [FromQuery] int? maxPrice,
+            [FromQuery] int? priceLevel,
             [FromQuery] decimal? minRating,
             [FromQuery] string type)
         {
-            var validationError = _validator.ValidateNameRequest(name, minPrice, maxPrice, minRating);
+            var validationError = _validator.ValidateNameRequest(name, priceLevel, minRating);
             if (validationError != null) return validationError;
 
-            var filterContext = _filterService.CreateFilterContext(minPrice, maxPrice, minRating, type);
+            var filterContext = _filterService.CreateFilterContext(priceLevel, minRating, type);
 
             var response = await _googleServices.GetPlacesByNameAsync(filterContext, name);
 

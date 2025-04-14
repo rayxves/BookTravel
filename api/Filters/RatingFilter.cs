@@ -13,7 +13,7 @@ public class RatingFilter : IFilter
 
     public string ApplyFilter(string baseUrl)
     {
-        return $"{baseUrl}&minrating={_rating}";
+        return baseUrl;
     }
 
 

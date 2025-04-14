@@ -36,7 +36,7 @@ namespace api.Mappers
                 Name = googleTouristSpot.Name,
                 Rating = googleTouristSpot.Rating,
                 PhotoUrls = googleTouristSpot.Photos?.Select(p => p.PhotoReference).ToList() ?? new List<string>(),
-                Address =  googleTouristSpot.Formatted_address ?? null,
+                Address = googleTouristSpot.Formatted_address ?? null,
             };
         }
 

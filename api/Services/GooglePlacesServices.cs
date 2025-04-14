@@ -37,13 +37,12 @@ namespace api.Services
 
         }
 
-
-
         public async Task<GooglePlacesResponse> GetFilteredPlacesAsync(FilterContext filterContext, string baseUrl)
         {
             string finalUrl = filterContext.ApplyFilters(baseUrl);
 
             var touristSpotResponse = await GetApiResponseAsync(finalUrl);
+
 
             return new GooglePlacesResponse
             {
@@ -64,6 +63,8 @@ namespace api.Services
             {
                 throw new HttpRequestException("Response content is null or empty.");
             }
+
+            Console.WriteLine(content);
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             return JsonSerializer.Deserialize<GooglePlacesResponse>(content, options);

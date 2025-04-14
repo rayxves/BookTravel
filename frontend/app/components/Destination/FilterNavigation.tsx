@@ -11,7 +11,11 @@ interface Props {
   handleShowFilter: () => void;
 }
 
-export default function FilterNavigation({ name, isLocationSearch, handleShowFilter }: Props) {
+export default function FilterNavigation({
+  name,
+  isLocationSearch,
+  handleShowFilter,
+}: Props) {
   const { fetchTouristSpotsByFilterAndName } = useNameSpotsContext();
   const { fetchTouristSpotsByFilterAndLocation, location } =
     useNearbySpotsContext();
@@ -20,8 +24,7 @@ export default function FilterNavigation({ name, isLocationSearch, handleShowFil
   const [showPrice, setShowPrice] = useState(false);
   const [typeFilter, setTypeFilter] = useState("");
   const [ratingFilter, setRatingFilter] = useState(0);
-  const [priceFilterFrom, setPriceFilterFrom] = useState(0);
-  const [priceFilterTo, setPriceFilterTo] = useState(0);
+  const [priceLevel, setPriceLevel] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleShowPrice() {
@@ -44,9 +47,8 @@ export default function FilterNavigation({ name, isLocationSearch, handleShowFil
     setRatingFilter(rating);
   }
 
-  function handlePriceFilter(minPrice: number, maxPrice: number) {
-    setPriceFilterFrom(minPrice);
-    setPriceFilterTo(maxPrice);
+  function handlePriceFilter(priceLevel: number) {
+    setPriceLevel(priceLevel);
   }
 
   function handleFetchPlaces() {
@@ -64,22 +66,18 @@ export default function FilterNavigation({ name, isLocationSearch, handleShowFil
         name,
         typeFilter,
         ratingFilter,
-        priceFilterFrom,
-        priceFilterTo
+        priceLevel
       );
-      handleShowFilter()
-      
+      handleShowFilter();
     } else {
       fetchTouristSpotsByFilterAndLocation(
         location.lat,
         location.lon,
         typeFilter,
         ratingFilter,
-        priceFilterFrom,
-        priceFilterTo
+        priceLevel
       );
-      handleShowFilter()
-
+      handleShowFilter();
     }
   }
 

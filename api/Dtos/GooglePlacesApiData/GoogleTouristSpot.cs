@@ -14,6 +14,8 @@ public class GoogleTouristSpot
 {
     public string Name { get; set; }
     public decimal Rating { get; set; }
+    [JsonPropertyName("price_level")]
+     public int? PriceLevel { get; set; }
     public List<GooglePhoto> Photos { get; set; } = new List<GooglePhoto>();
     public string? Formatted_address { get; set; }
 }

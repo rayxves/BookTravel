@@ -96,8 +96,8 @@ export function useNearbySpots() {
       longitude: number,
       type: string,
       rating?: number,
-      minPrice?: number,
-      maxPrice?: number
+      priceLevel?: number,
+
     ) => {
       try {
         const response = await filterByLocation(
@@ -105,8 +105,7 @@ export function useNearbySpots() {
           longitude,
           type,
           rating,
-          minPrice,
-          maxPrice
+          priceLevel,
         );
 
         if (response.length === 0) {
