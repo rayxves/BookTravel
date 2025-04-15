@@ -18,7 +18,6 @@ export default function CommentList({ comment }: { comment: Comment }) {
     try {
       console.log(id);
       await deleteComment(id);
-      setResponse("Deleted  successfully.");
       setTimeout(() => {
         setIsVisible(false);
       }, 1000);
@@ -34,7 +33,6 @@ export default function CommentList({ comment }: { comment: Comment }) {
   async function handleUpdateComments(content: string, id: number) {
     try {
       await updateComment(content, id);
-      setResponse("Updated successfully.");
       setTimeout(() => {
         comment.content = content;
         setIsUpdating(false);

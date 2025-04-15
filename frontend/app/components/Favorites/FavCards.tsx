@@ -69,8 +69,8 @@ export default function FavCards({
       <div
         className={
           showCreateComment || showViewComments || showViewComments
-            ? " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:shadow-lg relative opacity-55"
-            : " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[30rem] p-4 bg-gray-300 bg-opacity-25 rounded-lg shadow-lg hover:scale-105 hover:shadow-lg relative"
+            ? " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[36rem] p-4 bg-gray-100 bg-opacity-25 rounded-lg shadow-lg hover:shadow-lg relative opacity-55"
+            : " font-inter transition-all duration-300 ease-in-out flex flex-col items-center justify-between gap-8 w-[90%] max-w-[24rem] h-[36rem] p-4 bg-gray-100 bg-opacity-25 rounded-lg shadow-lg hover:scale-105 hover:shadow-lg relative"
         }
       >
         <div className="w-full flex justify-between items-center px-2">
@@ -115,17 +115,40 @@ export default function FavCards({
         <h1 className=" flex items-center justify-center h-fit p-1 text-2xl font-semibold">
           {name}
         </h1>
-        <div className="w-fit max-w-[18.7rem] max-h-[11rem] overflow-hidden rounded-lg shadow-md shadow-cyan-950/55">
+        <div className="w-[95%] h-60  overflow-hidden rounded shadow-md shadow-cyan-950/55">
           {imageUrl ? (
             <Image
               src={imageUrl}
               alt={name}
-              width={300}
-              height={200}
-              className="w-full h-full object-contain rounded-lg "
+              width={800}
+              height={500}
+              className="w-full h-full object-cover rounded"
+              quality={80}
+              priority
             />
           ) : (
-            <p className="font-inter text-md">Image unavailable</p>
+            <svg
+              className="w-100 h-100 text-gray-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"
+              />
+              <path
+                stroke="currentColor"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
           )}
         </div>
 

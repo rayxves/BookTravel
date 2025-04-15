@@ -41,7 +41,7 @@ export default function FeatureList() {
         return (
           <div
             key={index}
-            className="relative bg-white/10 rounded-xl shadow-md overflow-visible"
+            className="relative bg-gray-200 rounded-xl shadow-md overflow-visible"
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : index)}
