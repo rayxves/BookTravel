@@ -1,6 +1,7 @@
 using api.Extensions;
 using api.Interfaces;
 using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +16,16 @@ namespace api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IFavoriteRepository _faveRepo;
         private readonly ITouristSpotRepository _spotRepo;
+        private readonly GooglePlacesServices _googlePlacesServices;
 
 
         [ActivatorUtilitiesConstructor]
-        public FavoriteController(IFavoriteRepository faveRepo, UserManager<User> userManager, ITouristSpotRepository spotRepo)
+        public FavoriteController(IFavoriteRepository faveRepo, UserManager<User> userManager, ITouristSpotRepository spotRepo, GooglePlacesServices googlePlacesServices)
         {
             _userManager = userManager;
             _faveRepo = faveRepo;
             _spotRepo = spotRepo;
+            _googlePlacesServices = googlePlacesServices;
 
         }
 
@@ -62,7 +65,23 @@ namespace api.Controllers
             var touristSpot = await _spotRepo.GetByNameAsync(touristSpotName);
             if (touristSpot == null)
             {
-                return NotFound("Tourist spot not found");
+
+                var googleTouristSpot = await _googlePlacesServices.GetPlaceDetailsByName(touristSpotName);
+                if (googleTouristSpot == null)
+                {
+                    return NotFound("Tourist spot not found");
+
+                }
+                var touristSpotModel = new TouristSpot
+                {
+                    Name = googleTouristSpot.Name,
+                    Description = googleTouristSpot.Formatted_address ?? "",
+                    Rating = googleTouristSpot.Rating,
+                    PhotoUrls = googleTouristSpot.Photos.Select(x => x.PhotoReference).ToList()
+                };
+                await _spotRepo.CreateAsync(touristSpotModel);
+                touristSpot = touristSpotModel;
+
             }
 
             var userFavoriteTouristSpot = await _faveRepo.GetUserFavorite(appUser);
