@@ -16,7 +16,7 @@ export default function RatingFilter({ handleRatingFilter }: Props) {
   }
   
   return (
-    <div className="flex flex-col gap-2 w-full bg-gray-200 p-2 rounded items-center justify-center">
+    <div className="flex flex-col gap-2 w-full bg-gray-100 p-2 rounded items-center justify-center">
       <div className="flex">
         {Array.from({ length: maxStars }, (_, index) => {
           const starValue = index + 1;

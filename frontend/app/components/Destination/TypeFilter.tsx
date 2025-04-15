@@ -14,7 +14,7 @@ export default function TypeFilter({ handleTypeFilter }: Props) {
   };
 
   return (
-    <div className="bg-gray-200 w-full grid grid-cols-2 p-2">
+    <div className="bg-gray-100 w-full grid grid-cols-2 p-2">
       {types.map((type) => (
         <div
           key={type}

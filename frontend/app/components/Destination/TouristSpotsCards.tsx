@@ -57,12 +57,31 @@ export default function TouristSpotsCards({
           />
         </div>
       ) : (
-        <div className="w-fit max-w-[18.7rem] max-h-[11rem]">
-          {" "}
-          <p className="font-inter text-md">Image unavailable</p>
+        <div className="w-fit max-w-[20rem] max-h-[13rem] overflow-hidden rounded-lg ">
+          <svg
+            className="w-50 h-50 text-gray-300"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="100"
+            height="100"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"
+            />
+            <path
+              stroke="currentColor"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+          </svg>
         </div>
       )}
-
       <p className="flex items-center justify-center text-center leading-tight h-fit text-sm font-medium">
         {address}
       </p>

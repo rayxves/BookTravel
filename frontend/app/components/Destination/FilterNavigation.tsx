@@ -87,7 +87,7 @@ export default function FilterNavigation({
         {" "}
         <h1 className="font-poppins text-md font-semibold">Filters</h1>
       </div>{" "}
-      <div className="flex flex-col items-center rounded hover:bg-gray-400 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
+      <div className="flex flex-col items-center rounded hover:bg-gray-300 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
         {" "}
         <button
           type="button"
@@ -116,7 +116,7 @@ export default function FilterNavigation({
         </button>
         {showTypes && <TypeFilter handleTypeFilter={handleTypeFilter} />}
       </div>{" "}
-      <div className="flex flex-col items-center rounded hover:bg-gray-400 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
+      <div className="flex flex-col items-center rounded hover:bg-gray-300 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
         {" "}
         <button
           type="button"
@@ -145,7 +145,7 @@ export default function FilterNavigation({
         </button>
         {showRating && <RatingFilter handleRatingFilter={handleRatingFilter} />}
       </div>{" "}
-      <div className="flex flex-col items-center rounded hover:bg-gray-400 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
+      <div className="flex flex-col items-center rounded hover:bg-gray-300 bg-[rgba(149,147,147,0.3)] justify-between w-full border-b-2 border-gray-500 py-3 px-2 gap-2">
         {" "}
         <button
           type="button"
