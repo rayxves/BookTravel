@@ -35,7 +35,6 @@ export default function ViewComments({ onCancel, touristSpotName }: Props) {
         setResponse("");
       }
     } catch (error: any) {
-      console.log("Error: ", error);
       setResponse(error.message);
     }
   }

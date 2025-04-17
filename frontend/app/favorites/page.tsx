@@ -37,7 +37,6 @@ export default function FavoritePage() {
         });
         setFavTouristSpots(formattedData);
       } catch (error: any) {
-        console.log(error);
         setError(
           error.response?.message?.data || "Error trying to fetch favorites."
         );

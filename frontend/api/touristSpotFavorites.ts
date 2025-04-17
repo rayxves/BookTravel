@@ -15,7 +15,6 @@ export const getFavorites = async () => {
       return data;
     });
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.message || "Error trying to get favorites.");
   }
 };
@@ -33,7 +32,6 @@ export const removeFavorite = async (touristSpotName: string) => {
     );
     return { message: "Removed favorite successfully" };
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.message || "Error trying to remove favorite.");
   }
 };

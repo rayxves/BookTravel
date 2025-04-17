@@ -32,10 +32,15 @@ export function useNearbySpots() {
       setCategoryNearbySpots({});
       setFilterNearbySpots([]);
       setNearbyErrorMessage("");
+      setLocationError(null);
+
     }
   }, [pathname]);
 
   const handleSetUserLocation = useCallback(() => {
+    setNearbyErrorMessage("");
+    setLocationError(null);
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -68,6 +73,7 @@ export function useNearbySpots() {
   const fetchTouristSpotsByLocation = useCallback(
     async (latitude: number, longitude: number) => {
       try {
+        setNearbyErrorMessage("");
         const categories = ["restaurant", "bar", "park"];
         const results: Record<string, FilterLocationResult[]> = {};
 
@@ -82,7 +88,6 @@ export function useNearbySpots() {
 
         setMode("location");
         setCategoryNearbySpots(results);
-        setNearbyErrorMessage("");
       } catch (error: any) {
         setNearbyErrorMessage(error.message);
       }
@@ -96,16 +101,17 @@ export function useNearbySpots() {
       longitude: number,
       type: string,
       rating?: number,
-      priceLevel?: number,
-
+      priceLevel?: number
     ) => {
       try {
+        setNearbyErrorMessage("");
+
         const response = await filterByLocation(
           latitude,
           longitude,
           type,
           rating,
-          priceLevel,
+          priceLevel
         );
 
         if (response.length === 0) {
@@ -115,7 +121,6 @@ export function useNearbySpots() {
 
         setMode("location");
         setFilterNearbySpots(response);
-        setNearbyErrorMessage("");
       } catch (error: any) {
         setNearbyErrorMessage(error.message);
       }

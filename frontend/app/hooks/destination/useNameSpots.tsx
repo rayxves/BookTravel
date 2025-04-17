@@ -12,7 +12,6 @@ export function useNameSpots() {
   const { setMode } = useSearchMode();
   const pathname = usePathname();
 
-
   useEffect(() => {
     if (!pathname.includes("/destinations")) {
       setTouristSpots([]);
@@ -26,7 +25,7 @@ export function useNameSpots() {
       setSearchText(event.target.value);
       setMode("name");
     },
-    []
+    [setMode]
   );
 
   const fetchTouristSpotsByName = useCallback(async (name: string) => {
@@ -35,6 +34,7 @@ export function useNameSpots() {
 
       if (response.length === 0) {
         setErrorMessage("No tourist spots found.");
+        setTouristSpots([]);
         return;
       }
 
@@ -43,6 +43,7 @@ export function useNameSpots() {
       setErrorMessage("");
     } catch (error: any) {
       setErrorMessage(error.message);
+      setTouristSpots([]);
     }
   }, []);
 
@@ -51,19 +52,14 @@ export function useNameSpots() {
       name: string,
       type: string,
       rating?: number,
-      priceLevel?: number,
+      priceLevel?: number
     ) => {
       try {
-        const response = await filterByName(
-          name,
-          type,
-          rating,
-          priceLevel,
-          
-        );
+        const response = await filterByName(name, type, rating, priceLevel);
 
         if (response.length === 0) {
           setErrorMessage("No tourist spots found.");
+          setTouristSpots([]);
           return;
         }
         setMode("name");
@@ -71,6 +67,7 @@ export function useNameSpots() {
         setErrorMessage("");
       } catch (error: any) {
         setErrorMessage(error.message);
+        setTouristSpots([]);
       }
     },
     []

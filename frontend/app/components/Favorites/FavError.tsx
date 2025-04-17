@@ -15,10 +15,10 @@ export default function FavError({ error }) {
       <p className="font-inter text-xl sm:text-2xl">
         Something went wrong...
       </p>
-      <p className="w-fit h-fit text-lg sm:text-xl p-3 text-red-700 font-inter">
+      <p className="w-fit h-fit text-lg sm:text-xl p-2.5 text-red-700 font-semibold font-inter">
         {error}
       </p>
-      <Lottie options={options} style={{ width: "50%", height: "50%" }} />
+      <Lottie options={options} style={{ width: "40%", height: "40%" }} />
     </div>
   );
 }

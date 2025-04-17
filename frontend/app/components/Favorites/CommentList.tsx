@@ -16,7 +16,6 @@ export default function CommentList({ comment }: { comment: Comment }) {
 
   async function handleDeleteComment(id: number) {
     try {
-      console.log(id);
       await deleteComment(id);
       setTimeout(() => {
         setIsVisible(false);

@@ -19,14 +19,15 @@ export default function Searchbar({ handleInputChange }: Props) {
   const [searchText, setSearchText] = useState<string>("");
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-    setMode("name");
     handleInputChange(event);
     setSearchText(event.target.value);
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     fetchTouristSpotsByName(searchText);
+    setMode("name");
     if (pathname === "/") {
       router.replace("/destinations");
     }

@@ -4,7 +4,7 @@ export async function filterByName(
   name: string,
   type: string,
   rating?: number,
-  priceLevel?: number,
+  priceLevel?: number
 ) {
   try {
     let url = `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/tourist-spot/by-name-filter`;
@@ -13,7 +13,7 @@ export async function filterByName(
     if (name) params.append("name", name);
     if (type) params.append("type", type);
     if (rating !== undefined) {
-      params.append("rating", rating.toString());
+      params.append("minRating", rating.toString());
     }
     if (priceLevel !== undefined && priceLevel !== 0) {
       params.append("priceLevel", priceLevel.toString());
@@ -40,7 +40,7 @@ export async function filterByLocation(
   longitude: number,
   type: string,
   rating?: number,
-  priceLevel?: number,
+  priceLevel?: number
 ) {
   try {
     let url = `${process.env.NEXT_PUBLIC_DEVELOPMENT_API_URL}/api/tourist-spot/by-location`;
@@ -50,12 +50,11 @@ export async function filterByLocation(
     if (longitude) params.append("longitude", longitude.toString());
     if (type) params.append("type", type);
     if (rating !== undefined) {
-      params.append("rating", rating.toString());
+      params.append("minRating", rating.toString());
     }
     if (priceLevel !== undefined && priceLevel !== 0) {
       params.append("priceLevel", priceLevel.toString());
     }
-
 
     if (params.toString()) {
       url += `?${params.toString()}`;

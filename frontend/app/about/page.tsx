@@ -8,8 +8,8 @@ export default function About() {
   return (
     <>
       {" "}
-      <div className="w-full min-h-screen overflow-y-auto pb-8 bg-gray-200 font-inter">
-        <div className="flex flex-col items-center min-h-screen p-6 bg-gray-200 relative">
+      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 to-blue-100  overflow-y-auto pb-8 font-inter">
+        <div className="flex flex-col items-center min-h-screen p-6 bg-gradient-to-br from-blue-50 to-blue-100  relative">
           <h1 className="text-center font-poppins text-gray-800 text-2xl md:text-3xl border-b border-gray-800 w-full pb-4 mb-5">
             Welcome to Book Travel!
           </h1>

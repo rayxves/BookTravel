@@ -53,7 +53,6 @@ export const registerRequest = async (credentials: RegisterData) => {
   } catch (error: any) {
     if (error.response) {
       const status = error.response.status;
-
       if (status === 400) {
         throw new Error("Invalid registration data");
       } else if (status === 500) {

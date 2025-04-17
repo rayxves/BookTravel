@@ -2,11 +2,11 @@
 import { useAuth } from "@/authContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import router from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { registerRequest } from "../../api/auth";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   name: string;
@@ -18,7 +18,11 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required("Name is required")
-    .min(3, "Name must be at least 3 characters long"),
+    .min(3, "Name must be at least 3 characters long")
+    .matches(
+      /^[a-zA-Z0-9]+$/,
+      "Username is invalid, can only contain letters or digits"
+    ),
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()
@@ -31,6 +35,7 @@ const schema = yup.object().shape({
 
 export default function Register() {
   const { authLogin } = useAuth();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [registerResponse, setRegisterResponse] = useState<string | null>("");
   const {

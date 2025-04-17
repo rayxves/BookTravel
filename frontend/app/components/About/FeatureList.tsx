@@ -41,7 +41,7 @@ export default function FeatureList() {
         return (
           <div
             key={index}
-            className="relative bg-gray-200 rounded-xl shadow-md overflow-visible"
+            className="relative bg-blue-100 rounded-xl shadow-md overflow-visible"
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -65,7 +65,7 @@ export default function FeatureList() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute z-10 top-full left-0 mt-1 w-full bg-gray-100 text-gray-700 text-sm rounded-b-xl shadow-lg px-6 py-4"
+                  className="absolute z-10 top-full left-0 mt-1 w-full bg-blue-50 text-gray-700 text-sm rounded-b-xl shadow-lg px-6 py-4"
                 >
                   {item.content}
                 </motion.div>

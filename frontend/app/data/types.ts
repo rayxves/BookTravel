@@ -5,7 +5,6 @@ export const types = [
   "bar",
   "school",
   "hospital",
-  "hotel",
   "cafe",
   "store",
 ];

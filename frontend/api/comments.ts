@@ -20,7 +20,6 @@ export async function createComment(content: string, touristSpotName: string) {
 
     return response.data;
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.message || "Error trying to create comment.");
   }
 }
@@ -56,7 +55,6 @@ export async function deleteComment(commentId: number) {
       withCredentials: true,
     });
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.message || "Error trying to delete comment.");
   }
 }
@@ -76,7 +74,6 @@ export async function updateComment(content: string, id: number) {
       }
     );
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.message || "Error trying to update comment.");
   }
 }

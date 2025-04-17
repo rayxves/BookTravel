@@ -8,7 +8,6 @@ import { useEffect } from "react";
 export default function NearbyFilterComponent() {
   const {
     fetchTouristSpotsByLocation,
-    nearbyErrorMessage,
     location,
     locationError,
     handleSetUserLocation,
@@ -64,7 +63,7 @@ export default function NearbyFilterComponent() {
       </button>
 
       <p className="text-xs text-red-700 font-inter">
-        {nearbyErrorMessage ?? locationError ?? ""}
+        { locationError ?? ""}
       </p>
     </div>
   );
