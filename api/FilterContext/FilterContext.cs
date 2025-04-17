@@ -22,7 +22,6 @@ public class FilterContext
                 hasParams = true;
             }
         }
-        Console.WriteLine(baseUrl);
         return baseUrl;
     }
 

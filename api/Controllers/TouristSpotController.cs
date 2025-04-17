@@ -110,7 +110,6 @@ namespace api.Controllers
            [FromQuery] double latitude,
            [FromQuery] double longitude,
            [FromQuery] int? priceLevel,
-           
            [FromQuery] decimal? minRating,
            [FromQuery] string type)
         {

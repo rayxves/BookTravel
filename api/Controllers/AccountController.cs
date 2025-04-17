@@ -29,7 +29,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
 
             if (user == null)
             {
@@ -61,7 +61,7 @@ namespace api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var existingUser = await _userManager.FindByNameAsync(registerDto.UserName.ToLower());
+                var existingUser = await _userManager.FindByNameAsync(registerDto.UserName);
                 if (existingUser != null)
                 {
                     return Unauthorized("Username already in use.");
@@ -91,20 +91,17 @@ namespace api.Controllers
                     else
                     {
                         var errorMessages = roleResult.Errors.Select(e => e.Description).ToList();
-                        Console.WriteLine(errorMessages);
                         return StatusCode(500, new { Errors = errorMessages });
                     }
                 }
                 else
                 {
                     var errorMessages = createdUser.Errors.Select(e => e.Description).ToList();
-                    Console.WriteLine(errorMessages);
                     return StatusCode(500, new { Errors = errorMessages });
                 }
             }
             catch (Exception error)
             {
-                Console.WriteLine(error);
                 return StatusCode(500, error);
             }
         }

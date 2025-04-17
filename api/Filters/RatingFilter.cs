@@ -19,6 +19,8 @@ public class RatingFilter : IFilter
 
     public List<GoogleTouristSpot> ApplyFilter(List<GoogleTouristSpot> places)
     {
-        return places.Where(place => place.Rating >= _rating).ToList();
+
+        var filtered = places.Where(place => place.Rating >= _rating).ToList();
+        return filtered;
     }
 }

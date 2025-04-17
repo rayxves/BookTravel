@@ -14,6 +14,7 @@ public class GoogleTouristSpotById
 {
     public string Place_Id { get; set; }
     public string Name { get; set; }
+    [JsonPropertyName("rating")]
     public decimal Rating { get; set; }
 
     [JsonPropertyName("price_level")]
