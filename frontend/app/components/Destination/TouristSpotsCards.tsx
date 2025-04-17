@@ -1,5 +1,5 @@
 import { addFavorite } from "@/api/touristSpotFavorites";
-import { useAuth } from "@/authContext";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

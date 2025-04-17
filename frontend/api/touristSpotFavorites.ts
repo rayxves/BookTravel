@@ -15,6 +15,9 @@ export const getFavorites = async () => {
       return data;
     });
   } catch (error: any) {
+    if (error.status === 404) {
+      return [];
+    }
     throw new Error(error.message || "Error trying to get favorites.");
   }
 };
@@ -51,7 +54,6 @@ export const addFavorite = async (touristSpotName: string) => {
 
     return { message: "Add favorite successfully" };
   } catch (error: any) {
-
     throw new Error(error.message || "Error trying to add favorite.");
   }
 };

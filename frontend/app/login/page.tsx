@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { loginRequest } from "../../api/auth";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/authContext";
+import { useAuth } from "@/context/AuthContext";
 
 interface FormData {
   name: string;
@@ -44,8 +44,7 @@ export default function Login() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await loginRequest(data);
-
-      authLogin(response.UserName, response.token);
+      authLogin(response.token);
       setLoginResponse("Login successful");
 
       await new Promise<void>(() => {

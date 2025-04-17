@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/authContext";
+import { useAuth } from "@/context/AuthContext";
 import animationDataNoAuth from "@/public/NoAuth.json";
 import animationDataNoContent from "@/public/NoContent.json";
 import { getFavorites } from "@/api/touristSpotFavorites";

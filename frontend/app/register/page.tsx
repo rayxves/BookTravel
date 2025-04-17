@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/authContext";
+import { useAuth } from "@/context/AuthContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useState } from "react";
@@ -48,8 +48,8 @@ export default function Register() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await registerRequest(data);
-      authLogin(data.name, data.password);
+      const response = await registerRequest(data);
+      authLogin(response.token);
       setRegisterResponse("Register successful");
 
       await new Promise<void>(() => {

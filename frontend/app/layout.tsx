@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
-import { AuthProvider } from "@/authContext";
+import { AuthProvider } from "../context/AuthContext";
 import { NameSpotsProvider } from "@/context/NameSpotsContext";
 import { NearbySpotsProvider } from "@/context/NearbySpotsContext";
 import { SearchModeProvider } from "@/context/SearchModeContext";
